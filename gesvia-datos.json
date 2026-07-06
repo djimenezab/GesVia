@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-06T22:29:43.343Z",
+ "exportado": "2026-07-06T22:44:44.911Z",
  "datos": {
   "roads": [
    {
@@ -341,6 +341,9 @@
     "id": "x27"
    }
   ],
-  "seq": 29
+  "seq": 29,
+  "ajustes": {
+   "sector": "ZONA 2"
+  }
  }
 }
