@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gesvia-v1.0';
+const CACHE_NAME = 'gesvia-v1.1';
 const ASSETS = [
   './',
   './index.html',
@@ -24,6 +24,8 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  // Solo cacheamos peticiones GET de la propia app; la API de GitHub pasa directa
+  if (e.request.method !== 'GET' || !e.request.url.startsWith(self.location.origin)) return;
   e.respondWith(
     caches.match(e.request).then(cached => cached || fetch(e.request))
   );

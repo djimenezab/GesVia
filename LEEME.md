@@ -34,8 +34,28 @@ LEEME.md
 ## Cuando actualices la app
 
 Si subes un `index.html` nuevo, edita en `sw.js` la primera línea y sube la versión
-(`gesvia-v1.0` → `gesvia-v1.1`). Así los móviles descargan la versión nueva en vez
+(`gesvia-v1.1` → `gesvia-v1.2`). Así los móviles descargan la versión nueva en vez
 de seguir usando la copia guardada en caché.
+
+## Sincronización automática con GitHub (como RegIn 1.91)
+
+1. Abre la app y pulsa el botón **⬆⬇** de la cabecera.
+2. En Configuración: usuario `djimenezab`, repositorio `GesVia`, archivo `gesvia-datos.json`
+   y tu **token** de GitHub (te vale el mismo que usas en RegIn; si necesitas uno nuevo:
+   Settings → Developer settings → Personal access tokens → Tokens (classic) →
+   Generate new token con el permiso `repo`).
+3. Guarda la configuración **en cada dispositivo** (móvil y PC) una sola vez.
+
+A partir de ahí: al abrir la app descarga los datos del repositorio, y cada cambio se sube
+solo unos segundos después. El punto de color junto a ⬆⬇ indica el estado:
+verde = sincronizado · ámbar = subiendo · rojo = error o sin conexión · gris = sin configurar.
+Si trabajas sin cobertura, los cambios quedan en el dispositivo; abre el panel ⬆⬇ y pulsa
+"Subir ahora" cuando vuelvas a tener conexión (antes de eso, no descargues, para no pisar lo local).
+
+🔒 Nota: el repositorio es público (lo exige GitHub Pages en cuentas gratuitas), así que el
+archivo de datos también es visible públicamente, igual que ocurre con regin-datos.json.
+Si algún día quieres datos privados, crea un segundo repositorio privado solo para el archivo
+de datos y apunta ahí la configuración: el token también funciona con repositorios privados.
 
 ## Dónde se guardan los datos
 

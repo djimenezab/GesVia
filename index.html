@@ -214,6 +214,9 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
     </div>
   </div>
   <nav>
+    <button onclick="abrirSync()" title="Sincronización con GitHub" style="display:flex;align-items:center;gap:.45rem">
+      <span id="sync-dot" style="width:10px;height:10px;border-radius:50%;background:#9aa1a7;display:inline-block;transition:background .3s"></span>⬆⬇
+    </button>
     <button data-v="panel" class="activo" onclick="go('panel')">Panel</button>
     <button data-v="red" onclick="go('red')">Red</button>
     <button data-v="inspeccion" onclick="go('inspeccion')">Inspección</button>
@@ -400,7 +403,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
     <p>Todo se guarda en este dispositivo (localStorage del navegador).</p>
   </div>
   <div class="aviso-banda">
-    <strong>Importante:</strong> los datos viven en el navegador de cada dispositivo. Exporta una copia JSON periódicamente y guárdala (o súbela a una carpeta compartida) para no perder nada y para pasar datos entre el móvil de campo y el PC de oficina.
+    <strong>Sincronización activada:</strong> si configuras GitHub en el botón ⬆⬇ de arriba, al abrir la app se descargan los datos del repositorio y cada cambio se sube automáticamente a los pocos segundos (igual que en RegIn). El punto de color indica el estado: verde = sincronizado, ámbar = subiendo, rojo = error o sin conexión. La copia JSON manual sigue disponible como respaldo extra.
   </div>
   <div class="tarjeta">
     <div class="acciones" style="margin-top:0">
@@ -469,13 +472,14 @@ function load(){
   if(!S || !Array.isArray(S.roads)) S = {roads:[],tramos:[],insp:[],ots:[],seq:1};
 }
 let avisadoAlmacen = false;
-function save(){
+function saveLocal(){
   const ok = store.set('gesvia_v1', JSON.stringify(S));
   if(!ok && !avisadoAlmacen){
     avisadoAlmacen = true;
     toast('⚠ Este entorno no permite guardar de forma permanente. Exporta un JSON en «Datos» antes de cerrar.');
   }
 }
+function save(){ saveLocal(); programarAutoSubida(); }
 const uid = ()=> 'x'+(S.seq++);
 
 /* ---------- utilidades ---------- */
@@ -1037,9 +1041,200 @@ function cargaDemo(confirmar){
   save(); go('panel'); toast('Datos de ejemplo cargados. Explora el panel.');
 }
 
+/* =====================================================
+   SINCRONIZACIÓN CON GITHUB (mismo mecanismo que RegIn 1.91)
+   - Al abrir la app: descarga automática del archivo de datos.
+   - Tras cada cambio: subida automática agrupada (retraso de 3 s).
+   ===================================================== */
+const GH_KEY = 'gesvia_gh';
+let autoSubidaTimer = null, sincronizando = false, appLista = false;
+
+function cargarConfigGH(){
+  try{ return JSON.parse(store.get(GH_KEY)) || {}; }catch(e){ return {}; }
+}
+function ghConfigurado(){
+  const c = cargarConfigGH();
+  return !!(c.token && c.usuario && c.repo);
+}
+function ghUrl(c){ return `https://api.github.com/repos/${c.usuario}/${c.repo}/contents/${c.archivo||'gesvia-datos.json'}`; }
+function ghHeaders(c){ return {'Authorization':`token ${c.token}`, 'Accept':'application/vnd.github.v3+json'}; }
+
+function setSyncDot(color, titulo){
+  const d = $('sync-dot'); if(!d) return;
+  d.style.background = color; d.parentElement.title = titulo;
+}
+function setSyncEstado(msg, color){
+  const el = $('sync-estado'); if(el){ el.textContent = msg; el.style.color = color || 'var(--texto2)'; }
+}
+
+function abrirSync(){
+  const c = cargarConfigGH();
+  abrirModal(`<button class="cerrar-x" onclick="cerrarModal()">✕</button>
+    <h3>☁️ Sincronización con GitHub</h3>
+    <p style="color:var(--texto2);font-size:.9rem;margin-bottom:.8rem">
+      Los datos se guardan en un archivo JSON de tu repositorio. Al abrir la app se descargan
+      y cada cambio se sube automáticamente unos segundos después.</p>
+    <div class="acciones" style="margin:0 0 .8rem">
+      <button class="btn" onclick="subirAGitHub()">⬆ Subir ahora</button>
+      <button class="btn sec" onclick="descargarDeGitHub()">⬇ Descargar ahora</button>
+    </div>
+    <div id="sync-estado" style="font-size:.9rem;min-height:1.3rem;margin-bottom:.8rem;color:var(--texto2)"></div>
+    <details ${ghConfigurado()?'':'open'}>
+      <summary style="cursor:pointer;font-weight:700;padding:.3rem 0">⚙ Configuración</summary>
+      <div class="form-grid" style="margin-top:.6rem">
+        <label class="campo">Usuario de GitHub<input id="gh-usuario" value="${esc(c.usuario||'djimenezab')}"></label>
+        <label class="campo">Repositorio<input id="gh-repo" value="${esc(c.repo||'GesVia')}"></label>
+        <label class="campo">Archivo de datos<input id="gh-archivo" value="${esc(c.archivo||'gesvia-datos.json')}"></label>
+        <label class="campo">Token de acceso<input type="password" id="gh-token" value="${esc(c.token||'')}" placeholder="ghp_xxxxxxxxxxxx"></label>
+      </div>
+      <div class="acciones" style="margin-top:.7rem">
+        <button class="btn sec" onclick="guardarConfigGH()">Guardar configuración</button>
+        <span id="gh-config-estado" style="font-size:.85rem;align-self:center"></span>
+      </div>
+    </details>
+    <details style="margin-top:.5rem">
+      <summary style="cursor:pointer;font-size:.85rem;color:var(--texto2);padding:.3rem 0">❓ ¿Cómo obtengo el token?</summary>
+      <div style="font-size:.85rem;color:var(--texto2);line-height:1.6;padding:.4rem 0">
+        1. GitHub → tu foto → <strong>Settings → Developer settings</strong><br>
+        2. <strong>Personal access tokens → Tokens (classic)</strong><br>
+        3. <strong>Generate new token (classic)</strong>, marca el permiso <strong>repo</strong>, sin caducidad o la que prefieras.<br>
+        4. Copia el token (empieza por ghp_) y pégalo aquí. Se guarda solo en este dispositivo.<br><br>
+        💡 Si ya tienes el token de RegIn, te vale el mismo: da acceso a todos tus repositorios.<br>
+        🔒 Ojo: el repositorio es público (necesario para GitHub Pages), así que el archivo de datos
+        también lo es. Si algún día quieres datos privados, apunta «Repositorio» a un segundo
+        repositorio privado solo para datos: el token también funciona con privados.
+      </div>
+    </details>`);
+  setSyncDot($('sync-dot').style.background, '');
+}
+function guardarConfigGH(){
+  const cfg = {
+    usuario: $('gh-usuario').value.trim(),
+    repo:    $('gh-repo').value.trim(),
+    archivo: $('gh-archivo').value.trim() || 'gesvia-datos.json',
+    token:   $('gh-token').value.trim()
+  };
+  const est = $('gh-config-estado');
+  if(!cfg.usuario || !cfg.repo || !cfg.token){
+    est.textContent = '⚠ Rellena usuario, repositorio y token'; est.style.color = 'var(--aviso)'; return;
+  }
+  store.set(GH_KEY, JSON.stringify(cfg));
+  est.textContent = '✅ Guardado en este dispositivo'; est.style.color = 'var(--ok)';
+  setSyncDot('var(--aviso)', 'Configurado, pendiente de sincronizar');
+}
+
+function payloadGH(){
+  return { app:'gesvia', version:'2.0', exportado:new Date().toISOString(), datos:S };
+}
+function codifica(obj){ return btoa(unescape(encodeURIComponent(JSON.stringify(obj, null, 1)))); }
+function decodifica(b64){ return JSON.parse(decodeURIComponent(escape(atob(b64.replace(/\n/g,''))))); }
+
+async function subirAGitHub(){
+  if(!ghConfigurado()) return setSyncEstado('⚠ Configura primero usuario, repositorio y token', 'var(--aviso)');
+  const c = cargarConfigGH();
+  setSyncEstado('⏳ Subiendo datos a GitHub...', 'var(--aviso)');
+  try{
+    let sha = null;
+    const gr = await fetch(ghUrl(c), {headers: ghHeaders(c)});
+    if(gr.ok){ sha = (await gr.json()).sha; }
+    const pr = await fetch(ghUrl(c), {
+      method:'PUT',
+      headers: {...ghHeaders(c), 'Content-Type':'application/json'},
+      body: JSON.stringify({message:`GESVIA sync ${new Date().toLocaleString('es-ES')}`, content:codifica(payloadGH()), ...(sha?{sha}:{})})
+    });
+    if(pr.ok){
+      setSyncEstado(`✅ Subido: ${S.roads.length} carreteras · ${S.insp.length} inspecciones · ${S.ots.length} órdenes`, 'var(--ok)');
+      setSyncDot('var(--ok)', 'Sincronizado ✓'); toast('☁️ Datos subidos a GitHub');
+    } else {
+      const e = await pr.json().catch(()=>({}));
+      setSyncEstado('❌ Error: '+(e.message||pr.status), 'var(--critico)');
+      setSyncDot('var(--critico)', 'Error al subir');
+    }
+  }catch(e){ setSyncEstado('❌ Error de red: '+e.message, 'var(--critico)'); setSyncDot('var(--critico)', 'Sin conexión'); }
+}
+
+async function descargarDeGitHub(){
+  if(!ghConfigurado()) return setSyncEstado('⚠ Configura primero usuario, repositorio y token', 'var(--aviso)');
+  const c = cargarConfigGH();
+  setSyncEstado('⏳ Descargando datos de GitHub...', 'var(--aviso)');
+  try{
+    const res = await fetch(ghUrl(c), {headers: ghHeaders(c)});
+    if(!res.ok){
+      const e = await res.json().catch(()=>({}));
+      setSyncEstado(res.status===404? 'ℹ El archivo aún no existe en el repositorio. Pulsa «Subir ahora» para crearlo.' : '❌ Error: '+(e.message||res.status), res.status===404?'var(--texto2)':'var(--critico)');
+      return;
+    }
+    const parsed = decodifica((await res.json()).content);
+    const d = parsed.datos || parsed; // admite también un JSON exportado a mano
+    if(!d || !Array.isArray(d.roads)){ setSyncEstado('❌ El archivo no tiene el formato de GesVía', 'var(--critico)'); return; }
+    S = d; saveLocal(); go('panel');
+    setSyncEstado(`✅ Descargado: ${S.roads.length} carreteras · ${S.insp.length} inspecciones`, 'var(--ok)');
+    setSyncDot('var(--ok)', 'Sincronizado ✓'); toast('📥 Datos descargados de GitHub');
+  }catch(e){ setSyncEstado('❌ Error: '+e.message, 'var(--critico)'); }
+}
+
+/* Agrupa cambios seguidos en una sola subida (3 s después del último) */
+function programarAutoSubida(){
+  if(!appLista || !ghConfigurado()) return;
+  clearTimeout(autoSubidaTimer);
+  setSyncDot('var(--aviso)', 'Cambios pendientes de subir...');
+  autoSubidaTimer = setTimeout(autoSubir, 3000);
+}
+async function autoSubir(){
+  if(sincronizando || !ghConfigurado()) return;
+  sincronizando = true;
+  setSyncDot('var(--aviso)', 'Subiendo a GitHub...');
+  const c = cargarConfigGH();
+  try{
+    let sha = null;
+    const gr = await fetch(ghUrl(c), {headers: ghHeaders(c)});
+    if(gr.ok){ sha = (await gr.json()).sha; }
+    const pr = await fetch(ghUrl(c), {
+      method:'PUT',
+      headers: {...ghHeaders(c), 'Content-Type':'application/json'},
+      body: JSON.stringify({message:`GESVIA auto-sync ${new Date().toLocaleString('es-ES')}`, content:codifica(payloadGH()), ...(sha?{sha}:{})})
+    });
+    setSyncDot(pr.ok? 'var(--ok)' : 'var(--critico)', pr.ok? 'Sincronizado ✓' : 'Error al subir — abre ⬆⬇ para reintentar');
+  }catch(e){
+    setSyncDot('var(--critico)', 'Sin conexión — los cambios quedan guardados en el dispositivo');
+  }
+  sincronizando = false;
+}
+
+/* Descarga automática al abrir la app */
+async function autoDescargar(){
+  if(!ghConfigurado()){
+    setSyncDot('#9aa1a7', 'GitHub sin configurar — pulsa ⬆⬇');
+    appLista = true; return;
+  }
+  sincronizando = true;
+  setSyncDot('var(--aviso)', 'Descargando datos de GitHub...');
+  const c = cargarConfigGH();
+  try{
+    const res = await fetch(ghUrl(c), {headers: ghHeaders(c)});
+    if(res.ok){
+      const parsed = decodifica((await res.json()).content);
+      const d = parsed.datos || parsed;
+      if(d && Array.isArray(d.roads)){
+        S = d; saveLocal();
+        setSyncDot('var(--ok)', 'Sincronizado ✓');
+        const activa = document.querySelector('nav button.activo');
+        go(activa? activa.dataset.v || 'panel' : 'panel');
+      } else setSyncDot('var(--critico)', 'El archivo remoto no tiene formato GesVía');
+    } else if(res.status===404){
+      setSyncDot('var(--aviso)', 'Aún no hay archivo de datos en GitHub: se creará con el primer cambio');
+    } else setSyncDot('var(--critico)', 'Error al descargar ('+res.status+')');
+  }catch(e){
+    setSyncDot('var(--critico)', 'Sin conexión — usando los datos guardados en el dispositivo');
+  }
+  sincronizando = false;
+  appLista = true;
+}
+
 /* ---------- arranque ---------- */
 load();
 renderPanel();
+autoDescargar();
 
 /* ---------- PWA: service worker (offline e instalable) ---------- */
 if ('serviceWorker' in navigator) {
