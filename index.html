@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GesVía · Conservación de Carreteras</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#22262B">
+<link rel="icon" type="image/png" href="icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="icons/icon-152x152.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+<link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192x192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512x512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Archivo+Narrow:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --asfalto:#22262B;        /* gris asfalto: cabecera y texto fuerte */
+  --hormigon:#F1F2EF;       /* fondo general */
+  --panel:#FFFFFF;
+  --borde:#D8DBD4;
+  --texto:#2B2F33;
+  --texto2:#6A7076;
+  --senal:#0B5FA5;          /* azul señal de carretera: acción principal */
+  --senal-osc:#094B83;
+  --ok:#1F9D55;             /* verde: bueno */
+  --aviso:#E8A200;          /* ámbar: defecto leve */
+  --critico:#D0453B;        /* rojo: crítico */
+  --nd:#C4C9CC;             /* gris: sin datos */
+  --radio:10px;
+  --sombra:0 1px 3px rgba(20,24,28,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{
+  font-family:'Archivo Narrow',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  background:var(--hormigon);color:var(--texto);line-height:1.45;
+}
+h1,h2,h3,.display{font-family:'Archivo',system-ui,sans-serif}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:1rem;color:var(--texto)}
+
+/* ---------- Cabecera ---------- */
+header{
+  background:var(--asfalto);color:#fff;padding:.7rem 1rem;
+  display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;
+  border-bottom:4px solid var(--senal);
+  position:sticky;top:0;z-index:50;
+}
+.logo{display:flex;align-items:center;gap:.55rem}
+.logo-mark{
+  width:34px;height:34px;border-radius:6px;background:var(--senal);
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+  font-family:'Archivo';font-weight:800;font-size:1.05rem;color:#fff;
+  box-shadow:inset 0 0 0 2px #fff3;
+}
+.logo h1{font-size:1.15rem;font-weight:800;letter-spacing:.03em}
+.logo small{display:block;font-family:'Archivo Narrow';font-weight:400;font-size:.72rem;color:#B9C0C6;letter-spacing:.06em;text-transform:uppercase}
+nav{display:flex;gap:.25rem;flex-wrap:wrap;margin-left:auto}
+nav button{
+  background:transparent;border:0;color:#C9CFD4;padding:.5rem .75rem;
+  border-radius:7px;font-size:.95rem;font-weight:600;font-family:'Archivo Narrow';
+}
+nav button:hover{background:#ffffff14;color:#fff}
+nav button.activo{background:var(--senal);color:#fff}
+
+main{max-width:1150px;margin:0 auto;padding:1.1rem 1rem 4rem}
+section.vista{display:none}
+section.vista.activa{display:block}
+.titulo-vista{display:flex;align-items:baseline;gap:.7rem;margin:.4rem 0 1rem;flex-wrap:wrap}
+.titulo-vista h2{font-size:1.35rem;font-weight:800}
+.titulo-vista p{color:var(--texto2);font-size:.95rem}
+
+/* ---------- Tarjetas / KPI ---------- */
+.tarjeta{background:var(--panel);border:1px solid var(--borde);border-radius:var(--radio);box-shadow:var(--sombra);padding:1rem}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin-bottom:1rem}
+.kpi{background:var(--panel);border:1px solid var(--borde);border-radius:var(--radio);padding:.8rem .9rem;box-shadow:var(--sombra)}
+.kpi .valor{font-family:'Archivo';font-size:1.7rem;font-weight:800;line-height:1.1}
+.kpi .etiqueta{font-size:.82rem;color:var(--texto2);text-transform:uppercase;letter-spacing:.05em}
+
+/* ---------- Chips de pregunta rápida ---------- */
+.chips{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.chip{
+  border:1px solid var(--borde);background:var(--panel);border-radius:999px;
+  padding:.45rem .85rem;font-size:.92rem;font-weight:600;display:flex;gap:.45rem;align-items:center;
+}
+.chip:hover{border-color:var(--senal);color:var(--senal)}
+.chip.sel{background:var(--senal);border-color:var(--senal);color:#fff}
+.chip .num{
+  background:var(--critico);color:#fff;border-radius:999px;min-width:1.35rem;height:1.35rem;
+  display:inline-flex;align-items:center;justify-content:center;font-size:.78rem;padding:0 .3rem;
+}
+.chip .num.cero{background:var(--ok)}
+
+/* ---------- Semáforo ---------- */
+.dot{display:inline-block;width:.72rem;height:.72rem;border-radius:50%;vertical-align:baseline}
+.n-ok{background:var(--ok)} .n-aviso{background:var(--aviso)} .n-critico{background:var(--critico)} .n-nd{background:var(--nd)}
+.badge{display:inline-block;padding:.12rem .5rem;border-radius:5px;color:#fff;font-weight:700;font-size:.82rem}
+.b-ok{background:var(--ok)} .b-aviso{background:var(--aviso)} .b-critico{background:var(--critico)} .b-nd{background:var(--nd);color:#555}
+
+/* ---------- Esquema lineal (firma de la app) ---------- */
+.esquema{background:var(--panel);border:1px solid var(--borde);border-radius:var(--radio);box-shadow:var(--sombra);padding:1rem;margin-bottom:1rem;overflow-x:auto}
+.esquema h3{font-size:1.05rem;font-weight:800;display:flex;gap:.6rem;align-items:baseline;flex-wrap:wrap}
+.esquema h3 small{font-family:'Archivo Narrow';font-weight:400;color:var(--texto2)}
+.mapa-lineal{min-width:560px;margin-top:.7rem}
+.fila-fam{display:flex;align-items:stretch;gap:0;margin-bottom:3px}
+.fila-fam .etq{
+  flex:0 0 168px;font-size:.82rem;color:var(--texto2);display:flex;align-items:center;
+  padding-right:.6rem;justify-content:flex-end;text-align:right;line-height:1.15;
+}
+.fila-fam .celdas{flex:1;display:flex;gap:2px}
+.celda{
+  min-width:14px;height:26px;border-radius:3px;cursor:pointer;position:relative;
+  transition:transform .08s;
+}
+.celda:hover{transform:scaleY(1.18);outline:2px solid var(--asfalto);z-index:2}
+.regla{display:flex;margin-top:.25rem}
+.regla .etq{flex:0 0 168px}
+.regla .celdas{flex:1;display:flex;gap:2px}
+.regla .pk{font-size:.72rem;color:var(--texto2);font-variant-numeric:tabular-nums;text-align:left;padding-left:2px;border-left:1px solid var(--borde)}
+.leyenda{display:flex;gap:1rem;flex-wrap:wrap;font-size:.85rem;color:var(--texto2);margin-top:.6rem}
+.leyenda span{display:flex;align-items:center;gap:.35rem}
+
+/* ---------- Tablas ---------- */
+table{width:100%;border-collapse:collapse;font-size:.93rem}
+th{font-family:'Archivo';font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--texto2);text-align:left;padding:.45rem .5rem;border-bottom:2px solid var(--borde)}
+td{padding:.5rem;border-bottom:1px solid var(--borde);vertical-align:top}
+tr:hover td{background:#f7f8f6}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- Formularios ---------- */
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.8rem}
+label.campo{display:block;font-size:.85rem;font-weight:600;color:var(--texto2)}
+label.campo input,label.campo select,label.campo textarea{
+  display:block;width:100%;margin-top:.25rem;padding:.5rem .6rem;border:1px solid var(--borde);
+  border-radius:7px;background:#fff;
+}
+label.campo textarea{min-height:70px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--senal);outline-offset:1px}
+.ayuda{font-size:.8rem;color:var(--texto2);font-weight:400;margin-top:.2rem}
+.btn{
+  background:var(--senal);color:#fff;border:0;border-radius:8px;padding:.6rem 1rem;
+  font-weight:700;font-size:.95rem;font-family:'Archivo Narrow';
+}
+.btn:hover{background:var(--senal-osc)}
+.btn.sec{background:#fff;color:var(--texto);border:1px solid var(--borde)}
+.btn.sec:hover{border-color:var(--senal);color:var(--senal);background:#fff}
+.btn.peligro{background:#fff;color:var(--critico);border:1px solid var(--critico)}
+.btn.peligro:hover{background:var(--critico);color:#fff}
+.btn.mini{padding:.3rem .6rem;font-size:.85rem;border-radius:6px}
+.acciones{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
+
+/* Valorador 0-100 */
+.valorador{display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;margin-top:.3rem}
+.valorador input[type=range]{flex:1;min-width:180px;accent-color:var(--senal)}
+.valor-grande{
+  font-family:'Archivo';font-weight:800;font-size:1.5rem;min-width:5.6rem;text-align:center;
+  border-radius:8px;color:#fff;padding:.25rem .5rem;
+}
+.escala-ref{display:flex;font-size:.75rem;color:var(--texto2);justify-content:space-between;width:100%}
+
+/* ---------- Listados ---------- */
+.lista-item{display:flex;gap:.8rem;align-items:flex-start;padding:.7rem 0;border-bottom:1px solid var(--borde)}
+.lista-item:last-child{border-bottom:0}
+.foto-mini{width:64px;height:64px;object-fit:cover;border-radius:6px;border:1px solid var(--borde);flex:0 0 auto;cursor:zoom-in}
+
+/* ---------- Modal ---------- */
+.velo{position:fixed;inset:0;background:rgba(20,24,28,.55);display:none;align-items:flex-start;justify-content:center;z-index:100;padding:2rem 1rem;overflow:auto}
+.velo.abierto{display:flex}
+.modal{background:#fff;border-radius:12px;max-width:720px;width:100%;padding:1.2rem;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.modal h3{font-size:1.2rem;font-weight:800;margin-bottom:.6rem}
+.cerrar-x{float:right;background:none;border:0;font-size:1.4rem;line-height:1;color:var(--texto2)}
+
+/* ---------- Aviso ---------- */
+.aviso-banda{background:#FFF6DE;border:1px solid #EFD48B;border-radius:var(--radio);padding:.7rem .9rem;font-size:.9rem;margin-bottom:1rem}
+.toast{
+  position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);
+  background:var(--asfalto);color:#fff;padding:.6rem 1.1rem;border-radius:8px;
+  font-weight:600;box-shadow:0 4px 18px rgba(0,0,0,.35);z-index:200;display:none;
+}
+
+/* ---------- Informe / impresión ---------- */
+#printArea{display:none}
+.informe{background:#fff;color:#111;max-width:900px;margin:1rem auto;padding:2rem;border:1px solid var(--borde);border-radius:var(--radio)}
+.informe .cab{border-bottom:4px solid var(--asfalto);padding-bottom:.8rem;margin-bottom:1.2rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.informe .cab h2{font-size:1.5rem;font-weight:800}
+.informe h3{font-size:1.05rem;font-weight:800;margin:1.3rem 0 .5rem;border-left:5px solid var(--senal);padding-left:.5rem}
+.informe table{font-size:.87rem}
+.informe .pie{margin-top:2rem;padding-top:.6rem;border-top:1px solid var(--borde);font-size:.78rem;color:var(--texto2);display:flex;justify-content:space-between}
+@media print{
+  body.imprimiendo header, body.imprimiendo main{display:none!important}
+  body.imprimiendo #printArea{display:block}
+  .informe{border:0;margin:0;max-width:none;padding:0}
+  .celda:hover{transform:none;outline:none}
+  .esquema{box-shadow:none}
+  @page{margin:14mm}
+}
+
+@media (max-width:640px){
+  .fila-fam .etq,.regla .etq{flex-basis:104px;font-size:.72rem}
+  nav{width:100%;justify-content:space-between}
+  nav button{padding:.45rem .5rem;font-size:.85rem}
+}
+@media (prefers-reduced-motion:reduce){ .celda{transition:none} }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <div class="logo-mark">GV</div>
+    <div>
+      <h1>GesVía</h1>
+      <small>Gestión de la conservación · Sector de carreteras</small>
+    </div>
+  </div>
+  <nav>
+    <button data-v="panel" class="activo" onclick="go('panel')">Panel</button>
+    <button data-v="red" onclick="go('red')">Red</button>
+    <button data-v="inspeccion" onclick="go('inspeccion')">Inspección</button>
+    <button data-v="ordenes" onclick="go('ordenes')">Órdenes</button>
+    <button data-v="informe" onclick="go('informe')">Informe</button>
+    <button data-v="datos" onclick="go('datos')">Datos</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ================= PANEL ================= -->
+<section id="v-panel" class="vista activa">
+  <div class="titulo-vista">
+    <h2>Estado de la red de un vistazo</h2>
+    <p>Última inspección de cada tramo y familia de elementos.</p>
+  </div>
+  <div id="sinDatosPanel"></div>
+  <div class="kpis" id="kpis"></div>
+  <div class="chips" id="chipsPregunta"></div>
+  <div id="listaFiltrada"></div>
+  <div id="esquemas"></div>
+  <div class="leyenda tarjeta" style="margin-top:.2rem">
+    <span><span class="dot n-ok"></span> Bueno (70–100)</span>
+    <span><span class="dot n-aviso"></span> Defecto leve (40–69)</span>
+    <span><span class="dot n-critico"></span> Crítico (0–39)</span>
+    <span><span class="dot n-nd"></span> Sin datos</span>
+    <span style="margin-left:auto">Pulsa una celda para ver el detalle del tramo.</span>
+  </div>
+</section>
+
+<!-- ================= RED ================= -->
+<section id="v-red" class="vista">
+  <div class="titulo-vista">
+    <h2>Inventario de la red</h2>
+    <p>Carreteras y tramificación por puntos kilométricos.</p>
+  </div>
+  <div class="tarjeta" style="margin-bottom:1rem">
+    <h3 style="margin-bottom:.6rem">Añadir carretera</h3>
+    <div class="form-grid">
+      <label class="campo">Código
+        <input id="r-codigo" placeholder="Ej.: CM-3203">
+      </label>
+      <label class="campo">Denominación
+        <input id="r-nombre" placeholder="Ej.: Albacete – Peñas de San Pedro">
+      </label>
+      <label class="campo">Sector / zona
+        <input id="r-sector" placeholder="Ej.: Sector AB-2">
+      </label>
+    </div>
+    <div class="acciones"><button class="btn" onclick="addRoad()">Guardar carretera</button></div>
+  </div>
+  <div id="listaRoads"></div>
+</section>
+
+<!-- ================= INSPECCIÓN ================= -->
+<section id="v-inspeccion" class="vista">
+  <div class="titulo-vista">
+    <h2>Registrar inspección</h2>
+    <p>Anota el estado observado; el indicador colorea el mapa automáticamente.</p>
+  </div>
+  <div class="tarjeta">
+    <div class="form-grid">
+      <label class="campo">Carretera
+        <select id="i-road" onchange="fillTramos()"></select>
+      </label>
+      <label class="campo">Tramo
+        <select id="i-tramo"></select>
+      </label>
+      <label class="campo">Familia de elementos
+        <select id="i-fam" onchange="renderParams()"></select>
+      </label>
+      <label class="campo">Fecha
+        <input type="date" id="i-fecha">
+      </label>
+      <label class="campo">Inspector / vigilante
+        <input id="i-inspector" placeholder="Nombre o iniciales">
+      </label>
+    </div>
+
+    <div id="i-params" style="margin-top:1rem"></div>
+
+    <div style="margin-top:1rem">
+      <label class="campo">Indicador de estado (0 = ruina · 100 = perfecto)</label>
+      <div class="valorador">
+        <input type="range" id="i-valor" min="0" max="100" value="80" oninput="pintaValor()">
+        <div class="valor-grande" id="i-valorBox">80</div>
+      </div>
+      <div class="escala-ref"><span>0 · Crítico</span><span>40 · Defecto leve</span><span>70 · Bueno</span><span>100</span></div>
+    </div>
+
+    <div class="form-grid" style="margin-top:1rem">
+      <label class="campo">Observaciones
+        <textarea id="i-obs" placeholder="Ej.: 12 captafaros rotos en la bionda margen derecha, PK 12+300 a 12+800"></textarea>
+      </label>
+      <div>
+        <label class="campo">Fotografía (opcional)
+          <input type="file" id="i-foto" accept="image/*" capture="environment">
+        </label>
+        <label class="campo" style="margin-top:.6rem">Coordenadas GPS (opcional)
+          <input id="i-gps" placeholder="lat, lon">
+        </label>
+        <button class="btn sec mini" style="margin-top:.4rem" onclick="capturaGPS()">📍 Capturar mi posición</button>
+      </div>
+    </div>
+    <div class="acciones">
+      <button class="btn" onclick="saveInsp()">Guardar inspección</button>
+    </div>
+  </div>
+
+  <div class="tarjeta" style="margin-top:1rem">
+    <h3>Últimas inspecciones registradas</h3>
+    <div id="listaInsp"></div>
+  </div>
+</section>
+
+<!-- ================= ÓRDENES ================= -->
+<section id="v-ordenes" class="vista">
+  <div class="titulo-vista">
+    <h2>Órdenes de trabajo</h2>
+    <p>Actuaciones programadas a partir de los indicadores.</p>
+  </div>
+  <div class="tarjeta" style="margin-bottom:1rem">
+    <h3 style="margin-bottom:.6rem">Nueva orden</h3>
+    <div class="form-grid">
+      <label class="campo">Carretera
+        <select id="o-road" onchange="fillTramosOT()"></select>
+      </label>
+      <label class="campo">Tramo
+        <select id="o-tramo"></select>
+      </label>
+      <label class="campo">Familia
+        <select id="o-fam"></select>
+      </label>
+      <label class="campo">Prioridad
+        <select id="o-prio">
+          <option value="alta">Alta</option>
+          <option value="media" selected>Media</option>
+          <option value="baja">Baja</option>
+        </select>
+      </label>
+      <label class="campo" style="grid-column:1/-1">Descripción de los trabajos
+        <input id="o-desc" placeholder="Ej.: Reponer 40 captafaros en bionda, PK 12+000 a 13+000">
+      </label>
+    </div>
+    <div class="acciones"><button class="btn" onclick="addOT()">Crear orden de trabajo</button></div>
+  </div>
+  <div class="tarjeta"><h3>Listado</h3><div id="listaOT"></div></div>
+</section>
+
+<!-- ================= INFORME ================= -->
+<section id="v-informe" class="vista">
+  <div class="titulo-vista">
+    <h2>Informe de estado de la vía</h2>
+    <p>Genera un documento listo para imprimir o guardar en PDF.</p>
+  </div>
+  <div class="tarjeta">
+    <div class="form-grid">
+      <label class="campo">Ámbito
+        <select id="f-road"><option value="*">Toda la red</option></select>
+      </label>
+      <label class="campo">Familias incluidas
+        <select id="f-fam"><option value="*">Todas las familias</option></select>
+      </label>
+      <label class="campo">Contenido
+        <select id="f-modo">
+          <option value="todo">Estado completo</option>
+          <option value="problemas" selected>Solo tramos con defecto o críticos</option>
+        </select>
+      </label>
+    </div>
+    <div class="acciones">
+      <button class="btn" onclick="verInforme()">Generar informe</button>
+      <button class="btn sec" id="btnImprimir" style="display:none" onclick="imprimir()">🖨 Imprimir / Guardar PDF</button>
+    </div>
+  </div>
+  <div id="previaInforme"></div>
+</section>
+
+<!-- ================= DATOS ================= -->
+<section id="v-datos" class="vista">
+  <div class="titulo-vista">
+    <h2>Datos y copias de seguridad</h2>
+    <p>Todo se guarda en este dispositivo (localStorage del navegador).</p>
+  </div>
+  <div class="aviso-banda">
+    <strong>Importante:</strong> los datos viven en el navegador de cada dispositivo. Exporta una copia JSON periódicamente y guárdala (o súbela a una carpeta compartida) para no perder nada y para pasar datos entre el móvil de campo y el PC de oficina.
+  </div>
+  <div class="tarjeta">
+    <div class="acciones" style="margin-top:0">
+      <button class="btn" onclick="exportJSON()">⬇ Exportar copia (JSON)</button>
+      <label class="btn sec" style="display:inline-block">
+        ⬆ Importar copia (JSON)
+        <input type="file" accept=".json,application/json" style="display:none" onchange="importJSON(this)">
+      </label>
+      <button class="btn sec" onclick="cargaDemo(true)">Cargar datos de ejemplo</button>
+      <button class="btn peligro" onclick="borrarTodo()">Borrar todos los datos</button>
+    </div>
+    <p style="margin-top:1rem;color:var(--texto2);font-size:.9rem" id="infoAlmacen"></p>
+  </div>
+</section>
+
+</main>
+
+<!-- Modal genérico -->
+<div class="velo" id="velo" onclick="if(event.target===this)cerrarModal()">
+  <div class="modal" id="modalBox"></div>
+</div>
+<div class="toast" id="toast"></div>
+<div id="printArea"></div>
+<script>
+/* =====================================================
+   GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
+   ===================================================== */
+
+const FAMILIAS = [
+  {id:'FIRME', nombre:'Firme (pavimento)'},
+  {id:'SH',    nombre:'Señalización horizontal'},
+  {id:'SV',    nombre:'Señalización vertical'},
+  {id:'BAL',   nombre:'Balizamiento y captafaros'},
+  {id:'CON',   nombre:'Contención (biondas)'},
+  {id:'DRE',   nombre:'Drenaje'},
+  {id:'MAR',   nombre:'Márgenes y desbroce'},
+];
+const ACCION = { // qué actuación implica cada familia en mal estado
+  FIRME:'Refuerzo / bacheo de firme', SH:'Repintado de marcas viales',
+  SV:'Reposición o limpieza de señales', BAL:'Reposición de captafaros e hitos',
+  CON:'Reparación de barrera de seguridad', DRE:'Limpieza de cunetas y ODT',
+  MAR:'Desbroce y limpieza de márgenes'
+};
+const PARAMS = { // campos técnicos opcionales por familia
+  FIRME:[{k:'iri',t:'IRI medio (dm/hm)',ayuda:'Orientativo: < 2 bueno · 2–3,5 regular · > 3,5 crítico'},
+         {k:'det',t:'% superficie con deterioros',ayuda:'Fisuras, roderas, baches'}],
+  SH:   [{k:'rl',t:'Retrorreflexión RL (mcd·lx⁻¹·m⁻²)',ayuda:'UNE-EN 1436: mínimo en servicio 100 · ≥ 200 buen estado'},
+         {k:'meses',t:'Meses desde el último pintado',ayuda:''}],
+  SV:   [{k:'total',t:'Señales revisadas',ayuda:''},{k:'malas',t:'Señales deficientes',ayuda:'Despintadas, giradas, vandalizadas u ocultas'}],
+  BAL:  [{k:'total',t:'Captafaros / hitos revisados',ayuda:''},{k:'malas',t:'En mal estado o ausentes',ayuda:''}],
+  CON:  [{k:'total',t:'Metros de barrera revisados',ayuda:''},{k:'malas',t:'Metros dañados',ayuda:'Golpes, postes doblados, terminales'}],
+  DRE:  [{k:'total',t:'Elementos de drenaje revisados',ayuda:'Cunetas, caños, arquetas'},{k:'malas',t:'Obstruidos o dañados',ayuda:''}],
+  MAR:  [],
+};
+
+/* ---------- almacenamiento con respaldo en memoria ---------- */
+let _mem = {};
+const store = {
+  get(k){ try{ return localStorage.getItem(k); }catch(e){ return _mem[k]??null; } },
+  set(k,v){ let ok=true; try{ localStorage.setItem(k,v); }catch(e){ _mem[k]=v; ok=false; } return ok; },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){} delete _mem[k]; }
+};
+let S = null;
+function load(){
+  try{ const raw = store.get('gesvia_v1'); if(raw) S = JSON.parse(raw); }catch(e){}
+  if(!S || !Array.isArray(S.roads)) S = {roads:[],tramos:[],insp:[],ots:[],seq:1};
+}
+let avisadoAlmacen = false;
+function save(){
+  const ok = store.set('gesvia_v1', JSON.stringify(S));
+  if(!ok && !avisadoAlmacen){
+    avisadoAlmacen = true;
+    toast('⚠ Este entorno no permite guardar de forma permanente. Exporta un JSON en «Datos» antes de cerrar.');
+  }
+}
+const uid = ()=> 'x'+(S.seq++);
+
+/* ---------- utilidades ---------- */
+const $ = id => document.getElementById(id);
+const esc = s => String(s??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const famName = id => (FAMILIAS.find(f=>f.id===id)||{}).nombre || id;
+const road = id => S.roads.find(r=>r.id===id);
+const tramo = id => S.tramos.find(t=>t.id===id);
+const tramosDe = rid => S.tramos.filter(t=>t.roadId===rid).sort((a,b)=>a.pkIni-b.pkIni);
+const pk = n => { const km=Math.floor(n), m=Math.round((n-km)*1000); return km+'+'+String(m).padStart(3,'0'); };
+const hoy = ()=> new Date().toISOString().slice(0,10);
+const fFecha = f => { if(!f) return '—'; const [a,m,d]=f.split('-'); return `${d}/${m}/${a}`; };
+
+function nivel(v){ if(v==null) return 'nd'; if(v>=70) return 'ok'; if(v>=40) return 'aviso'; return 'critico'; }
+const NIVEL_TXT = {ok:'Bueno', aviso:'Defecto leve', critico:'Crítico', nd:'Sin datos'};
+function badge(v){ const n=nivel(v); return `<span class="badge b-${n}">${v==null?'—':v} · ${NIVEL_TXT[n]}</span>`; }
+
+function lastInsp(tid, fam){
+  let best=null;
+  for(const i of S.insp) if(i.tramoId===tid && i.fam===fam){
+    if(!best || i.fecha>best.fecha || (i.fecha===best.fecha && i.id>best.id)) best=i;
+  }
+  return best;
+}
+function estadoTramo(tid, fam){ const i=lastInsp(tid,fam); return i? i.valor : null; }
+
+function toast(msg){
+  const t=$('toast'); t.textContent=msg; t.style.display='block';
+  clearTimeout(t._to); t._to=setTimeout(()=>t.style.display='none', 3500);
+}
+function abrirModal(html){ $('modalBox').innerHTML = html; $('velo').classList.add('abierto'); }
+function cerrarModal(){ $('velo').classList.remove('abierto'); }
+
+/* ---------- navegación ---------- */
+function go(v){
+  document.querySelectorAll('section.vista').forEach(s=>s.classList.remove('activa'));
+  $('v-'+v).classList.add('activa');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('activo', b.dataset.v===v));
+  ({panel:renderPanel, red:renderRed, inspeccion:renderInspeccion, ordenes:renderOrdenes, informe:renderInformeForm, datos:renderDatos}[v])();
+  window.scrollTo({top:0});
+}
+
+/* =====================================================
+   PANEL
+   ===================================================== */
+let filtroFam = null;
+
+function renderPanel(){
+  if(!S.roads.length){
+    $('sinDatosPanel').innerHTML = `<div class="tarjeta" style="text-align:center;padding:2.2rem">
+      <h3 style="font-size:1.2rem">Todavía no hay carreteras en el inventario</h3>
+      <p style="color:var(--texto2);margin:.5rem 0 1rem">Empieza creando tu red en la pestaña «Red», o carga los datos de ejemplo para ver cómo funciona.</p>
+      <button class="btn" onclick="cargaDemo(true)">Cargar datos de ejemplo</button>
+      <button class="btn sec" onclick="go('red')">Crear mi red</button></div>`;
+    $('kpis').innerHTML=''; $('chipsPregunta').innerHTML=''; $('listaFiltrada').innerHTML=''; $('esquemas').innerHTML='';
+    return;
+  }
+  $('sinDatosPanel').innerHTML='';
+
+  // KPIs
+  let eval_=0, buenos=0, otsPend = S.ots.filter(o=>o.estado!=='completada').length;
+  const d30 = new Date(Date.now()-30*864e5).toISOString().slice(0,10);
+  const insp30 = S.insp.filter(i=>i.fecha>=d30).length;
+  for(const t of S.tramos) for(const f of FAMILIAS){
+    const v = estadoTramo(t.id,f.id);
+    if(v!=null){ eval_++; if(v>=70) buenos++; }
+  }
+  const pct = eval_? Math.round(buenos/eval_*100) : 0;
+  $('kpis').innerHTML = `
+    <div class="kpi"><div class="valor">${S.roads.length}</div><div class="etiqueta">Carreteras</div></div>
+    <div class="kpi"><div class="valor">${S.tramos.length}</div><div class="etiqueta">Tramos</div></div>
+    <div class="kpi"><div class="valor" style="color:${pct>=70?'var(--ok)':pct>=40?'var(--aviso)':'var(--critico)'}">${eval_?pct+'%':'—'}</div><div class="etiqueta">Red en buen estado</div></div>
+    <div class="kpi"><div class="valor" style="color:${otsPend?'var(--aviso)':'var(--ok)'}">${otsPend}</div><div class="etiqueta">Órdenes pendientes</div></div>
+    <div class="kpi"><div class="valor">${insp30}</div><div class="etiqueta">Inspecciones 30 días</div></div>`;
+
+  // Chips "¿qué tengo que...?"
+  $('chipsPregunta').innerHTML = FAMILIAS.map(f=>{
+    const n = S.tramos.filter(t=>['aviso','critico'].includes(nivel(estadoTramo(t.id,f.id)))).length;
+    return `<button class="chip ${filtroFam===f.id?'sel':''}" onclick="setFiltro('${f.id}')">
+      ${esc(ACCION[f.id])} <span class="num ${n?'':'cero'}">${n}</span></button>`;
+  }).join('');
+
+  renderListaFiltrada();
+  $('esquemas').innerHTML = S.roads.map(r=>esquemaRoad(r,false)).join('');
+}
+
+function setFiltro(f){ filtroFam = (filtroFam===f)? null : f; renderPanel(); }
+
+function renderListaFiltrada(){
+  const box = $('listaFiltrada');
+  if(!filtroFam){ box.innerHTML=''; return; }
+  const filas = [];
+  for(const t of S.tramos){
+    const i = lastInsp(t.id, filtroFam);
+    if(i && nivel(i.valor)!=='ok'){
+      filas.push({t, i});
+    }
+  }
+  filas.sort((a,b)=>a.i.valor-b.i.valor);
+  const r = filas.map(({t,i})=>{
+    const rd = road(t.roadId);
+    return `<tr>
+      <td><strong>${esc(rd.codigo)}</strong></td>
+      <td class="num">PK ${pk(t.pkIni)} – ${pk(t.pkFin)}</td>
+      <td>${badge(i.valor)}</td>
+      <td class="num">${fFecha(i.fecha)}</td>
+      <td>${esc(i.obs||'')}</td>
+      <td><button class="btn sec mini" onclick="verTramo('${t.id}')">Detalle</button></td>
+    </tr>`;
+  }).join('');
+  box.innerHTML = `<div class="tarjeta" style="margin-bottom:1rem">
+    <h3 style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem">
+      <span>${esc(ACCION[filtroFam])} · tramos pendientes</span>
+      <span><button class="btn mini" onclick="informeRapido('${filtroFam}')">📄 Informe de estos tramos</button></span>
+    </h3>
+    ${filas.length? `<div style="overflow-x:auto"><table><thead><tr><th>Carretera</th><th>Tramo</th><th>Indicador</th><th>Inspección</th><th>Observaciones</th><th></th></tr></thead><tbody>${r}</tbody></table></div>`
+      : '<p style="color:var(--texto2)">✅ Ningún tramo pendiente en esta familia. Todo en buen estado o sin datos.</p>'}
+  </div>`;
+}
+
+/* ---------- esquema lineal (mapa de calor por PK) ---------- */
+function esquemaRoad(r, paraInforme){
+  const ts = tramosDe(r.id);
+  if(!ts.length) return `<div class="esquema"><h3>${esc(r.codigo)} <small>${esc(r.nombre||'')}</small></h3>
+    <p style="color:var(--texto2);margin-top:.4rem">Sin tramos definidos. Añádelos en «Red».</p></div>`;
+  const filas = FAMILIAS.map(f=>{
+    const celdas = ts.map(t=>{
+      const v = estadoTramo(t.id, f.id);
+      const n = nivel(v);
+      const grow = Math.max(t.pkFin - t.pkIni, .5);
+      const click = paraInforme? '' : ` onclick="verTramo('${t.id}')"`;
+      return `<div class="celda n-${n}" style="flex-grow:${grow};background:var(--${n==='ok'?'ok':n==='aviso'?'aviso':n==='critico'?'critico':'nd'})"
+        title="${esc(r.codigo)} · PK ${pk(t.pkIni)}–${pk(t.pkFin)} · ${esc(f.nombre)}: ${v==null?'sin datos':v+' ('+NIVEL_TXT[n]+')'}"${click}></div>`;
+    }).join('');
+    return `<div class="fila-fam"><div class="etq">${esc(f.nombre)}</div><div class="celdas">${celdas}</div></div>`;
+  }).join('');
+  const regla = ts.map(t=>`<div class="pk" style="flex-grow:${Math.max(t.pkFin-t.pkIni,.5)}">${pk(t.pkIni)}</div>`).join('');
+  return `<div class="esquema">
+    <h3>${esc(r.codigo)} <small>${esc(r.nombre||'')} ${r.sector? '· '+esc(r.sector):''}</small></h3>
+    <div class="mapa-lineal">${filas}
+      <div class="regla"><div class="etq"></div><div class="celdas">${regla}<div class="pk" style="flex-grow:0">${pk(ts[ts.length-1].pkFin)}</div></div></div>
+    </div>
+  </div>`;
+}
+
+/* ---------- detalle de tramo (modal) ---------- */
+function verTramo(tid){
+  const t = tramo(tid), r = road(t.roadId);
+  const filas = FAMILIAS.map(f=>{
+    const i = lastInsp(tid, f.id);
+    return `<tr><td>${esc(f.nombre)}</td>
+      <td>${i? badge(i.valor): '<span class="badge b-nd">Sin datos</span>'}</td>
+      <td class="num">${i? fFecha(i.fecha):'—'}</td>
+      <td>${i? esc(i.obs||''):''} ${i&&i.foto? `<img class="foto-mini" src="${i.foto}" onclick="verFoto('${i.id}')">`:''}</td></tr>`;
+  }).join('');
+  abrirModal(`<button class="cerrar-x" onclick="cerrarModal()">✕</button>
+    <h3>${esc(r.codigo)} · PK ${pk(t.pkIni)} – ${pk(t.pkFin)}</h3>
+    <p style="color:var(--texto2);margin-bottom:.7rem">${esc(t.desc||'')}</p>
+    <div style="overflow-x:auto"><table><thead><tr><th>Familia</th><th>Estado</th><th>Fecha</th><th>Observaciones</th></tr></thead><tbody>${filas}</tbody></table></div>
+    <div class="acciones">
+      <button class="btn" onclick="cerrarModal();prefillInsp('${tid}')">➕ Nueva inspección aquí</button>
+      <button class="btn sec" onclick="cerrarModal();prefillOT('${tid}')">🛠 Crear orden de trabajo</button>
+    </div>`);
+}
+function verFoto(iid){
+  const i = S.insp.find(x=>x.id===iid); if(!i||!i.foto) return;
+  abrirModal(`<button class="cerrar-x" onclick="cerrarModal()">✕</button>
+    <h3>Fotografía de inspección</h3><img src="${i.foto}" style="max-width:100%;border-radius:8px">`);
+}
+
+/* =====================================================
+   RED (inventario)
+   ===================================================== */
+function renderRed(){
+  const box = $('listaRoads');
+  if(!S.roads.length){ box.innerHTML = '<div class="tarjeta"><p style="color:var(--texto2)">Aún no hay carreteras. Crea la primera con el formulario de arriba.</p></div>'; return; }
+  box.innerHTML = S.roads.map(r=>{
+    const ts = tramosDe(r.id);
+    const filas = ts.map(t=>`<tr>
+      <td class="num">PK ${pk(t.pkIni)} – ${pk(t.pkFin)}</td>
+      <td>${esc(t.desc||'')}</td>
+      <td class="num">${(t.pkFin-t.pkIni).toFixed(1)} km</td>
+      <td style="text-align:right"><button class="btn peligro mini" onclick="delTramo('${t.id}')">Eliminar</button></td>
+    </tr>`).join('');
+    return `<div class="tarjeta" style="margin-bottom:1rem">
+      <h3 style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem">
+        <span>${esc(r.codigo)} <small style="font-family:'Archivo Narrow';font-weight:400;color:var(--texto2)">${esc(r.nombre||'')} ${r.sector?'· '+esc(r.sector):''}</small></span>
+        <button class="btn peligro mini" onclick="delRoad('${r.id}')">Eliminar carretera</button>
+      </h3>
+      ${ts.length? `<div style="overflow-x:auto;margin-top:.5rem"><table><thead><tr><th>Tramo</th><th>Descripción</th><th>Long.</th><th></th></tr></thead><tbody>${filas}</tbody></table></div>` : '<p style="color:var(--texto2);margin:.5rem 0">Sin tramos todavía.</p>'}
+      <div class="form-grid" style="margin-top:.8rem">
+        <label class="campo">PK inicio (km) <input type="number" step="0.1" min="0" id="tI-${r.id}" placeholder="0.0"></label>
+        <label class="campo">PK fin (km) <input type="number" step="0.1" min="0" id="tF-${r.id}" placeholder="4.5"></label>
+        <label class="campo">Descripción <input id="tD-${r.id}" placeholder="Ej.: Travesía – cruce N-322"></label>
+      </div>
+      <div class="acciones" style="margin-top:.6rem"><button class="btn sec" onclick="addTramo('${r.id}')">Añadir tramo</button></div>
+    </div>`;
+  }).join('');
+}
+function addRoad(){
+  const codigo = $('r-codigo').value.trim();
+  if(!codigo) return toast('Indica al menos el código de la carretera.');
+  S.roads.push({id:uid(), codigo, nombre:$('r-nombre').value.trim(), sector:$('r-sector').value.trim()});
+  $('r-codigo').value=$('r-nombre').value=$('r-sector').value='';
+  save(); renderRed(); toast('Carretera guardada.');
+}
+function delRoad(rid){
+  const r = road(rid);
+  if(!confirm(`¿Eliminar ${r.codigo} con todos sus tramos, inspecciones y órdenes?`)) return;
+  const tids = tramosDe(rid).map(t=>t.id);
+  S.tramos = S.tramos.filter(t=>t.roadId!==rid);
+  S.insp = S.insp.filter(i=>!tids.includes(i.tramoId));
+  S.ots = S.ots.filter(o=>!tids.includes(o.tramoId));
+  S.roads = S.roads.filter(x=>x.id!==rid);
+  save(); renderRed();
+}
+function addTramo(rid){
+  const a = parseFloat($('tI-'+rid).value), b = parseFloat($('tF-'+rid).value);
+  if(isNaN(a)||isNaN(b)||b<=a) return toast('Revisa los PK: el fin debe ser mayor que el inicio.');
+  S.tramos.push({id:uid(), roadId:rid, pkIni:a, pkFin:b, desc:$('tD-'+rid).value.trim()});
+  save(); renderRed(); toast('Tramo añadido.');
+}
+function delTramo(tid){
+  if(!confirm('¿Eliminar el tramo y sus inspecciones y órdenes?')) return;
+  S.tramos = S.tramos.filter(t=>t.id!==tid);
+  S.insp = S.insp.filter(i=>i.tramoId!==tid);
+  S.ots = S.ots.filter(o=>o.tramoId!==tid);
+  save(); renderRed();
+}
+
+/* =====================================================
+   INSPECCIÓN
+   ===================================================== */
+let fotoPendiente = null;
+
+function fillSelectRoads(sel){
+  sel.innerHTML = S.roads.map(r=>`<option value="${r.id}">${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('') || '<option value="">— crea antes una carretera —</option>';
+}
+function fillSelectTramos(selRoad, selTramo){
+  const ts = tramosDe(selRoad.value);
+  selTramo.innerHTML = ts.map(t=>`<option value="${t.id}">PK ${pk(t.pkIni)} – ${pk(t.pkFin)} ${t.desc?'· '+esc(t.desc):''}</option>`).join('') || '<option value="">— sin tramos —</option>';
+}
+function renderInspeccion(){
+  fillSelectRoads($('i-road')); fillTramos();
+  $('i-fam').innerHTML = FAMILIAS.map(f=>`<option value="${f.id}">${esc(f.nombre)}</option>`).join('');
+  if(!$('i-fecha').value) $('i-fecha').value = hoy();
+  renderParams(); pintaValor(); listInsp();
+}
+function fillTramos(){ fillSelectTramos($('i-road'), $('i-tramo')); }
+function renderParams(){
+  const fam = $('i-fam').value;
+  const ps = PARAMS[fam]||[];
+  $('i-params').innerHTML = ps.length? `<div class="form-grid">${ps.map(p=>
+    `<label class="campo">${esc(p.t)}<input type="number" step="any" min="0" id="p-${p.k}" oninput="sugerir()">
+     ${p.ayuda?`<span class="ayuda">${esc(p.ayuda)}</span>`:''}</label>`).join('')}
+     <div><span class="ayuda" id="sugerencia"></span></div></div>` : '';
+}
+function sugerir(){
+  const fam = $('i-fam').value; let sug = null;
+  const val = k => { const el=$('p-'+k); return el&&el.value!==''? parseFloat(el.value): null; };
+  if(fam==='FIRME'){ const iri=val('iri'), det=val('det');
+    if(iri!=null) sug = Math.round(100 - (iri-1)*26);
+    if(det!=null) sug = Math.min(sug??100, Math.round(100-det*1.5));
+  } else if(fam==='SH'){ const rl=val('rl');
+    if(rl!=null) sug = rl>=200? Math.round(70+Math.min(rl-200,100)*0.3) : rl>=100? Math.round(40+(rl-100)*0.3) : Math.round(rl*0.39);
+  } else { const t=val('total'), m=val('malas');
+    if(t!=null && m!=null && t>0) sug = Math.round((t-m)/t*100);
+  }
+  const box = $('sugerencia'); if(!box) return;
+  if(sug!=null){ sug = Math.max(0,Math.min(100,sug));
+    box.innerHTML = `Indicador sugerido según los datos: <strong>${sug}</strong> &nbsp;<button class="btn sec mini" onclick="usarSug(${sug})">Usar</button>`;
+  } else box.innerHTML='';
+}
+function usarSug(v){ $('i-valor').value=v; pintaValor(); }
+function pintaValor(){
+  const v = +$('i-valor').value, n = nivel(v);
+  const b = $('i-valorBox');
+  b.textContent = v + ' · ' + NIVEL_TXT[n];
+  b.style.background = getComputedStyle(document.documentElement).getPropertyValue('--'+(n==='nd'?'nd':n));
+}
+function capturaGPS(){
+  if(!navigator.geolocation) return toast('Este dispositivo no ofrece geolocalización.');
+  navigator.geolocation.getCurrentPosition(
+    p=>{ $('i-gps').value = p.coords.latitude.toFixed(6)+', '+p.coords.longitude.toFixed(6); toast('Posición capturada.'); },
+    ()=> toast('No se pudo obtener la posición (¿permisos?).'), {enableHighAccuracy:true, timeout:8000});
+}
+$('i-foto') && document.addEventListener('change', e=>{
+  if(e.target.id!=='i-foto') return;
+  const f = e.target.files[0]; if(!f) { fotoPendiente=null; return; }
+  const img = new Image();
+  img.onload = ()=>{
+    const max=900, esc_ = Math.min(1, max/Math.max(img.width,img.height));
+    const c = document.createElement('canvas');
+    c.width = Math.round(img.width*esc_); c.height = Math.round(img.height*esc_);
+    c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+    fotoPendiente = c.toDataURL('image/jpeg',0.6);
+    toast('Fotografía adjuntada (comprimida).');
+  };
+  img.src = URL.createObjectURL(f);
+});
+function saveInsp(){
+  const tid = $('i-tramo').value;
+  if(!tid) return toast('Selecciona un tramo (créalo antes en «Red» si no existe).');
+  const params = {};
+  (PARAMS[$('i-fam').value]||[]).forEach(p=>{ const el=$('p-'+p.k); if(el&&el.value!=='') params[p.k]=parseFloat(el.value); });
+  S.insp.push({
+    id: uid(), tramoId: tid, fam: $('i-fam').value,
+    fecha: $('i-fecha').value || hoy(), valor: +$('i-valor').value,
+    obs: $('i-obs').value.trim(), inspector: $('i-inspector').value.trim(),
+    gps: $('i-gps').value.trim(), params, foto: fotoPendiente
+  });
+  fotoPendiente = null; $('i-foto').value=''; $('i-obs').value=''; $('i-gps').value='';
+  save(); listInsp(); toast('Inspección guardada. El panel ya refleja el nuevo estado.');
+}
+function prefillInsp(tid){
+  go('inspeccion');
+  const t = tramo(tid);
+  $('i-road').value = t.roadId; fillTramos(); $('i-tramo').value = tid;
+}
+function listInsp(){
+  const ult = [...S.insp].sort((a,b)=> b.fecha.localeCompare(a.fecha) || b.id.localeCompare(a.id)).slice(0,15);
+  $('listaInsp').innerHTML = ult.length? ult.map(i=>{
+    const t = tramo(i.tramoId); if(!t) return '';
+    const r = road(t.roadId);
+    return `<div class="lista-item">
+      ${i.foto? `<img class="foto-mini" src="${i.foto}" onclick="verFoto('${i.id}')">`:''}
+      <div style="flex:1">
+        <strong>${esc(r.codigo)}</strong> · PK ${pk(t.pkIni)}–${pk(t.pkFin)} · ${esc(famName(i.fam))}
+        &nbsp;${badge(i.valor)}
+        <div style="color:var(--texto2);font-size:.88rem">${fFecha(i.fecha)}${i.inspector? ' · '+esc(i.inspector):''}${i.gps? ' · 📍 '+esc(i.gps):''}</div>
+        ${i.obs? `<div>${esc(i.obs)}</div>`:''}
+      </div>
+      <button class="btn peligro mini" onclick="delInsp('${i.id}')">Eliminar</button>
+    </div>`;
+  }).join('') : '<p style="color:var(--texto2)">Todavía no hay inspecciones.</p>';
+}
+function delInsp(iid){ if(!confirm('¿Eliminar esta inspección?')) return; S.insp = S.insp.filter(i=>i.id!==iid); save(); listInsp(); }
+
+/* =====================================================
+   ÓRDENES DE TRABAJO
+   ===================================================== */
+function renderOrdenes(){
+  fillSelectRoads($('o-road')); fillTramosOT();
+  $('o-fam').innerHTML = FAMILIAS.map(f=>`<option value="${f.id}">${esc(f.nombre)}</option>`).join('');
+  listOT();
+}
+function fillTramosOT(){ fillSelectTramos($('o-road'), $('o-tramo')); }
+function addOT(){
+  const tid = $('o-tramo').value;
+  if(!tid) return toast('Selecciona un tramo.');
+  const desc = $('o-desc').value.trim();
+  if(!desc) return toast('Describe brevemente los trabajos.');
+  S.ots.push({id:uid(), tramoId:tid, fam:$('o-fam').value, desc, prio:$('o-prio').value, estado:'pendiente', creada:hoy(), cerrada:null});
+  $('o-desc').value=''; save(); listOT(); toast('Orden creada.');
+}
+function prefillOT(tid){
+  go('ordenes');
+  const t = tramo(tid);
+  $('o-road').value = t.roadId; fillTramosOT(); $('o-tramo').value = tid;
+  $('o-desc').focus();
+}
+function cicloOT(oid){
+  const o = S.ots.find(x=>x.id===oid); if(!o) return;
+  o.estado = o.estado==='pendiente'? 'en curso' : o.estado==='en curso'? 'completada' : 'pendiente';
+  o.cerrada = o.estado==='completada'? hoy() : null;
+  save(); listOT();
+  if(o.estado==='completada') toast('Orden completada. Recuerda registrar una nueva inspección para actualizar el indicador.');
+}
+function delOT(oid){ if(!confirm('¿Eliminar la orden?')) return; S.ots = S.ots.filter(o=>o.id!==oid); save(); listOT(); }
+function listOT(){
+  const orden = {alta:0, media:1, baja:2}, est = {pendiente:0,'en curso':1,completada:2};
+  const ots = [...S.ots].sort((a,b)=> est[a.estado]-est[b.estado] || orden[a.prio]-orden[b.prio]);
+  $('listaOT').innerHTML = ots.length? `<div style="overflow-x:auto"><table><thead>
+    <tr><th>Estado</th><th>Prioridad</th><th>Carretera / tramo</th><th>Familia</th><th>Trabajos</th><th>Fechas</th><th></th></tr></thead><tbody>${
+    ots.map(o=>{
+      const t = tramo(o.tramoId); if(!t) return ''; const r = road(t.roadId);
+      const col = o.estado==='completada'?'b-ok':o.estado==='en curso'?'b-aviso':'b-critico';
+      return `<tr>
+        <td><button class="badge ${col}" style="border:0" onclick="cicloOT('${o.id}')" title="Pulsar para cambiar estado">${o.estado}</button></td>
+        <td>${o.prio}</td>
+        <td><strong>${esc(r.codigo)}</strong><br><span class="num" style="color:var(--texto2)">PK ${pk(t.pkIni)}–${pk(t.pkFin)}</span></td>
+        <td>${esc(famName(o.fam))}</td>
+        <td>${esc(o.desc)}</td>
+        <td class="num">${fFecha(o.creada)}${o.cerrada? '<br>✔ '+fFecha(o.cerrada):''}</td>
+        <td><button class="btn peligro mini" onclick="delOT('${o.id}')">✕</button></td></tr>`;
+    }).join('')}</tbody></table></div>
+    <p class="ayuda" style="margin-top:.5rem">Pulsa sobre el estado para avanzar: pendiente → en curso → completada.</p>`
+    : '<p style="color:var(--texto2)">No hay órdenes de trabajo.</p>';
+}
+
+/* =====================================================
+   INFORME
+   ===================================================== */
+function renderInformeForm(){
+  const fr = $('f-road');
+  fr.innerHTML = '<option value="*">Toda la red</option>' + S.roads.map(r=>`<option value="${r.id}">${esc(r.codigo)}</option>`).join('');
+  $('f-fam').innerHTML = '<option value="*">Todas las familias</option>' + FAMILIAS.map(f=>`<option value="${f.id}">${esc(f.nombre)}</option>`).join('');
+}
+function informeRapido(fam){
+  go('informe');
+  $('f-fam').value = fam; $('f-modo').value = 'problemas';
+  verInforme();
+}
+function verInforme(){
+  const html = construirInforme($('f-road').value, $('f-fam').value, $('f-modo').value);
+  $('previaInforme').innerHTML = html;
+  $('printArea').innerHTML = html;
+  $('btnImprimir').style.display = 'inline-block';
+}
+function imprimir(){
+  document.body.classList.add('imprimiendo');
+  window.print();
+  setTimeout(()=>document.body.classList.remove('imprimiendo'), 300);
+}
+function construirInforme(roadSel, famSel, modo){
+  const roads = roadSel==='*'? S.roads : S.roads.filter(r=>r.id===roadSel);
+  const fams = famSel==='*'? FAMILIAS : FAMILIAS.filter(f=>f.id===famSel);
+  const fechaTxt = new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
+
+  // Resumen por familia
+  const resumen = fams.map(f=>{
+    let ok=0, av=0, cr=0, nd=0;
+    for(const r of roads) for(const t of tramosDe(r.id)){
+      const n = nivel(estadoTramo(t.id,f.id));
+      if(n==='ok')ok++; else if(n==='aviso')av++; else if(n==='critico')cr++; else nd++;
+    }
+    const tot = ok+av+cr;
+    return `<tr><td>${esc(f.nombre)}</td>
+      <td class="num" style="text-align:center">${ok}</td>
+      <td class="num" style="text-align:center;color:var(--aviso);font-weight:700">${av}</td>
+      <td class="num" style="text-align:center;color:var(--critico);font-weight:700">${cr}</td>
+      <td class="num" style="text-align:center;color:#888">${nd}</td>
+      <td class="num" style="text-align:center">${tot? Math.round(ok/tot*100)+'%':'—'}</td></tr>`;
+  }).join('');
+
+  // Detalle por carretera
+  let detalle = '';
+  for(const r of roads){
+    const ts = tramosDe(r.id);
+    if(!ts.length) continue;
+    let filas = '';
+    for(const t of ts) for(const f of fams){
+      const i = lastInsp(t.id, f.id);
+      if(!i) continue;
+      const n = nivel(i.valor);
+      if(modo==='problemas' && n==='ok') continue;
+      filas += `<tr>
+        <td class="num">PK ${pk(t.pkIni)} – ${pk(t.pkFin)}</td>
+        <td>${esc(f.nombre)}</td>
+        <td>${badge(i.valor)}</td>
+        <td class="num">${fFecha(i.fecha)}</td>
+        <td>${esc(i.obs||'')}</td>
+        <td>${esc(ACCION[f.id])}</td></tr>`;
+    }
+    detalle += `<h3>${esc(r.codigo)} ${r.nombre? '· '+esc(r.nombre):''}</h3>
+      ${esquemaRoad(r,true)}
+      ${filas? `<div style="overflow-x:auto"><table><thead><tr><th>Tramo</th><th>Familia</th><th>Indicador</th><th>Inspección</th><th>Observaciones</th><th>Actuación propuesta</th></tr></thead><tbody>${filas}</tbody></table></div>`
+        : `<p style="color:var(--texto2)">${modo==='problemas'? 'Sin tramos con defectos en las familias seleccionadas.':'Sin inspecciones registradas.'}</p>`}`;
+  }
+
+  // Órdenes pendientes en el ámbito
+  const roadIds = roads.map(r=>r.id);
+  const otsP = S.ots.filter(o=>{
+    const t = tramo(o.tramoId);
+    return t && roadIds.includes(t.roadId) && o.estado!=='completada' && (famSel==='*'||o.fam===famSel);
+  });
+  const otsHtml = otsP.length? `<h3>Órdenes de trabajo pendientes (${otsP.length})</h3>
+    <div style="overflow-x:auto"><table><thead><tr><th>Prioridad</th><th>Carretera / tramo</th><th>Familia</th><th>Trabajos</th><th>Creada</th></tr></thead><tbody>${
+    otsP.map(o=>{ const t=tramo(o.tramoId), r=road(t.roadId);
+      return `<tr><td>${o.prio}</td><td>${esc(r.codigo)} · PK ${pk(t.pkIni)}–${pk(t.pkFin)}</td><td>${esc(famName(o.fam))}</td><td>${esc(o.desc)}</td><td class="num">${fFecha(o.creada)}</td></tr>`;
+    }).join('')}</tbody></table></div>` : '';
+
+  const ambito = (roadSel==='*'? 'Toda la red' : esc(road(roadSel).codigo)) + (famSel==='*'? '' : ' · '+esc(famName(famSel)));
+  return `<div class="informe">
+    <div class="cab">
+      <div><h2>Informe de estado de la vía</h2>
+        <div style="color:var(--texto2)">${ambito} · ${modo==='problemas'?'Tramos con defecto leve o críticos':'Estado completo'}</div></div>
+      <div style="text-align:right"><div class="display" style="font-weight:800">GesVía</div>
+        <div style="color:var(--texto2);font-size:.9rem">${fechaTxt}</div></div>
+    </div>
+    <h3>Resumen por familia de elementos</h3>
+    <div style="overflow-x:auto"><table><thead><tr><th>Familia</th><th style="text-align:center">Bueno</th><th style="text-align:center">Defecto</th><th style="text-align:center">Crítico</th><th style="text-align:center">Sin datos</th><th style="text-align:center">% en buen estado</th></tr></thead>
+    <tbody>${resumen}</tbody></table></div>
+    ${detalle}
+    ${otsHtml}
+    <div class="pie"><span>Indicadores: 70–100 bueno · 40–69 defecto leve · 0–39 crítico (última inspección de cada tramo).</span><span>Generado con GesVía</span></div>
+  </div>`;
+}
+
+/* =====================================================
+   DATOS: exportar / importar / demo
+   ===================================================== */
+function renderDatos(){
+  let n = 0; try{ n = (store.get('gesvia_v1')||'').length; }catch(e){}
+  $('infoAlmacen').textContent = `Elementos actuales: ${S.roads.length} carreteras · ${S.tramos.length} tramos · ${S.insp.length} inspecciones · ${S.ots.length} órdenes. Tamaño aproximado: ${(n/1024).toFixed(0)} KB (límite orientativo del navegador ≈ 5.000 KB; las fotos son lo que más ocupa).`;
+}
+function exportJSON(){
+  const blob = new Blob([JSON.stringify(S,null,1)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'gesvia_copia_'+hoy()+'.json';
+  a.click(); URL.revokeObjectURL(a.href);
+}
+function importJSON(input){
+  const f = input.files[0]; if(!f) return;
+  const rd = new FileReader();
+  rd.onload = ()=>{
+    try{
+      const d = JSON.parse(rd.result);
+      if(!Array.isArray(d.roads)) throw 0;
+      if(!confirm('Esto sustituirá los datos actuales por los del archivo. ¿Continuar?')) return;
+      S = d; save(); go('panel'); toast('Copia importada correctamente.');
+    }catch(e){ toast('El archivo no parece una copia válida de GesVía.'); }
+    input.value='';
+  };
+  rd.readAsText(f);
+}
+function borrarTodo(){
+  if(!confirm('¿Borrar TODOS los datos de este dispositivo? Esta acción no se puede deshacer.')) return;
+  S = {roads:[],tramos:[],insp:[],ots:[],seq:1};
+  store.del('gesvia_v1'); save(); go('panel'); toast('Datos borrados.');
+}
+
+/* ---------- datos de ejemplo ---------- */
+function cargaDemo(confirmar){
+  if(confirmar && S.roads.length && !confirm('Se añadirán datos de ejemplo a los existentes. ¿Continuar?')) return;
+  const mk = o => { o.id = uid(); return o; };
+  const r1 = mk({codigo:'CM-3203', nombre:'Albacete – Peñas de San Pedro', sector:'Sector AB-2'});
+  const r2 = mk({codigo:'AB-884', nombre:'Acceso a polígono', sector:'Sector AB-2'});
+  S.roads.push(r1, r2);
+  const T = (r,a,b,d)=>{ const t = mk({roadId:r.id, pkIni:a, pkFin:b, desc:d}); S.tramos.push(t); return t; };
+  const t1 = T(r1,0,4.5,'Salida ciudad – rotonda de servicio');
+  const t2 = T(r1,4.5,9,'Llano, recta larga');
+  const t3 = T(r1,9,14,'Zona de curvas, terraplenes');
+  const t4 = T(r1,14,18.2,'Entrada a núcleo urbano');
+  const u1 = T(r2,0,3,'Tronco principal');
+  const u2 = T(r2,3,6.4,'Ramal norte');
+  const I = (t,fam,dias,valor,obs,params)=>S.insp.push(mk({tramoId:t.id, fam, fecha:new Date(Date.now()-dias*864e5).toISOString().slice(0,10), valor, obs, inspector:'J.G.', gps:'', params:params||{}, foto:null}));
+  I(t1,'FIRME',20,82,'Rodadura en buen estado.',{iri:1.6});
+  I(t2,'FIRME',20,74,'Fisuración fina aislada.',{iri:2.0});
+  I(t3,'FIRME',12,31,'Baches y roderas en PK 11+200 a 12+400. Precisa refuerzo.',{iri:4.1,det:22});
+  I(t4,'FIRME',12,66,'Desgaste superficial en travesía.',{iri:2.6});
+  I(t1,'SH',30,78,'Pintado hace 10 meses.',{rl:230,meses:10});
+  I(t2,'SH',30,55,'Línea de borde desgastada.',{rl:150,meses:22});
+  I(t3,'SH',8,28,'RL por debajo del mínimo de la UNE-EN 1436. Repintar.',{rl:80,meses:30});
+  I(u1,'SH',15,35,'Eje central casi borrado.',{rl:95,meses:28});
+  I(t1,'SV',40,90,'Todo correcto.',{total:24,malas:1});
+  I(t3,'SV',10,58,'3 señales despintadas, 1 girada.',{total:18,malas:5});
+  I(t2,'BAL',6,26,'Captafaros de bionda rotos o ausentes entre PK 6+000 y 7+500.',{total:120,malas:64});
+  I(t3,'BAL',6,61,'Faltan hitos de arista en curva PK 10+300.',{total:90,malas:18});
+  I(t3,'CON',25,44,'Bionda golpeada en PK 12+100, 30 m a sustituir.',{total:2400,malas:130});
+  I(t1,'DRE',50,85,'Cunetas limpias.',{total:14,malas:1});
+  I(t4,'DRE',9,38,'Caño obstruido en PK 15+700.',{total:10,malas:4});
+  I(u2,'MAR',5,52,'Vegetación invadiendo arcén margen izquierda.');
+  const O = (t,fam,desc,prio,estado)=>S.ots.push(mk({tramoId:t.id, fam, desc, prio, estado, creada:hoy(), cerrada:null}));
+  O(t3,'FIRME','Refuerzo de firme PK 11+200 a 12+400 (MBC 5 cm).','alta','pendiente');
+  O(t2,'BAL','Reponer 64 captafaros en bionda, PK 6+000 a 7+500.','alta','en curso');
+  O(t3,'SH','Repintado completo de marcas viales del tramo.','media','pendiente');
+  save(); go('panel'); toast('Datos de ejemplo cargados. Explora el panel.');
+}
+
+/* ---------- arranque ---------- */
+load();
+renderPanel();
+
+/* ---------- PWA: service worker (offline e instalable) ---------- */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
