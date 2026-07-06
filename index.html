@@ -209,8 +209,8 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía</h1>
-      <small>Gestión de la conservación · Sector de carreteras</small>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">2.0</span></span></h1>
+      <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
   <nav>
@@ -223,6 +223,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
     <button data-v="ordenes" onclick="go('ordenes')">Órdenes</button>
     <button data-v="informe" onclick="go('informe')">Informe</button>
     <button data-v="datos" onclick="go('datos')">Datos</button>
+    <button data-v="ajustes" onclick="go('ajustes')">Ajustes</button>
   </nav>
 </header>
 
@@ -268,6 +269,12 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
       </label>
     </div>
     <div class="acciones"><button class="btn" onclick="addRoad()">Guardar carretera</button></div>
+  </div>
+  <div class="tarjeta" style="margin-bottom:1rem;padding:.7rem 1rem">
+    <label class="campo" style="margin:0">🔎 Buscar carretera
+      <input id="red-buscar" placeholder="Código, denominación o sector…" oninput="renderRed()" autocomplete="off">
+      <span class="ayuda" id="red-buscar-info"></span>
+    </label>
   </div>
   <div id="listaRoads"></div>
 </section>
@@ -364,7 +371,15 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
     </div>
     <div class="acciones"><button class="btn" onclick="addOT()">Crear orden de trabajo</button></div>
   </div>
-  <div class="tarjeta"><h3>Listado</h3><div id="listaOT"></div></div>
+  <div class="tarjeta">
+    <h3 style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem;align-items:center">
+      <span>Listado</span>
+      <label class="campo" style="margin:0;font-weight:400;min-width:220px">
+        <select id="ot-filtro-road" onchange="listOT()" style="margin-top:0"></select>
+      </label>
+    </h3>
+    <div id="listaOT"></div>
+  </div>
 </section>
 
 <!-- ================= INFORME ================= -->
@@ -419,7 +434,27 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   </div>
 </section>
 
+<!-- ================= AJUSTES ================= -->
+<section id="v-ajustes" class="vista">
+  <div class="titulo-vista">
+    <h2>Ajustes</h2>
+    <p>Identifica este dispositivo y la zona en la que trabajas.</p>
+  </div>
+  <div class="tarjeta">
+    <div class="form-grid">
+      <label class="campo">Sector / zona de trabajo
+        <input id="aj-sector" placeholder="Ej.: Zona 2" oninput="guardarAjustes()">
+        <span class="ayuda">Aparece en la cabecera y en el encabezado de los informes.</span>
+      </label>
+    </div>
+    <p style="margin-top:1rem;color:var(--texto2);font-size:.9rem">
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">2.0</span></strong>
+    </p>
+  </div>
+</section>
+
 </main>
+
 
 <!-- Modal genérico -->
 <div class="velo" id="velo" onclick="if(event.target===this)cerrarModal()">
@@ -431,6 +466,8 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 /* =====================================================
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
+
+const APP_VERSION = '2.1';   // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -470,6 +507,7 @@ let S = null;
 function load(){
   try{ const raw = store.get('gesvia_v1'); if(raw) S = JSON.parse(raw); }catch(e){}
   if(!S || !Array.isArray(S.roads)) S = {roads:[],tramos:[],insp:[],ots:[],seq:1};
+  if(!S.ajustes) S.ajustes = {sector:''};
 }
 let avisadoAlmacen = false;
 function saveLocal(){
@@ -518,8 +556,26 @@ function go(v){
   document.querySelectorAll('section.vista').forEach(s=>s.classList.remove('activa'));
   $('v-'+v).classList.add('activa');
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('activo', b.dataset.v===v));
-  ({panel:renderPanel, red:renderRed, inspeccion:renderInspeccion, ordenes:renderOrdenes, informe:renderInformeForm, datos:renderDatos}[v])();
+  ({panel:renderPanel, red:renderRed, inspeccion:renderInspeccion, ordenes:renderOrdenes, informe:renderInformeForm, datos:renderDatos, ajustes:renderAjustes}[v])();
   window.scrollTo({top:0});
+}
+
+/* ---------- cabecera (versión + sector) ---------- */
+function aplicarCabecera(){
+  $('hdr-version').textContent = APP_VERSION;
+  $('aj-version').textContent = APP_VERSION;
+  const s = (S.ajustes && S.ajustes.sector || '').trim();
+  $('hdr-sector').textContent = s || 'Sector sin definir';
+}
+function renderAjustes(){
+  $('aj-sector').value = (S.ajustes && S.ajustes.sector) || '';
+  aplicarCabecera();
+}
+function guardarAjustes(){
+  if(!S.ajustes) S.ajustes = {};
+  S.ajustes.sector = $('aj-sector').value;
+  aplicarCabecera();
+  save();
 }
 
 /* =====================================================
@@ -601,11 +657,12 @@ function renderListaFiltrada(){
 }
 
 /* ---------- esquema lineal (mapa de calor por PK) ---------- */
-function esquemaRoad(r, paraInforme){
+function esquemaRoad(r, paraInforme, soloFam){
   const ts = tramosDe(r.id);
   if(!ts.length) return `<div class="esquema"><h3>${esc(r.codigo)} <small>${esc(r.nombre||'')}</small></h3>
     <p style="color:var(--texto2);margin-top:.4rem">Sin tramos definidos. Añádelos en «Red».</p></div>`;
-  const filas = FAMILIAS.map(f=>{
+  const familiasMostrar = soloFam? FAMILIAS.filter(f=>f.id===soloFam) : FAMILIAS;
+  const filas = familiasMostrar.map(f=>{
     const celdas = ts.map(t=>{
       const v = estadoTramo(t.id, f.id);
       const n = nivel(v);
@@ -655,8 +712,13 @@ function verFoto(iid){
    ===================================================== */
 function renderRed(){
   const box = $('listaRoads');
-  if(!S.roads.length){ box.innerHTML = '<div class="tarjeta"><p style="color:var(--texto2)">Aún no hay carreteras. Crea la primera con el formulario de arriba.</p></div>'; return; }
-  box.innerHTML = S.roads.map(r=>{
+  if(!S.roads.length){ box.innerHTML = '<div class="tarjeta"><p style="color:var(--texto2)">Aún no hay carreteras. Crea la primera con el formulario de arriba.</p></div>'; const inf=$('red-buscar-info'); if(inf) inf.textContent=''; return; }
+  const q = (($('red-buscar')||{}).value || '').trim().toLowerCase();
+  const lista = q? S.roads.filter(r=> (r.codigo+' '+(r.nombre||'')+' '+(r.sector||'')).toLowerCase().includes(q)) : S.roads;
+  const inf = $('red-buscar-info');
+  if(inf) inf.textContent = q? `${lista.length} de ${S.roads.length} carreteras` : '';
+  if(!lista.length){ box.innerHTML = `<div class="tarjeta"><p style="color:var(--texto2)">Ninguna carretera coincide con «${esc(q)}».</p></div>`; return; }
+  box.innerHTML = lista.map(r=>{
     const ts = tramosDe(r.id);
     const filas = ts.map(t=>`<tr>
       <td class="num">PK ${pk(t.pkIni)} – ${pk(t.pkFin)}</td>
@@ -824,6 +886,9 @@ function delInsp(iid){ if(!confirm('¿Eliminar esta inspección?')) return; S.in
 function renderOrdenes(){
   fillSelectRoads($('o-road')); fillTramosOT();
   $('o-fam').innerHTML = FAMILIAS.map(f=>`<option value="${f.id}">${esc(f.nombre)}</option>`).join('');
+  const fsel = $('ot-filtro-road'), prev = fsel.value;
+  fsel.innerHTML = '<option value="*">Todas las carreteras</option>' + S.roads.map(r=>`<option value="${r.id}">${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('');
+  if(prev && [...fsel.options].some(o=>o.value===prev)) fsel.value = prev;
   listOT();
 }
 function fillTramosOT(){ fillSelectTramos($('o-road'), $('o-tramo')); }
@@ -851,7 +916,11 @@ function cicloOT(oid){
 function delOT(oid){ if(!confirm('¿Eliminar la orden?')) return; S.ots = S.ots.filter(o=>o.id!==oid); save(); listOT(); }
 function listOT(){
   const orden = {alta:0, media:1, baja:2}, est = {pendiente:0,'en curso':1,completada:2};
-  const ots = [...S.ots].sort((a,b)=> est[a.estado]-est[b.estado] || orden[a.prio]-orden[b.prio]);
+  const fsel = $('ot-filtro-road');
+  const filtroRoad = fsel? fsel.value : '*';
+  let ots = [...S.ots];
+  if(filtroRoad && filtroRoad!=='*') ots = ots.filter(o=>{ const t=tramo(o.tramoId); return t && t.roadId===filtroRoad; });
+  ots.sort((a,b)=> est[a.estado]-est[b.estado] || orden[a.prio]-orden[b.prio]);
   $('listaOT').innerHTML = ots.length? `<div style="overflow-x:auto"><table><thead>
     <tr><th>Estado</th><th>Prioridad</th><th>Carretera / tramo</th><th>Familia</th><th>Trabajos</th><th>Fechas</th><th></th></tr></thead><tbody>${
     ots.map(o=>{
@@ -867,7 +936,7 @@ function listOT(){
         <td><button class="btn peligro mini" onclick="delOT('${o.id}')">✕</button></td></tr>`;
     }).join('')}</tbody></table></div>
     <p class="ayuda" style="margin-top:.5rem">Pulsa sobre el estado para avanzar: pendiente → en curso → completada.</p>`
-    : '<p style="color:var(--texto2)">No hay órdenes de trabajo.</p>';
+    : `<p style="color:var(--texto2)">${filtroRoad && filtroRoad!=='*'? 'No hay órdenes para esta carretera.':'No hay órdenes de trabajo.'}</p>`;
 }
 
 /* =====================================================
@@ -916,7 +985,9 @@ function construirInforme(roadSel, famSel, modo){
   }).join('');
 
   // Detalle por carretera
+  const famUnica = famSel!=='*' ? famSel : null;
   let detalle = '';
+  let carreterasMostradas = 0;
   for(const r of roads){
     const ts = tramosDe(r.id);
     if(!ts.length) continue;
@@ -934,10 +1005,17 @@ function construirInforme(roadSel, famSel, modo){
         <td>${esc(i.obs||'')}</td>
         <td>${esc(ACCION[f.id])}</td></tr>`;
     }
+    // Si se ha filtrado por una familia concreta, omitir las carreteras que no tienen
+    // ninguna fila que mostrar en esa familia (p. ej. sin problemas cuando modo=problemas).
+    if(famUnica && !filas) continue;
+    carreterasMostradas++;
     detalle += `<h3>${esc(r.codigo)} ${r.nombre? '· '+esc(r.nombre):''}</h3>
-      ${esquemaRoad(r,true)}
+      ${esquemaRoad(r,true,famUnica)}
       ${filas? `<div style="overflow-x:auto"><table><thead><tr><th>Tramo</th><th>Familia</th><th>Indicador</th><th>Inspección</th><th>Observaciones</th><th>Actuación propuesta</th></tr></thead><tbody>${filas}</tbody></table></div>`
         : `<p style="color:var(--texto2)">${modo==='problemas'? 'Sin tramos con defectos en las familias seleccionadas.':'Sin inspecciones registradas.'}</p>`}`;
+  }
+  if(famUnica && !carreterasMostradas){
+    detalle = `<p style="color:var(--texto2);padding:.5rem 0">✅ Ninguna carretera del ámbito presenta ${modo==='problemas'?'defectos':'inspecciones'} en «${esc(famName(famUnica))}».</p>`;
   }
 
   // Órdenes pendientes en el ámbito
@@ -957,7 +1035,7 @@ function construirInforme(roadSel, famSel, modo){
     <div class="cab">
       <div><h2>Informe de estado de la vía</h2>
         <div style="color:var(--texto2)">${ambito} · ${modo==='problemas'?'Tramos con defecto leve o críticos':'Estado completo'}</div></div>
-      <div style="text-align:right"><div class="display" style="font-weight:800">GesVía</div>
+      <div style="text-align:right"><div class="display" style="font-weight:800">GesVía${(S.ajustes&&S.ajustes.sector)? ' · '+esc(S.ajustes.sector):''}</div>
         <div style="color:var(--texto2);font-size:.9rem">${fechaTxt}</div></div>
     </div>
     <h3>Resumen por familia de elementos</h3>
@@ -991,7 +1069,7 @@ function importJSON(input){
       const d = JSON.parse(rd.result);
       if(!Array.isArray(d.roads)) throw 0;
       if(!confirm('Esto sustituirá los datos actuales por los del archivo. ¿Continuar?')) return;
-      S = d; save(); go('panel'); toast('Copia importada correctamente.');
+      S = d; if(!S.ajustes) S.ajustes={sector:''}; save(); aplicarCabecera(); go('panel'); toast('Copia importada correctamente.');
     }catch(e){ toast('El archivo no parece una copia válida de GesVía.'); }
     input.value='';
   };
@@ -999,13 +1077,15 @@ function importJSON(input){
 }
 function borrarTodo(){
   if(!confirm('¿Borrar TODOS los datos de este dispositivo? Esta acción no se puede deshacer.')) return;
-  S = {roads:[],tramos:[],insp:[],ots:[],seq:1};
-  store.del('gesvia_v1'); save(); go('panel'); toast('Datos borrados.');
+  S = {roads:[],tramos:[],insp:[],ots:[],seq:1,ajustes:{sector:''}};
+  store.del('gesvia_v1'); save(); aplicarCabecera(); go('panel'); toast('Datos borrados.');
 }
 
 /* ---------- datos de ejemplo ---------- */
 function cargaDemo(confirmar){
   if(confirmar && S.roads.length && !confirm('Se añadirán datos de ejemplo a los existentes. ¿Continuar?')) return;
+  if(!S.ajustes) S.ajustes = {sector:''};
+  if(!S.ajustes.sector) S.ajustes.sector = 'Zona 2';
   const mk = o => { o.id = uid(); return o; };
   const r1 = mk({codigo:'CM-3203', nombre:'Albacete – Peñas de San Pedro', sector:'Sector AB-2'});
   const r2 = mk({codigo:'AB-884', nombre:'Acceso a polígono', sector:'Sector AB-2'});
@@ -1038,7 +1118,7 @@ function cargaDemo(confirmar){
   O(t3,'FIRME','Refuerzo de firme PK 11+200 a 12+400 (MBC 5 cm).','alta','pendiente');
   O(t2,'BAL','Reponer 64 captafaros en bionda, PK 6+000 a 7+500.','alta','en curso');
   O(t3,'SH','Repintado completo de marcas viales del tramo.','media','pendiente');
-  save(); go('panel'); toast('Datos de ejemplo cargados. Explora el panel.');
+  save(); aplicarCabecera(); go('panel'); toast('Datos de ejemplo cargados. Explora el panel.');
 }
 
 /* =====================================================
@@ -1167,7 +1247,7 @@ async function descargarDeGitHub(){
     const parsed = decodifica((await res.json()).content);
     const d = parsed.datos || parsed; // admite también un JSON exportado a mano
     if(!d || !Array.isArray(d.roads)){ setSyncEstado('❌ El archivo no tiene el formato de GesVía', 'var(--critico)'); return; }
-    S = d; saveLocal(); go('panel');
+    S = d; if(!S.ajustes) S.ajustes={sector:''}; saveLocal(); aplicarCabecera(); go('panel');
     setSyncEstado(`✅ Descargado: ${S.roads.length} carreteras · ${S.insp.length} inspecciones`, 'var(--ok)');
     setSyncDot('var(--ok)', 'Sincronizado ✓'); toast('📥 Datos descargados de GitHub');
   }catch(e){ setSyncEstado('❌ Error: '+e.message, 'var(--critico)'); }
@@ -1216,7 +1296,7 @@ async function autoDescargar(){
       const parsed = decodifica((await res.json()).content);
       const d = parsed.datos || parsed;
       if(d && Array.isArray(d.roads)){
-        S = d; saveLocal();
+        S = d; if(!S.ajustes) S.ajustes={sector:''}; saveLocal(); aplicarCabecera();
         setSyncDot('var(--ok)', 'Sincronizado ✓');
         const activa = document.querySelector('nav button.activo');
         go(activa? activa.dataset.v || 'panel' : 'panel');
@@ -1233,6 +1313,7 @@ async function autoDescargar(){
 
 /* ---------- arranque ---------- */
 load();
+aplicarCabecera();
 renderPanel();
 autoDescargar();
 
