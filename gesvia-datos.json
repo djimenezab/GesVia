@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-06T22:27:06.477Z",
+ "exportado": "2026-07-06T22:27:35.402Z",
  "datos": {
   "roads": [
    {
@@ -323,9 +323,9 @@
     "fam": "SH",
     "desc": "Repintado completo de marcas viales del tramo.",
     "prio": "media",
-    "estado": "completada",
+    "estado": "en curso",
     "creada": "2026-07-06",
-    "cerrada": "2026-07-06",
+    "cerrada": null,
     "id": "x27"
    }
   ],
