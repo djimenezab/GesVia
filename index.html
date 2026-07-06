@@ -394,6 +394,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
         <option value="estado">Informe de estado de la vía (con gráfica)</option>
         <option value="listado">Listado de tramos con defecto o críticos (sin gráfica)</option>
         <option value="ordenes">Órdenes de trabajo pendientes</option>
+        <option value="completadas">Órdenes de trabajo completadas (histórico)</option>
       </select>
     </label>
     <div class="form-grid">
@@ -408,6 +409,12 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
           <option value="todo">Estado completo</option>
           <option value="problemas" selected>Solo tramos con defecto o críticos</option>
         </select>
+      </label>
+      <label class="campo" id="wrap-desde">Desde
+        <input type="date" id="f-desde">
+      </label>
+      <label class="campo" id="wrap-hasta">Hasta
+        <input type="date" id="f-hasta">
       </label>
     </div>
     <div class="acciones">
@@ -474,7 +481,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '2.2';   // ← subir este número al publicar cambios
+const APP_VERSION = '2.3';   // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -960,8 +967,12 @@ function cambiaTipoInforme(){
   const tipo = $('f-tipo').value;
   // El "Contenido" (completo / solo problemas) solo tiene sentido en el informe de estado
   $('wrap-modo').style.display = (tipo==='estado') ? '' : 'none';
-  // La familia aplica a estado y a listado, no a órdenes (las órdenes ya tienen su familia)
+  // La familia aplica a todo menos a "órdenes pendientes" (que ya listan su familia)
   $('wrap-fam').style.display = (tipo==='ordenes') ? 'none' : '';
+  // El rango de fechas solo aplica al histórico de completadas
+  const verFechas = (tipo==='completadas') ? '' : 'none';
+  $('wrap-desde').style.display = verFechas;
+  $('wrap-hasta').style.display = verFechas;
 }
 function informeRapido(fam){
   go('informe');
@@ -973,9 +984,10 @@ function verInforme(){
   const tipo = $('f-tipo').value;
   const road = $('f-road').value, fam = $('f-fam').value, modo = $('f-modo').value;
   let html;
-  if(tipo==='listado')      html = informeListado(road, fam);
-  else if(tipo==='ordenes') html = informeOrdenes(road);
-  else                      html = construirInforme(road, fam, modo);
+  if(tipo==='listado')          html = informeListado(road, fam);
+  else if(tipo==='ordenes')     html = informeOrdenes(road);
+  else if(tipo==='completadas') html = informeCompletadas(road, fam, $('f-desde').value, $('f-hasta').value);
+  else                          html = construirInforme(road, fam, modo);
   $('previaInforme').innerHTML = html;
   $('printArea').innerHTML = html;
   $('btnImprimir').style.display = 'inline-block';
@@ -1144,6 +1156,67 @@ function informeOrdenes(roadSel){
   </div>`;
 }
 
+/* ---------- Informe: órdenes de trabajo completadas (histórico) ---------- */
+function informeCompletadas(roadSel, famSel, desde, hasta){
+  const roadIds = roadSel==='*'? null : [roadSel];
+  // Filtramos las completadas por ámbito, familia y rango de fechas de cierre
+  let ots = S.ots.filter(o=>{
+    if(o.estado!=='completada') return false;
+    const t = tramo(o.tramoId);
+    if(!t) return false;
+    if(roadIds && !roadIds.includes(t.roadId)) return false;
+    if(famSel!=='*' && o.fam!==famSel) return false;
+    const f = o.cerrada || o.creada;           // fecha de referencia = cierre
+    if(desde && f < desde) return false;
+    if(hasta && f > hasta) return false;
+    return true;
+  }).sort((a,b)=> (b.cerrada||b.creada).localeCompare(a.cerrada||a.creada)); // más recientes primero
+
+  // Tabla principal (histórico cronológico)
+  const filas = ots.map(o=>{
+    const t = tramo(o.tramoId), r = road(t.roadId);
+    return `<tr>
+      <td class="num">${fFecha(o.cerrada||o.creada)}</td>
+      <td><strong>${esc(r.codigo)}</strong> · PK ${pk(t.pkIni)}–${pk(t.pkFin)}</td>
+      <td>${esc(famName(o.fam))}</td>
+      <td>${esc(o.desc)}</td>
+      <td class="num">${fFecha(o.creada)}</td></tr>`;
+  }).join('');
+
+  // Resumen "veces por carretera y familia" (p. ej. cuántas veces se ha pintado cada vía)
+  const conteo = {};
+  for(const o of ots){
+    const t = tramo(o.tramoId); const r = road(t.roadId);
+    const clave = r.codigo + '||' + o.fam;
+    if(!conteo[clave]) conteo[clave] = {codigo:r.codigo, fam:o.fam, n:0, ultima:''};
+    conteo[clave].n++;
+    const f = o.cerrada || o.creada;
+    if(f > conteo[clave].ultima) conteo[clave].ultima = f;
+  }
+  const resumenFilas = Object.values(conteo)
+    .sort((a,b)=> a.codigo.localeCompare(b.codigo) || famName(a.fam).localeCompare(famName(b.fam)))
+    .map(c=>`<tr><td><strong>${esc(c.codigo)}</strong></td><td>${esc(famName(c.fam))}</td>
+      <td class="num" style="text-align:center">${c.n}</td><td class="num">${fFecha(c.ultima)}</td></tr>`).join('');
+
+  // Subtítulo con el rango de fechas elegido
+  let rango = 'Todas las fechas';
+  if(desde && hasta) rango = `${fFecha(desde)} – ${fFecha(hasta)}`;
+  else if(desde)     rango = `Desde ${fFecha(desde)}`;
+  else if(hasta)     rango = `Hasta ${fFecha(hasta)}`;
+  const ambito = (roadSel==='*'? 'Toda la red' : esc(road(roadSel).codigo)) + (famSel==='*'? '' : ' · '+esc(famName(famSel)));
+
+  return `<div class="informe">
+    ${cabInforme('Órdenes de trabajo completadas', `${ambito} · ${rango} · ${ots.length} actuación(es)`)}
+    ${ots.length? `
+      <h3>Resumen de actuaciones</h3>
+      <div style="overflow-x:auto"><table><thead><tr><th>Carretera</th><th>Familia</th><th style="text-align:center">Nº veces</th><th>Última</th></tr></thead><tbody>${resumenFilas}</tbody></table></div>
+      <h3>Detalle cronológico</h3>
+      <div style="overflow-x:auto"><table><thead><tr><th>Completada</th><th>Carretera / tramo</th><th>Familia</th><th>Trabajos</th><th>Creada</th></tr></thead><tbody>${filas}</tbody></table></div>`
+      : `<p style="color:var(--texto2);padding:.5rem 0">No hay órdenes completadas en el ámbito y rango de fechas seleccionados.</p>`}
+    <div class="pie"><span>Histórico de actuaciones ya ejecutadas (fecha = cierre de la orden).</span><span>Generado con GesVía</span></div>
+  </div>`;
+}
+
 /* =====================================================
    DATOS: exportar / importar / demo
    ===================================================== */
@@ -1212,9 +1285,16 @@ function cargaDemo(confirmar){
   I(t4,'DRE',9,38,'Caño obstruido en PK 15+700.',{total:10,malas:4});
   I(u2,'MAR',5,52,'Vegetación invadiendo arcén margen izquierda.');
   const O = (t,fam,desc,prio,estado)=>S.ots.push(mk({tramoId:t.id, fam, desc, prio, estado, creada:hoy(), cerrada:null}));
+  const Ocomp = (t,fam,desc,creada,cerrada)=>S.ots.push(mk({tramoId:t.id, fam, desc, prio:'media', estado:'completada', creada, cerrada}));
   O(t3,'FIRME','Refuerzo de firme PK 11+200 a 12+400 (MBC 5 cm).','alta','pendiente');
   O(t2,'BAL','Reponer 64 captafaros en bionda, PK 6+000 a 7+500.','alta','en curso');
   O(t3,'SH','Repintado completo de marcas viales del tramo.','media','pendiente');
+  // Histórico de actuaciones ya ejecutadas (para el informe de completadas)
+  Ocomp(t1,'SH','Repintado de marcas viales del tramo.','2024-03-05','2024-03-18');
+  Ocomp(t1,'SH','Repintado de marcas viales del tramo.','2025-04-02','2025-04-15');
+  Ocomp(t2,'SH','Repintado de eje y bordes.','2025-05-10','2025-05-22');
+  Ocomp(t1,'FIRME','Sellado de fisuras PK 0+000 a 4+500.','2025-09-01','2025-09-09');
+  Ocomp(u1,'MAR','Desbroce de márgenes completo.','2025-06-01','2025-06-06');
   save(); aplicarCabecera(); go('panel'); toast('Datos de ejemplo cargados. Explora el panel.');
 }
 
