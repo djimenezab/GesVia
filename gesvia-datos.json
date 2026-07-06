@@ -1,0 +1,334 @@
+{
+ "app": "gesvia",
+ "version": "2.0",
+ "exportado": "2026-07-06T22:20:17.019Z",
+ "datos": {
+  "roads": [
+   {
+    "codigo": "CM-3203",
+    "nombre": "Albacete – Peñas de San Pedro",
+    "sector": "Sector AB-2",
+    "id": "x1"
+   },
+   {
+    "codigo": "AB-884",
+    "nombre": "Acceso a polígono",
+    "sector": "Sector AB-2",
+    "id": "x2"
+   }
+  ],
+  "tramos": [
+   {
+    "roadId": "x1",
+    "pkIni": 0,
+    "pkFin": 4.5,
+    "desc": "Salida ciudad – rotonda de servicio",
+    "id": "x3"
+   },
+   {
+    "roadId": "x1",
+    "pkIni": 4.5,
+    "pkFin": 9,
+    "desc": "Llano, recta larga",
+    "id": "x4"
+   },
+   {
+    "roadId": "x1",
+    "pkIni": 9,
+    "pkFin": 14,
+    "desc": "Zona de curvas, terraplenes",
+    "id": "x5"
+   },
+   {
+    "roadId": "x1",
+    "pkIni": 14,
+    "pkFin": 18.2,
+    "desc": "Entrada a núcleo urbano",
+    "id": "x6"
+   },
+   {
+    "roadId": "x2",
+    "pkIni": 0,
+    "pkFin": 3,
+    "desc": "Tronco principal",
+    "id": "x7"
+   },
+   {
+    "roadId": "x2",
+    "pkIni": 3,
+    "pkFin": 6.4,
+    "desc": "Ramal norte",
+    "id": "x8"
+   }
+  ],
+  "insp": [
+   {
+    "tramoId": "x3",
+    "fam": "FIRME",
+    "fecha": "2026-06-16",
+    "valor": 82,
+    "obs": "Rodadura en buen estado.",
+    "inspector": "J.G.",
+    "gps": "",
+    "params": {
+     "iri": 1.6
+    },
+    "foto": null,
+    "id": "x9"
+   },
+   {
+    "tramoId": "x4",
+    "fam": "FIRME",
+    "fecha": "2026-06-16",
+    "valor": 74,
+    "obs": "Fisuración fina aislada.",
+    "inspector": "J.G.",
+    "gps": "",
+    "params": {
+     "iri": 2
+    },
+    "foto": null,
+    "id": "x10"
+   },
+   {
+    "tramoId": "x5",
+    "fam": "FIRME",
+    "fecha": "2026-06-24",
+    "valor": 31,
+    "obs": "Baches y roderas en PK 11+200 a 12+400. Precisa refuerzo.",
+    "inspector": "J.G.",
+    "gps": "",
+    "params": {
+     "iri": 4.1,
+     "det": 22
+    },
+    "foto": null,
+    "id": "x11"
+   },
+   {
+    "tramoId": "x6",
+    "fam": "FIRME",
+    "fecha": "2026-06-24",
+    "valor": 66,
+    "obs": "Desgaste superficial en travesía.",
+    "inspector": "J.G.",
+    "gps": "",
+    "params": {
+     "iri": 2.6
+    },
+    "foto": null,
+    "id": "x12"
+   },
+   {
+    "tramoId": "x3",
+    "fam": "SH",
+    "fecha": "2026-06-06",
+    "valor": 78,
+    "obs": "Pintado hace 10 meses.",
+    "inspector": "J.G.",
+    "gps": "",
+    "params": {
+     "rl": 230,
+     "meses": 10
+    },
+    "foto": null,
+    "id": "x13"
+   },
+   {
+    "tramoId": "x4",
+    "fam": "SH",
+    "fecha": "2026-06-06",
+    "valor": 55,
+    "obs": "Línea de borde desgastada.",
+    "inspector": "J.G.",
+    "gps": "",
+    "params": {
+     "rl": 150,
+     "meses": 22
+    },
+    "foto": null,
+    "id": "x14"
+   },
+   {
+    "tramoId": "x5",
+    "fam": "SH",
+    "fecha": "2026-06-28",
+    "valor": 28,
+    "obs": "RL por debajo del mínimo de la UNE-EN 1436. Repintar.",
+    "inspector": "J.G.",
+    "gps": "",
+    "params": {
+     "rl": 80,
+     "meses": 30
+    },
+    "foto": null,
+    "id": "x15"
+   },
+   {
+    "tramoId": "x7",
+    "fam": "SH",
+    "fecha": "2026-06-21",
+    "valor": 35,
+    "obs": "Eje central casi borrado.",
+    "inspector": "J.G.",
+    "gps": "",
+    "params": {
+     "rl": 95,
+     "meses": 28
+    },
+    "foto": null,
+    "id": "x16"
+   },
+   {
+    "tramoId": "x3",
+    "fam": "SV",
+    "fecha": "2026-05-27",
+    "valor": 90,
+    "obs": "Todo correcto.",
+    "inspector": "J.G.",
+    "gps": "",
+    "params": {
+     "total": 24,
+     "malas": 1
+    },
+    "foto": null,
+    "id": "x17"
+   },
+   {
+    "tramoId": "x5",
+    "fam": "SV",
+    "fecha": "2026-06-26",
+    "valor": 58,
+    "obs": "3 señales despintadas, 1 girada.",
+    "inspector": "J.G.",
+    "gps": "",
+    "params": {
+     "total": 18,
+     "malas": 5
+    },
+    "foto": null,
+    "id": "x18"
+   },
+   {
+    "tramoId": "x4",
+    "fam": "BAL",
+    "fecha": "2026-06-30",
+    "valor": 26,
+    "obs": "Captafaros de bionda rotos o ausentes entre PK 6+000 y 7+500.",
+    "inspector": "J.G.",
+    "gps": "",
+    "params": {
+     "total": 120,
+     "malas": 64
+    },
+    "foto": null,
+    "id": "x19"
+   },
+   {
+    "tramoId": "x5",
+    "fam": "BAL",
+    "fecha": "2026-06-30",
+    "valor": 61,
+    "obs": "Faltan hitos de arista en curva PK 10+300.",
+    "inspector": "J.G.",
+    "gps": "",
+    "params": {
+     "total": 90,
+     "malas": 18
+    },
+    "foto": null,
+    "id": "x20"
+   },
+   {
+    "tramoId": "x5",
+    "fam": "CON",
+    "fecha": "2026-06-11",
+    "valor": 44,
+    "obs": "Bionda golpeada en PK 12+100, 30 m a sustituir.",
+    "inspector": "J.G.",
+    "gps": "",
+    "params": {
+     "total": 2400,
+     "malas": 130
+    },
+    "foto": null,
+    "id": "x21"
+   },
+   {
+    "tramoId": "x3",
+    "fam": "DRE",
+    "fecha": "2026-05-17",
+    "valor": 85,
+    "obs": "Cunetas limpias.",
+    "inspector": "J.G.",
+    "gps": "",
+    "params": {
+     "total": 14,
+     "malas": 1
+    },
+    "foto": null,
+    "id": "x22"
+   },
+   {
+    "tramoId": "x6",
+    "fam": "DRE",
+    "fecha": "2026-06-27",
+    "valor": 38,
+    "obs": "Caño obstruido en PK 15+700.",
+    "inspector": "J.G.",
+    "gps": "",
+    "params": {
+     "total": 10,
+     "malas": 4
+    },
+    "foto": null,
+    "id": "x23"
+   },
+   {
+    "tramoId": "x8",
+    "fam": "MAR",
+    "fecha": "2026-07-01",
+    "valor": 52,
+    "obs": "Vegetación invadiendo arcén margen izquierda.",
+    "inspector": "J.G.",
+    "gps": "",
+    "params": {},
+    "foto": null,
+    "id": "x24"
+   }
+  ],
+  "ots": [
+   {
+    "tramoId": "x5",
+    "fam": "FIRME",
+    "desc": "Refuerzo de firme PK 11+200 a 12+400 (MBC 5 cm).",
+    "prio": "alta",
+    "estado": "pendiente",
+    "creada": "2026-07-06",
+    "cerrada": null,
+    "id": "x25"
+   },
+   {
+    "tramoId": "x4",
+    "fam": "BAL",
+    "desc": "Reponer 64 captafaros en bionda, PK 6+000 a 7+500.",
+    "prio": "alta",
+    "estado": "en curso",
+    "creada": "2026-07-06",
+    "cerrada": null,
+    "id": "x26"
+   },
+   {
+    "tramoId": "x5",
+    "fam": "SH",
+    "desc": "Repintado completo de marcas viales del tramo.",
+    "prio": "media",
+    "estado": "pendiente",
+    "creada": "2026-07-06",
+    "cerrada": null,
+    "id": "x27"
+   }
+  ],
+  "seq": 28
+ }
+}
