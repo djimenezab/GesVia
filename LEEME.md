@@ -1,5 +1,19 @@
 # GesVía · Gestión de la conservación de carreteras (PWA)
 
+## Novedades v2.2
+- **Informes por tipo**: al entrar en Informes eliges primero qué documento quieres:
+  - *Informe de estado de la vía* (con gráfica lineal, como hasta ahora).
+  - *Listado de tramos con defecto o críticos* (sin gráfica: solo la tabla, agrupada por carretera).
+  - *Órdenes de trabajo pendientes*.
+- Los filtros de familia y contenido se muestran solo cuando aplican a ese tipo de informe.
+
+## Novedades v2.1
+- Número de versión visible junto al título.
+- Nueva pestaña **Ajustes**: define el sector/zona (p. ej. «Zona 2»); aparece en la cabecera y en los informes.
+- **Buscador** en el Inventario de la red (por código, denominación o sector).
+- **Informe por familia**: al elegir una familia concreta, solo salen las carreteras con incidencia en ella y el esquema muestra únicamente esa familia.
+- **Filtro por carretera** en el listado de Órdenes de trabajo.
+
 Aplicación web instalable (PWA), con la misma estructura que APP-Regin:
 funciona offline, se instala en el móvil con su propio icono y se publica en GitHub Pages.
 
@@ -34,7 +48,7 @@ LEEME.md
 ## Cuando actualices la app
 
 Si subes un `index.html` nuevo, edita en `sw.js` la primera línea y sube la versión
-(`gesvia-v1.1` → `gesvia-v1.2`). Así los móviles descargan la versión nueva en vez
+(`gesvia-v1.3` → `gesvia-v1.4`). Así los móviles descargan la versión nueva en vez
 de seguir usando la copia guardada en caché.
 
 ## Sincronización automática con GitHub (como RegIn 1.91)

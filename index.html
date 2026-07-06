@@ -385,18 +385,25 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 <!-- ================= INFORME ================= -->
 <section id="v-informe" class="vista">
   <div class="titulo-vista">
-    <h2>Informe de estado de la vía</h2>
-    <p>Genera un documento listo para imprimir o guardar en PDF.</p>
+    <h2>Informes</h2>
+    <p>Elige el tipo de informe y genera un documento listo para imprimir o guardar en PDF.</p>
   </div>
   <div class="tarjeta">
+    <label class="campo" style="margin-bottom:1rem">Tipo de informe
+      <select id="f-tipo" onchange="cambiaTipoInforme()">
+        <option value="estado">Informe de estado de la vía (con gráfica)</option>
+        <option value="listado">Listado de tramos con defecto o críticos (sin gráfica)</option>
+        <option value="ordenes">Órdenes de trabajo pendientes</option>
+      </select>
+    </label>
     <div class="form-grid">
       <label class="campo">Ámbito
         <select id="f-road"><option value="*">Toda la red</option></select>
       </label>
-      <label class="campo">Familias incluidas
+      <label class="campo" id="wrap-fam">Familia
         <select id="f-fam"><option value="*">Todas las familias</option></select>
       </label>
-      <label class="campo">Contenido
+      <label class="campo" id="wrap-modo">Contenido
         <select id="f-modo">
           <option value="todo">Estado completo</option>
           <option value="problemas" selected>Solo tramos con defecto o críticos</option>
@@ -467,7 +474,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '2.1';   // ← subir este número al publicar cambios
+const APP_VERSION = '2.2';   // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -946,14 +953,29 @@ function renderInformeForm(){
   const fr = $('f-road');
   fr.innerHTML = '<option value="*">Toda la red</option>' + S.roads.map(r=>`<option value="${r.id}">${esc(r.codigo)}</option>`).join('');
   $('f-fam').innerHTML = '<option value="*">Todas las familias</option>' + FAMILIAS.map(f=>`<option value="${f.id}">${esc(f.nombre)}</option>`).join('');
+  cambiaTipoInforme();
+}
+/* Muestra u oculta los filtros según el tipo de informe elegido */
+function cambiaTipoInforme(){
+  const tipo = $('f-tipo').value;
+  // El "Contenido" (completo / solo problemas) solo tiene sentido en el informe de estado
+  $('wrap-modo').style.display = (tipo==='estado') ? '' : 'none';
+  // La familia aplica a estado y a listado, no a órdenes (las órdenes ya tienen su familia)
+  $('wrap-fam').style.display = (tipo==='ordenes') ? 'none' : '';
 }
 function informeRapido(fam){
   go('informe');
+  $('f-tipo').value = 'estado'; cambiaTipoInforme();
   $('f-fam').value = fam; $('f-modo').value = 'problemas';
   verInforme();
 }
 function verInforme(){
-  const html = construirInforme($('f-road').value, $('f-fam').value, $('f-modo').value);
+  const tipo = $('f-tipo').value;
+  const road = $('f-road').value, fam = $('f-fam').value, modo = $('f-modo').value;
+  let html;
+  if(tipo==='listado')      html = informeListado(road, fam);
+  else if(tipo==='ordenes') html = informeOrdenes(road);
+  else                      html = construirInforme(road, fam, modo);
   $('previaInforme').innerHTML = html;
   $('printArea').innerHTML = html;
   $('btnImprimir').style.display = 'inline-block';
@@ -1044,6 +1066,81 @@ function construirInforme(roadSel, famSel, modo){
     ${detalle}
     ${otsHtml}
     <div class="pie"><span>Indicadores: 70–100 bueno · 40–69 defecto leve · 0–39 crítico (última inspección de cada tramo).</span><span>Generado con GesVía</span></div>
+  </div>`;
+}
+
+/* Cabecera común de todos los informes */
+function cabInforme(titulo, subtitulo){
+  const fechaTxt = new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
+  return `<div class="cab">
+    <div><h2>${esc(titulo)}</h2><div style="color:var(--texto2)">${subtitulo}</div></div>
+    <div style="text-align:right"><div class="display" style="font-weight:800">GesVía${(S.ajustes&&S.ajustes.sector)? ' · '+esc(S.ajustes.sector):''}</div>
+      <div style="color:var(--texto2);font-size:.9rem">${fechaTxt}</div></div>
+  </div>`;
+}
+
+/* ---------- Informe: listado de tramos con defecto/crítico (sin gráfica) ---------- */
+function informeListado(roadSel, famSel){
+  const roads = roadSel==='*'? S.roads : S.roads.filter(r=>r.id===roadSel);
+  const fams  = famSel==='*'? FAMILIAS : FAMILIAS.filter(f=>f.id===famSel);
+  let bloques = '';
+  let totalFilas = 0;
+  for(const r of roads){
+    const ts = tramosDe(r.id);
+    let filas = '';
+    for(const t of ts) for(const f of fams){
+      const i = lastInsp(t.id, f.id);
+      if(!i) continue;
+      const n = nivel(i.valor);
+      if(n!=='aviso' && n!=='critico') continue; // solo defecto y crítico
+      filas += `<tr>
+        <td class="num">PK ${pk(t.pkIni)} – ${pk(t.pkFin)}</td>
+        <td>${esc(f.nombre)}</td>
+        <td>${badge(i.valor)}</td>
+        <td class="num">${fFecha(i.fecha)}</td>
+        <td>${esc(i.obs||'')}</td>
+        <td>${esc(ACCION[f.id])}</td></tr>`;
+      totalFilas++;
+    }
+    if(!filas) continue;
+    bloques += `<h3>${esc(r.codigo)} ${r.nombre? '· '+esc(r.nombre):''}</h3>
+      <div style="overflow-x:auto"><table><thead><tr><th>Tramo</th><th>Familia</th><th>Indicador</th><th>Inspección</th><th>Observaciones</th><th>Actuación propuesta</th></tr></thead><tbody>${filas}</tbody></table></div>`;
+  }
+  const ambito = (roadSel==='*'? 'Toda la red' : esc(road(roadSel).codigo)) + (famSel==='*'? '' : ' · '+esc(famName(famSel)));
+  return `<div class="informe">
+    ${cabInforme('Listado de tramos con defecto o críticos', `${ambito} · ${totalFilas} tramo(s)`)}
+    ${bloques || `<p style="color:var(--texto2);padding:.5rem 0">✅ No hay tramos con defecto ni críticos en el ámbito seleccionado.</p>`}
+    <div class="pie"><span>Solo se listan indicadores en defecto leve (40–69) o críticos (0–39).</span><span>Generado con GesVía</span></div>
+  </div>`;
+}
+
+/* ---------- Informe: órdenes de trabajo pendientes ---------- */
+function informeOrdenes(roadSel){
+  const roadIds = roadSel==='*'? null : [roadSel];
+  const orden = {alta:0, media:1, baja:2};
+  const ots = S.ots.filter(o=>{
+    const t = tramo(o.tramoId);
+    return t && o.estado!=='completada' && (!roadIds || roadIds.includes(t.roadId));
+  }).sort((a,b)=> orden[a.prio]-orden[b.prio] || (a.estado>b.estado?1:-1));
+
+  let filas = ots.map(o=>{
+    const t = tramo(o.tramoId), r = road(t.roadId);
+    const col = o.estado==='en curso'?'b-aviso':'b-critico';
+    return `<tr>
+      <td><span class="badge ${col}">${o.estado}</span></td>
+      <td>${o.prio}</td>
+      <td><strong>${esc(r.codigo)}</strong> · PK ${pk(t.pkIni)}–${pk(t.pkFin)}</td>
+      <td>${esc(famName(o.fam))}</td>
+      <td>${esc(o.desc)}</td>
+      <td class="num">${fFecha(o.creada)}</td></tr>`;
+  }).join('');
+
+  const ambito = roadSel==='*'? 'Toda la red' : esc(road(roadSel).codigo);
+  return `<div class="informe">
+    ${cabInforme('Órdenes de trabajo pendientes', `${ambito} · ${ots.length} orden(es)`)}
+    ${ots.length? `<div style="overflow-x:auto"><table><thead><tr><th>Estado</th><th>Prioridad</th><th>Carretera / tramo</th><th>Familia</th><th>Trabajos</th><th>Creada</th></tr></thead><tbody>${filas}</tbody></table></div>`
+      : `<p style="color:var(--texto2);padding:.5rem 0">✅ No hay órdenes de trabajo pendientes en el ámbito seleccionado.</p>`}
+    <div class="pie"><span>Incluye órdenes en estado pendiente o en curso.</span><span>Generado con GesVía</span></div>
   </div>`;
 }
 
