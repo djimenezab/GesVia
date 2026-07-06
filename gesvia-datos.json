@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-06T22:44:44.911Z",
+ "exportado": "2026-07-06T23:22:04.352Z",
  "datos": {
   "roads": [
    {
@@ -315,9 +315,9 @@
     "fam": "FIRME",
     "desc": "Refuerzo de firme PK 11+200 a 12+400 (MBC 5 cm).",
     "prio": "alta",
-    "estado": "pendiente",
+    "estado": "completada",
     "creada": "2026-07-06",
-    "cerrada": null,
+    "cerrada": "2026-07-06",
     "id": "x25"
    },
    {
