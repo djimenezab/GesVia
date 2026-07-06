@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-06T22:27:46.745Z",
+ "exportado": "2026-07-06T22:29:43.343Z",
  "datos": {
   "roads": [
    {
@@ -295,6 +295,18 @@
     "params": {},
     "foto": null,
     "id": "x24"
+   },
+   {
+    "id": "x28",
+    "tramoId": "x3",
+    "fam": "MAR",
+    "fecha": "2026-07-06",
+    "valor": 34,
+    "obs": "Márgenes con cañas muy altas",
+    "inspector": "Manuel",
+    "gps": "",
+    "params": {},
+    "foto": null
    }
   ],
   "ots": [
@@ -329,6 +341,6 @@
     "id": "x27"
    }
   ],
-  "seq": 28
+  "seq": 29
  }
 }
