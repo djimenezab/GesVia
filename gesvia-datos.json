@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T10:26:56.286Z",
+ "exportado": "2026-07-07T10:38:55.338Z",
  "datos": {
   "roads": [
    {
@@ -16,8 +16,8 @@
     "id": "x30",
     "roadId": "x29",
     "pkIni": 17.575,
-    "pkFin": 33.87,
-    "desc": "La Gineta - Acceso Tarazona"
+    "pkFin": 23.265,
+    "desc": "La Gineta - Inicio cuestas río"
    },
    {
     "id": "x31",
