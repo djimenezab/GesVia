@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T11:15:05.458Z",
+ "exportado": "2026-07-07T11:15:36.912Z",
  "datos": {
   "roads": [
    {
@@ -121,6 +121,13 @@
     "pkIni": 0,
     "pkFin": 8.18,
     "desc": "La Roda - L.P. Cuenca"
+   },
+   {
+    "id": "x47",
+    "roadId": "x45",
+    "pkIni": 8.18,
+    "pkFin": 12.48,
+    "desc": "L.P. Cuenca - Puente Río Júcar"
    }
   ],
   "insp": [],
@@ -136,7 +143,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 47,
+  "seq": 48,
   "ajustes": {
    "sector": "ZONA 2"
   }
