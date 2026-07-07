@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T10:42:18.632Z",
+ "exportado": "2026-07-07T10:43:08.953Z",
  "datos": {
   "roads": [
    {
@@ -46,11 +46,18 @@
     "pkIni": 25.271,
     "pkFin": 30.2,
     "desc": "Salida curvas río - Rot. Polígono"
+   },
+   {
+    "id": "x35",
+    "roadId": "x29",
+    "pkIni": 30.2,
+    "pkFin": 33.87,
+    "desc": "Rot. Polg. - Inicio Tarazona"
    }
   ],
   "insp": [],
   "ots": [],
-  "seq": 35,
+  "seq": 36,
   "ajustes": {
    "sector": "ZONA 2"
   }
