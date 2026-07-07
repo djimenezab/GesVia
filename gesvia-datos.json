@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T11:09:25.682Z",
+ "exportado": "2026-07-07T11:10:26.945Z",
  "datos": {
   "roads": [
    {
@@ -94,6 +94,13 @@
     "pkIni": 60.583,
     "pkFin": 68.65,
     "desc": "Salida Tarazona - Rot. CM-3222"
+   },
+   {
+    "id": "x43",
+    "roadId": "x37",
+    "pkIni": 68.65,
+    "pkFin": 71.4,
+    "desc": "Rot. CM-3222 - Fin Madrigueras"
    }
   ],
   "insp": [],
@@ -109,7 +116,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 43,
+  "seq": 44,
   "ajustes": {
    "sector": "ZONA 2"
   }
