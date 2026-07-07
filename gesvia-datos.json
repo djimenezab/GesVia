@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-06T23:22:04.352Z",
+ "exportado": "2026-07-07T10:23:12.839Z",
  "datos": {
   "roads": [
    {
@@ -9,12 +9,6 @@
     "nombre": "Albacete – Peñas de San Pedro",
     "sector": "Sector AB-2",
     "id": "x1"
-   },
-   {
-    "codigo": "AB-884",
-    "nombre": "Acceso a polígono",
-    "sector": "Sector AB-2",
-    "id": "x2"
    }
   ],
   "tramos": [
@@ -45,20 +39,6 @@
     "pkFin": 18.2,
     "desc": "Entrada a núcleo urbano",
     "id": "x6"
-   },
-   {
-    "roadId": "x2",
-    "pkIni": 0,
-    "pkFin": 3,
-    "desc": "Tronco principal",
-    "id": "x7"
-   },
-   {
-    "roadId": "x2",
-    "pkIni": 3,
-    "pkFin": 6.4,
-    "desc": "Ramal norte",
-    "id": "x8"
    }
   ],
   "insp": [
@@ -165,21 +145,6 @@
     "id": "x15"
    },
    {
-    "tramoId": "x7",
-    "fam": "SH",
-    "fecha": "2026-06-21",
-    "valor": 35,
-    "obs": "Eje central casi borrado.",
-    "inspector": "J.G.",
-    "gps": "",
-    "params": {
-     "rl": 95,
-     "meses": 28
-    },
-    "foto": null,
-    "id": "x16"
-   },
-   {
     "tramoId": "x3",
     "fam": "SV",
     "fecha": "2026-05-27",
@@ -283,18 +248,6 @@
     },
     "foto": null,
     "id": "x23"
-   },
-   {
-    "tramoId": "x8",
-    "fam": "MAR",
-    "fecha": "2026-07-01",
-    "valor": 52,
-    "obs": "Vegetación invadiendo arcén margen izquierda.",
-    "inspector": "J.G.",
-    "gps": "",
-    "params": {},
-    "foto": null,
-    "id": "x24"
    },
    {
     "id": "x28",
