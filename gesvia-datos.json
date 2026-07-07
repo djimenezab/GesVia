@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T11:18:16.943Z",
+ "exportado": "2026-07-07T11:19:10.534Z",
  "datos": {
   "roads": [
    {
@@ -26,6 +26,12 @@
     "id": "x50",
     "codigo": "CM-3116",
     "nombre": "Tarazona - L.P. Cuenca",
+    "sector": "ZONA 2.1"
+   },
+   {
+    "id": "x52",
+    "codigo": "CM-3124",
+    "nombre": "Ledaña - Villamalea",
     "sector": "ZONA 2.1"
    }
   ],
@@ -170,7 +176,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 52,
+  "seq": 53,
   "ajustes": {
    "sector": "ZONA 2"
   }
