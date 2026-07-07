@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T11:06:23.970Z",
+ "exportado": "2026-07-07T11:07:33.236Z",
  "datos": {
   "roads": [
    {
@@ -73,6 +73,13 @@
     "pkIni": 43.231,
     "pkFin": 48.78,
     "desc": "Cruce Fuensanta - Rio Jucar"
+   },
+   {
+    "id": "x40",
+    "roadId": "x37",
+    "pkIni": 48.78,
+    "pkFin": 59.075,
+    "desc": "Rio Jucar - Rot. CM-220"
    }
   ],
   "insp": [],
@@ -88,7 +95,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 40,
+  "seq": 41,
   "ajustes": {
    "sector": "ZONA 2"
   }
