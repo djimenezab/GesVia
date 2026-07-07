@@ -1,5 +1,10 @@
 # GesVía · Gestión de la conservación de carreteras (PWA)
 
+## Novedades v1.31
+- Botón ✏️ para **editar un tramo** (PK inicio, PK fin y descripción) sin tener que borrarlo:
+  se conservan sus inspecciones y órdenes.
+- Corregida la numeración de versión (venía saltando a 2.x por error).
+
 ## Novedades v2.3
 - Nuevo tipo de informe **Órdenes de trabajo completadas (histórico)**: filtra por carretera,
   familia y rango de fechas (desde/hasta). Incluye un resumen de «nº de veces por carretera y
@@ -54,7 +59,7 @@ LEEME.md
 ## Cuando actualices la app
 
 Si subes un `index.html` nuevo, edita en `sw.js` la primera línea y sube la versión
-(`gesvia-v1.4` → `gesvia-v1.5`). Así los móviles descargan la versión nueva en vez
+(`gesvia-v1.5` → `gesvia-v1.6`). Así los móviles descargan la versión nueva en vez
 de seguir usando la copia guardada en caché.
 
 ## Sincronización automática con GitHub (como RegIn 1.91)

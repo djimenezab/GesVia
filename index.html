@@ -481,7 +481,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '2.3';   // ← subir este número al publicar cambios
+const APP_VERSION = '1.31';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -738,7 +738,7 @@ function renderRed(){
       <td class="num">PK ${pk(t.pkIni)} – ${pk(t.pkFin)}</td>
       <td>${esc(t.desc||'')}</td>
       <td class="num">${(t.pkFin-t.pkIni).toFixed(1)} km</td>
-      <td style="text-align:right"><button class="btn peligro mini" onclick="delTramo('${t.id}')">Eliminar</button></td>
+      <td style="text-align:right;white-space:nowrap"><button class="btn sec mini" title="Editar tramo" onclick="editarTramo('${t.id}')">✏️</button> <button class="btn peligro mini" onclick="delTramo('${t.id}')">Eliminar</button></td>
     </tr>`).join('');
     return `<div class="tarjeta" style="margin-bottom:1rem">
       <h3 style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem">
@@ -784,6 +784,36 @@ function delTramo(tid){
   S.insp = S.insp.filter(i=>i.tramoId!==tid);
   S.ots = S.ots.filter(o=>o.tramoId!==tid);
   save(); renderRed();
+}
+function editarTramo(tid){
+  const t = tramo(tid); if(!t) return;
+  const r = road(t.roadId);
+  const nInsp = S.insp.filter(i=>i.tramoId===tid).length;
+  const nOts  = S.ots.filter(o=>o.tramoId===tid).length;
+  abrirModal(`<button class="cerrar-x" onclick="cerrarModal()">✕</button>
+    <h3>Editar tramo · ${esc(r.codigo)}</h3>
+    <p style="color:var(--texto2);font-size:.9rem;margin-bottom:.8rem">
+      Se conservan sus ${nInsp} inspección(es) y ${nOts} orden(es); solo cambias los datos del tramo.</p>
+    <div class="form-grid">
+      <label class="campo">PK inicio (km)
+        <input type="number" step="0.1" min="0" id="et-ini" value="${t.pkIni}"></label>
+      <label class="campo">PK fin (km)
+        <input type="number" step="0.1" min="0" id="et-fin" value="${t.pkFin}"></label>
+      <label class="campo" style="grid-column:1/-1">Descripción
+        <input id="et-desc" value="${esc(t.desc||'')}" placeholder="Ej.: Travesía – cruce N-322"></label>
+    </div>
+    <div class="acciones">
+      <button class="btn" onclick="guardarEdicionTramo('${tid}')">Guardar cambios</button>
+      <button class="btn sec" onclick="cerrarModal()">Cancelar</button>
+    </div>`);
+  setTimeout(()=>{ const el=$('et-ini'); if(el) el.focus(); }, 50);
+}
+function guardarEdicionTramo(tid){
+  const t = tramo(tid); if(!t) return;
+  const a = parseFloat($('et-ini').value), b = parseFloat($('et-fin').value);
+  if(isNaN(a)||isNaN(b)||b<=a) return toast('Revisa los PK: el fin debe ser mayor que el inicio.');
+  t.pkIni = a; t.pkFin = b; t.desc = $('et-desc').value.trim();
+  save(); cerrarModal(); renderRed(); toast('Tramo actualizado.');
 }
 
 /* =====================================================
