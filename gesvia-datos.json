@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T11:29:04.412Z",
+ "exportado": "2026-07-07T11:29:52.202Z",
  "datos": {
   "roads": [
    {
@@ -168,6 +168,13 @@
     "pkIni": 48.3,
     "pkFin": 53.28,
     "desc": "Rot. Ledaña - L.P. Albacete"
+   },
+   {
+    "id": "x54",
+    "roadId": "x52",
+    "pkIni": 53.28,
+    "pkFin": 57.42,
+    "desc": "L.P. - Rot. CM-3226"
    }
   ],
   "insp": [],
@@ -183,7 +190,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 54,
+  "seq": 55,
   "ajustes": {
    "sector": "ZONA 2"
   }
