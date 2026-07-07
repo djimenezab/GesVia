@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T10:26:24.510Z",
+ "exportado": "2026-07-07T10:26:56.286Z",
  "datos": {
   "roads": [
    {
@@ -25,11 +25,18 @@
     "pkIni": 33.87,
     "pkFin": 37.045,
     "desc": "Variante Tarazona"
+   },
+   {
+    "id": "x32",
+    "roadId": "x29",
+    "pkIni": 37.045,
+    "pkFin": 40.238,
+    "desc": "Acceso Tarazona - L.P. Cuenca"
    }
   ],
   "insp": [],
   "ots": [],
-  "seq": 32,
+  "seq": 33,
   "ajustes": {
    "sector": "ZONA 2"
   }
