@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T10:38:55.338Z",
+ "exportado": "2026-07-07T10:40:20.220Z",
  "datos": {
   "roads": [
    {
@@ -32,11 +32,18 @@
     "pkIni": 37.045,
     "pkFin": 40.238,
     "desc": "Acceso Tarazona - L.P. Cuenca"
+   },
+   {
+    "id": "x33",
+    "roadId": "x29",
+    "pkIni": 23.265,
+    "pkFin": 25.271,
+    "desc": "Terminación curvas río"
    }
   ],
   "insp": [],
   "ots": [],
-  "seq": 33,
+  "seq": 34,
   "ajustes": {
    "sector": "ZONA 2"
   }
