@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T11:29:52.202Z",
+ "exportado": "2026-07-07T11:31:04.938Z",
  "datos": {
   "roads": [
    {
@@ -175,6 +175,13 @@
     "pkIni": 53.28,
     "pkFin": 57.42,
     "desc": "L.P. - Rot. CM-3226"
+   },
+   {
+    "id": "x55",
+    "roadId": "x52",
+    "pkIni": 57.42,
+    "pkFin": 61.82,
+    "desc": "Rot. CM-3226 - Cruce CM-3201"
    }
   ],
   "insp": [],
@@ -190,7 +197,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 55,
+  "seq": 56,
   "ajustes": {
    "sector": "ZONA 2"
   }
