@@ -365,6 +365,16 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
           <option value="baja">Baja</option>
         </select>
       </label>
+      <label class="campo">Estado inicial
+        <select id="o-estado" onchange="toggleFechaOT()">
+          <option value="pendiente" selected>Pendiente (trabajo por hacer)</option>
+          <option value="completada">Ya realizada (registrar en histórico)</option>
+        </select>
+      </label>
+      <label class="campo" id="wrap-o-fecha" style="display:none">Fecha de ejecución
+        <input type="date" id="o-fecha">
+        <span class="ayuda">Fecha real en que se hizo el trabajo.</span>
+      </label>
       <label class="campo" style="grid-column:1/-1">Descripción de los trabajos
         <input id="o-desc" placeholder="Ej.: Reponer 40 captafaros en bionda, PK 12+000 a 13+000">
       </label>
@@ -481,7 +491,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.31';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.32';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -936,13 +946,29 @@ function renderOrdenes(){
   listOT();
 }
 function fillTramosOT(){ fillSelectTramos($('o-road'), $('o-tramo')); }
+function toggleFechaOT(){
+  const comp = $('o-estado').value === 'completada';
+  $('wrap-o-fecha').style.display = comp ? '' : 'none';
+  if(comp && !$('o-fecha').value) $('o-fecha').value = hoy();
+}
 function addOT(){
   const tid = $('o-tramo').value;
   if(!tid) return toast('Selecciona un tramo.');
   const desc = $('o-desc').value.trim();
   if(!desc) return toast('Describe brevemente los trabajos.');
-  S.ots.push({id:uid(), tramoId:tid, fam:$('o-fam').value, desc, prio:$('o-prio').value, estado:'pendiente', creada:hoy(), cerrada:null});
-  $('o-desc').value=''; save(); listOT(); toast('Orden creada.');
+  const estado = $('o-estado').value;
+  let creada = hoy(), cerrada = null;
+  if(estado === 'completada'){
+    const f = $('o-fecha').value;
+    if(!f) return toast('Indica la fecha en que se realizó el trabajo.');
+    cerrada = f;
+    if(f < creada) creada = f;   // si es un trabajo antiguo, la creación no puede ser posterior al cierre
+  }
+  S.ots.push({id:uid(), tramoId:tid, fam:$('o-fam').value, desc, prio:$('o-prio').value, estado, creada, cerrada});
+  $('o-desc').value='';
+  $('o-estado').value='pendiente'; toggleFechaOT();
+  save(); listOT();
+  toast(estado==='completada' ? 'Trabajo registrado en el histórico.' : 'Orden creada.');
 }
 function prefillOT(tid){
   go('ordenes');
