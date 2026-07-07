@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T10:43:08.953Z",
+ "exportado": "2026-07-07T10:59:36.094Z",
  "datos": {
   "roads": [
    {
@@ -56,8 +56,19 @@
    }
   ],
   "insp": [],
-  "ots": [],
-  "seq": 36,
+  "ots": [
+   {
+    "id": "x36",
+    "tramoId": "x31",
+    "fam": "FIRME",
+    "desc": "Reposición de capa de firme y pintura señalización horizontal",
+    "prio": "media",
+    "estado": "completada",
+    "creada": "2026-06-01",
+    "cerrada": "2026-06-01"
+   }
+  ],
+  "seq": 37,
   "ajustes": {
    "sector": "ZONA 2"
   }
