@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T11:19:10.534Z",
+ "exportado": "2026-07-07T11:29:04.412Z",
  "datos": {
   "roads": [
    {
@@ -161,6 +161,13 @@
     "pkIni": 0,
     "pkFin": 4.24,
     "desc": "Tarazona - L.P. Cuenca"
+   },
+   {
+    "id": "x53",
+    "roadId": "x52",
+    "pkIni": 48.3,
+    "pkFin": 53.28,
+    "desc": "Rot. Ledaña - L.P. Albacete"
    }
   ],
   "insp": [],
@@ -176,7 +183,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 53,
+  "seq": 54,
   "ajustes": {
    "sector": "ZONA 2"
   }
