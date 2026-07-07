@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T10:25:49.492Z",
+ "exportado": "2026-07-07T10:26:24.510Z",
  "datos": {
   "roads": [
    {
@@ -18,11 +18,18 @@
     "pkIni": 17.575,
     "pkFin": 33.87,
     "desc": "La Gineta - Acceso Tarazona"
+   },
+   {
+    "id": "x31",
+    "roadId": "x29",
+    "pkIni": 33.87,
+    "pkFin": 37.045,
+    "desc": "Variante Tarazona"
    }
   ],
   "insp": [],
   "ots": [],
-  "seq": 31,
+  "seq": 32,
   "ajustes": {
    "sector": "ZONA 2"
   }
