@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T11:10:26.945Z",
+ "exportado": "2026-07-07T11:11:43.399Z",
  "datos": {
   "roads": [
    {
@@ -101,6 +101,13 @@
     "pkIni": 68.65,
     "pkFin": 71.4,
     "desc": "Rot. CM-3222 - Fin Madrigueras"
+   },
+   {
+    "id": "x44",
+    "roadId": "x37",
+    "pkIni": 71.4,
+    "pkFin": 76.836,
+    "desc": "Salida Madrigueras - Rot. CM-3226"
    }
   ],
   "insp": [],
@@ -116,7 +123,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 44,
+  "seq": 45,
   "ajustes": {
    "sector": "ZONA 2"
   }
