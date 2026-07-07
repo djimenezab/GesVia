@@ -1,5 +1,9 @@
 # GesVía · Gestión de la conservación de carreteras (PWA)
 
+## Novedades v1.38
+- Corregida la alineación de la escala de PK del esquema: cada marca cae ahora exactamente
+  en la línea que separa los cuadros de cada tramo (antes se desviaba en tramos cortos).
+
 ## Novedades v1.36
 - Retirada la fila de descripciones de tramo del esquema (no quedaba bien centrada);
   el esquema vuelve a mostrarse limpio con los PK de referencia debajo.
@@ -81,7 +85,7 @@ LEEME.md
 ## Cuando actualices la app
 
 Si subes un `index.html` nuevo, edita en `sw.js` la primera línea y sube la versión
-(`gesvia-v1.10` → `gesvia-v1.11`). Así los móviles descargan la versión nueva en vez
+(`gesvia-v1.11` → `gesvia-v1.12`). Así los móviles descargan la versión nueva en vez
 de seguir usando la copia guardada en caché.
 
 ## Sincronización automática con GitHub (como RegIn 1.91)

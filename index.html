@@ -111,13 +111,15 @@ section.vista.activa{display:block}
 .fila-fam .celdas{flex:1;display:flex;gap:2px}
 .celda{
   min-width:14px;height:26px;border-radius:3px;cursor:pointer;position:relative;
-  transition:transform .08s;
+  transition:transform .08s;flex-basis:0;
 }
 .celda:hover{transform:scaleY(1.18);outline:2px solid var(--asfalto);z-index:2}
 .regla{display:flex;margin-top:.25rem}
 .regla .etq{flex:0 0 168px}
-.regla .celdas{flex:1;display:flex;gap:2px}
-.regla .pk{font-size:.72rem;color:var(--texto2);font-variant-numeric:tabular-nums;text-align:left;padding-left:2px;border-left:1px solid var(--borde)}
+.regla .barra{flex:1;position:relative;height:1.15rem}
+.regla .marca{position:absolute;top:0;bottom:0;width:0;border-left:1px solid var(--borde)}
+.regla .marca > span{position:absolute;top:0;left:0;padding-left:2px;font-size:.72rem;color:var(--texto2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.regla .marca.fin > span{left:auto;right:0;padding-left:0;padding-right:2px}
 .leyenda{display:flex;gap:1rem;flex-wrap:wrap;font-size:.85rem;color:var(--texto2);margin-top:.6rem}
 .leyenda span{display:flex;align-items:center;gap:.35rem}
 
@@ -489,7 +491,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.36';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.38';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -643,6 +645,7 @@ function renderPanel(){
 
   renderListaFiltrada();
   $('esquemas').innerHTML = S.roads.map(r=>esquemaRoad(r,false)).join('');
+  requestAnimationFrame(()=>posicionarReglas($('esquemas')));
 }
 
 function setFiltro(f){ filtroFam = (filtroFam===f)? null : f; renderPanel(); }
@@ -696,14 +699,37 @@ function esquemaRoad(r, paraInforme, soloFam){
     }).join('');
     return `<div class="fila-fam"><div class="etq">${esc(f.nombre)}</div><div class="celdas">${celdas}</div></div>`;
   }).join('');
-  const regla = ts.map(t=>`<div class="pk" style="flex-grow:${Math.max(t.pkFin-t.pkIni,.5)}">${pk(t.pkIni)}</div>`).join('');
+  const marcas = ts.map(t=>pk(t.pkIni)).concat([pk(ts[ts.length-1].pkFin)]);
   return `<div class="esquema">
     <h3>${esc(r.codigo)} <small>${esc(r.nombre||'')} ${r.sector? '· '+esc(r.sector):''}</small></h3>
-    <div class="mapa-lineal">
+    <div class="mapa-lineal" data-marcas='${JSON.stringify(marcas).replace(/'/g,"&#39;")}'>
       ${filas}
-      <div class="regla"><div class="etq"></div><div class="celdas">${regla}<div class="pk" style="flex-grow:0">${pk(ts[ts.length-1].pkFin)}</div></div></div>
+      <div class="regla"><div class="etq"></div><div class="barra"></div></div>
     </div>
   </div>`;
+}
+
+/* Coloca las marcas de PK justo en el borde de cada celda (alineación exacta) */
+function posicionarReglas(cont){
+  const raiz = cont || document;
+  raiz.querySelectorAll('.mapa-lineal[data-marcas]').forEach(mapa=>{
+    let marcas; try{ marcas = JSON.parse(mapa.getAttribute('data-marcas')); }catch(e){ return; }
+    const fila = mapa.querySelector('.fila-fam .celdas');
+    const barra = mapa.querySelector('.regla .barra');
+    if(!fila || !barra) return;
+    const celdas = [...fila.querySelectorAll('.celda')];
+    if(!celdas.length) return;
+    const rectBarra = barra.getBoundingClientRect();
+    const baseLeft = rectBarra.left, ancho = rectBarra.width;
+    if(ancho<=0) return;
+    const bordes = celdas.map(c=> c.getBoundingClientRect().left - baseLeft );
+    bordes.push( celdas[celdas.length-1].getBoundingClientRect().right - baseLeft );
+    barra.innerHTML = marcas.map((txt,i)=>{
+      const pct = Math.max(0, Math.min(100, (bordes[i]/ancho)*100 ));
+      const fin = i===marcas.length-1 ? ' fin' : '';
+      return `<div class="marca${fin}" style="left:${pct}%"><span>${txt}</span></div>`;
+    }).join('');
+  });
 }
 
 /* ---------- detalle de tramo (modal) ---------- */
@@ -1047,11 +1073,16 @@ function verInforme(){
   $('previaInforme').innerHTML = html;
   $('printArea').innerHTML = html;
   $('btnImprimir').style.display = 'inline-block';
+  requestAnimationFrame(()=>{ posicionarReglas($('previaInforme')); posicionarReglas($('printArea')); });
 }
 function imprimir(){
   document.body.classList.add('imprimiendo');
-  window.print();
-  setTimeout(()=>document.body.classList.remove('imprimiendo'), 300);
+  // Ahora printArea es visible: recalcular las marcas de PK con su ancho real
+  posicionarReglas($('printArea'));
+  requestAnimationFrame(()=>{
+    window.print();
+    setTimeout(()=>document.body.classList.remove('imprimiendo'), 300);
+  });
 }
 function construirInforme(roadSel, famSel, modo){
   const roads = roadSel==='*'? S.roads : S.roads.filter(r=>r.id===roadSel);
@@ -1550,6 +1581,13 @@ load();
 aplicarCabecera();
 renderPanel();
 autoDescargar();
+
+/* Reajustar las marcas de PK al girar/redimensionar la pantalla */
+let _reglaTimer = null;
+window.addEventListener('resize', ()=>{
+  clearTimeout(_reglaTimer);
+  _reglaTimer = setTimeout(()=>{ posicionarReglas($('esquemas')); posicionarReglas($('previaInforme')); }, 150);
+});
 
 /* ---------- PWA: service worker (offline e instalable) ---------- */
 if ('serviceWorker' in navigator) {
