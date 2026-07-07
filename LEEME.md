@@ -1,5 +1,15 @@
 # GesVía · Gestión de la conservación de carreteras (PWA)
 
+## Novedades v1.33
+- La pestaña **Datos** se ha integrado dentro de **Ajustes** (exportar/importar copia, cargar
+  ejemplo, borrar datos e información de almacenamiento), liberando espacio en la barra superior
+  del móvil.
+
+## Novedades v1.32
+- Al crear una orden puedes marcarla como **«Ya realizada»** e indicar la **fecha de ejecución**:
+  queda registrada directamente en el histórico de órdenes completadas. Ideal para volcar trabajos
+  antiguos hechos antes de usar la app (p. ej. una reposición de firme y repintado ya ejecutados).
+
 ## Novedades v1.31
 - Botón ✏️ para **editar un tramo** (PK inicio, PK fin y descripción) sin tener que borrarlo:
   se conservan sus inspecciones y órdenes.
@@ -59,7 +69,7 @@ LEEME.md
 ## Cuando actualices la app
 
 Si subes un `index.html` nuevo, edita en `sw.js` la primera línea y sube la versión
-(`gesvia-v1.5` → `gesvia-v1.6`). Así los móviles descargan la versión nueva en vez
+(`gesvia-v1.7` → `gesvia-v1.8`). Así los móviles descargan la versión nueva en vez
 de seguir usando la copia guardada en caché.
 
 ## Sincronización automática con GitHub (como RegIn 1.91)
