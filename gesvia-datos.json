@@ -1,13 +1,19 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T10:59:36.094Z",
+ "exportado": "2026-07-07T11:03:53.439Z",
  "datos": {
   "roads": [
    {
     "id": "x29",
     "codigo": "CM-220",
     "nombre": "A-31 - L.P. Cuenca",
+    "sector": "ZONA 2.1"
+   },
+   {
+    "id": "x37",
+    "codigo": "CM-316",
+    "nombre": "La Roda - CM-3226",
     "sector": "ZONA 2.1"
    }
   ],
@@ -68,7 +74,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 37,
+  "seq": 38,
   "ajustes": {
    "sector": "ZONA 2"
   }
