@@ -1,5 +1,9 @@
 # GesVía · Gestión de la conservación de carreteras (PWA)
 
+## Novedades v1.34
+- El esquema lineal muestra ahora la **descripción de cada tramo** encima de su columna
+  (en el panel y en los informes), para localizar más fácil dónde está el problema.
+
 ## Novedades v1.33
 - La pestaña **Datos** se ha integrado dentro de **Ajustes** (exportar/importar copia, cargar
   ejemplo, borrar datos e información de almacenamiento), liberando espacio en la barra superior
@@ -69,7 +73,7 @@ LEEME.md
 ## Cuando actualices la app
 
 Si subes un `index.html` nuevo, edita en `sw.js` la primera línea y sube la versión
-(`gesvia-v1.7` → `gesvia-v1.8`). Así los móviles descargan la versión nueva en vez
+(`gesvia-v1.8` → `gesvia-v1.9`). Así los móviles descargan la versión nueva en vez
 de seguir usando la copia guardada en caché.
 
 ## Sincronización automática con GitHub (como RegIn 1.91)
