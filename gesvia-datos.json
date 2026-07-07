@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T11:08:36.656Z",
+ "exportado": "2026-07-07T11:09:25.682Z",
  "datos": {
   "roads": [
    {
@@ -87,6 +87,13 @@
     "pkIni": 59.075,
     "pkFin": 60.583,
     "desc": "Rot. CM-220 - Salida Tarazona"
+   },
+   {
+    "id": "x42",
+    "roadId": "x37",
+    "pkIni": 60.583,
+    "pkFin": 68.65,
+    "desc": "Salida Tarazona - Rot. CM-3222"
    }
   ],
   "insp": [],
@@ -102,7 +109,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 42,
+  "seq": 43,
   "ajustes": {
    "sector": "ZONA 2"
   }
