@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T10:40:45.716Z",
+ "exportado": "2026-07-07T10:42:18.632Z",
  "datos": {
   "roads": [
    {
@@ -39,11 +39,18 @@
     "pkIni": 23.265,
     "pkFin": 25.271,
     "desc": "Bajada río - Terminación curvas río"
+   },
+   {
+    "id": "x34",
+    "roadId": "x29",
+    "pkIni": 25.271,
+    "pkFin": 30.2,
+    "desc": "Salida curvas río - Rot. Polígono"
    }
   ],
   "insp": [],
   "ots": [],
-  "seq": 34,
+  "seq": 35,
   "ajustes": {
    "sector": "ZONA 2"
   }
