@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T11:14:22.673Z",
+ "exportado": "2026-07-07T11:15:05.458Z",
  "datos": {
   "roads": [
    {
@@ -114,6 +114,13 @@
     "pkIni": 71.4,
     "pkFin": 76.836,
     "desc": "Salida Madrigueras - Rot. CM-3226"
+   },
+   {
+    "id": "x46",
+    "roadId": "x45",
+    "pkIni": 0,
+    "pkFin": 8.18,
+    "desc": "La Roda - L.P. Cuenca"
    }
   ],
   "insp": [],
@@ -129,7 +136,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 46,
+  "seq": 47,
   "ajustes": {
    "sector": "ZONA 2"
   }
