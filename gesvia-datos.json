@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T11:15:36.912Z",
+ "exportado": "2026-07-07T11:16:11.241Z",
  "datos": {
   "roads": [
    {
@@ -128,6 +128,13 @@
     "pkIni": 8.18,
     "pkFin": 12.48,
     "desc": "L.P. Cuenca - Puente Río Júcar"
+   },
+   {
+    "id": "x48",
+    "roadId": "x45",
+    "pkIni": 12.48,
+    "pkFin": 15.91,
+    "desc": "Puente Río Júcar - Cambio firme"
    }
   ],
   "insp": [],
@@ -143,7 +150,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 48,
+  "seq": 49,
   "ajustes": {
    "sector": "ZONA 2"
   }
