@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T11:17:21.632Z",
+ "exportado": "2026-07-07T11:18:16.943Z",
  "datos": {
   "roads": [
    {
@@ -148,6 +148,13 @@
     "pkIni": 15.91,
     "pkFin": 19.791,
     "desc": "Cambio firme - L.P. Cuenca"
+   },
+   {
+    "id": "x51",
+    "roadId": "x50",
+    "pkIni": 0,
+    "pkFin": 4.24,
+    "desc": "Tarazona - L.P. Cuenca"
    }
   ],
   "insp": [],
@@ -163,7 +170,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 51,
+  "seq": 52,
   "ajustes": {
    "sector": "ZONA 2"
   }
