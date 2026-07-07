@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T11:05:07.003Z",
+ "exportado": "2026-07-07T11:06:23.970Z",
  "datos": {
   "roads": [
    {
@@ -66,6 +66,13 @@
     "pkIni": 36.216,
     "pkFin": 43.231,
     "desc": "La Roda - Cruce Fuensanta"
+   },
+   {
+    "id": "x39",
+    "roadId": "x37",
+    "pkIni": 43.231,
+    "pkFin": 48.78,
+    "desc": "Cruce Fuensanta - Rio Jucar"
    }
   ],
   "insp": [],
@@ -81,7 +88,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 39,
+  "seq": 40,
   "ajustes": {
    "sector": "ZONA 2"
   }
