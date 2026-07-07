@@ -111,13 +111,23 @@ section.vista.activa{display:block}
 .fila-fam .celdas{flex:1;display:flex;gap:2px}
 .cab-tramos{display:flex;margin-bottom:2px}
 .cab-tramos .etq{flex:0 0 168px}
-.cab-tramos .celdas{flex:1;display:flex;gap:2px}
+.cab-tramos .celdas{flex:1;display:flex;gap:2px;align-items:flex-end}
 .cab-tramos .desc{
-  font-size:.72rem;line-height:1.1;color:var(--asfalto);font-weight:600;
-  text-align:center;padding:0 2px;overflow:hidden;display:flex;align-items:flex-end;
-  justify-content:center;min-width:14px;border-bottom:2px solid var(--borde);
-  padding-bottom:2px;min-height:1.6rem;
+  font-size:.7rem;line-height:1.12;color:var(--asfalto);font-weight:600;
+  text-align:center;padding:0 3px;min-width:14px;
+  display:flex;flex-direction:column;justify-content:flex-end;
 }
+.cab-tramos .desc .txt{
+  overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+}
+/* Nivel alto (tramos impares): reserva espacio y baja con una guía */
+.cab-tramos .desc.alto .txt{min-height:2.5rem}
+.cab-tramos .desc.bajo .txt{min-height:1.25rem}
+.cab-tramos .desc .guia{
+  height:.55rem;border-left:1px solid var(--borde);align-self:center;margin-top:1px;
+}
+.cab-tramos .desc.bajo .guia{display:none}
+.cab-tramos + .fila-fam{border-top:2px solid var(--borde);padding-top:2px}
 .celda{
   min-width:14px;height:26px;border-radius:3px;cursor:pointer;position:relative;
   transition:transform .08s;
@@ -498,7 +508,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.34';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.35';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -705,10 +715,11 @@ function esquemaRoad(r, paraInforme, soloFam){
     }).join('');
     return `<div class="fila-fam"><div class="etq">${esc(f.nombre)}</div><div class="celdas">${celdas}</div></div>`;
   }).join('');
-  const cabTramos = ts.map(t=>{
+  const cabTramos = ts.map((t,idx)=>{
     const grow = Math.max(t.pkFin - t.pkIni, .5);
     const txt = t.desc ? esc(t.desc) : `PK ${pk(t.pkIni)}`;
-    return `<div class="desc" style="flex-grow:${grow}" title="${esc(t.desc||'')} · PK ${pk(t.pkIni)}–${pk(t.pkFin)}">${txt}</div>`;
+    const nivelPos = idx % 2 === 0 ? 'alto' : 'bajo';   // alterna arriba / abajo
+    return `<div class="desc ${nivelPos}" style="flex-grow:${grow}" title="${esc(t.desc||'')} · PK ${pk(t.pkIni)}–${pk(t.pkFin)}"><span class="txt">${txt}</span><span class="guia"></span></div>`;
   }).join('');
   const regla = ts.map(t=>`<div class="pk" style="flex-grow:${Math.max(t.pkFin-t.pkIni,.5)}">${pk(t.pkIni)}</div>`).join('');
   return `<div class="esquema">
