@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T11:16:40.867Z",
+ "exportado": "2026-07-07T11:17:21.632Z",
  "datos": {
   "roads": [
    {
@@ -20,6 +20,12 @@
     "id": "x45",
     "codigo": "CM-3114",
     "nombre": "La Roda - L.P. Cuenca",
+    "sector": "ZONA 2.1"
+   },
+   {
+    "id": "x50",
+    "codigo": "CM-3116",
+    "nombre": "Tarazona - L.P. Cuenca",
     "sector": "ZONA 2.1"
    }
   ],
@@ -157,7 +163,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 50,
+  "seq": 51,
   "ajustes": {
    "sector": "ZONA 2"
   }
