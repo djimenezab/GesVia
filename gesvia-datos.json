@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:30:24.402Z",
+ "exportado": "2026-07-08T11:30:45.847Z",
  "datos": {
   "roads": [
    {
@@ -75,6 +75,12 @@
     "codigo": "CM-3220",
     "nombre": "Almansa - L.P. Murcia",
     "sector": "ZONA 2.2"
+   },
+   {
+    "id": "x104",
+    "codigo": "CM-3222",
+    "nombre": "N-322 - L.P. Cuenca",
+    "sector": "ZONA 2.1"
    }
   ],
   "tramos": [
@@ -531,7 +537,7 @@
     "fotos": []
    }
   ],
-  "seq": 104,
+  "seq": 105,
   "ajustes": {
    "sector": "ZONA 2"
   }
