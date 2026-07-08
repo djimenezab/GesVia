@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T06:54:00.433Z",
+ "exportado": "2026-07-08T06:54:59.208Z",
  "datos": {
   "roads": [
    {
@@ -313,6 +313,13 @@
     "pkIni": 7.1,
     "pkFin": 14.848,
     "desc": "Casas de Ves - Cantoblanco"
+   },
+   {
+    "id": "x75",
+    "roadId": "x71",
+    "pkIni": 14.848,
+    "pkFin": 19.451,
+    "desc": "Cantoblanco - Balsa de Ves"
    }
   ],
   "insp": [],
@@ -328,7 +335,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 75,
+  "seq": 76,
   "ajustes": {
    "sector": "ZONA 2"
   }
