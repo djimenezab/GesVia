@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:18:20.441Z",
+ "exportado": "2026-07-08T11:19:11.495Z",
  "datos": {
   "roads": [
    {
@@ -430,6 +430,13 @@
     "pkIni": 14.935,
     "pkFin": 17.38,
     "desc": "Variante Pétrola"
+   },
+   {
+    "id": "x93",
+    "roadId": "x89",
+    "pkIni": 17.38,
+    "pkFin": 24.596,
+    "desc": "Pétrola - Las Anorias"
    }
   ],
   "insp": [],
@@ -457,7 +464,7 @@
     "fotos": []
    }
   ],
-  "seq": 93,
+  "seq": 94,
   "ajustes": {
    "sector": "ZONA 2"
   }
