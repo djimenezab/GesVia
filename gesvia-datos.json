@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:15:49.283Z",
+ "exportado": "2026-07-08T11:16:48.304Z",
  "datos": {
   "roads": [
    {
@@ -409,6 +409,13 @@
     "pkIni": 46.493,
     "pkFin": 55.375,
     "desc": "Montealegre - L.P. Murcia"
+   },
+   {
+    "id": "x90",
+    "roadId": "x89",
+    "pkIni": 0,
+    "pkFin": 11.433,
+    "desc": "Est. Chinchilla - Horna"
    }
   ],
   "insp": [],
@@ -436,7 +443,7 @@
     "fotos": []
    }
   ],
-  "seq": 90,
+  "seq": 91,
   "ajustes": {
    "sector": "ZONA 2"
   }
