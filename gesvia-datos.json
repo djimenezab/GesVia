@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T06:25:43.165Z",
+ "exportado": "2026-07-08T06:27:14.914Z",
  "datos": {
   "roads": [
    {
@@ -258,6 +258,13 @@
     "pkIni": 55,
     "pkFin": 68.26,
     "desc": "Cruce CM-3227 - Cruce CM-332"
+   },
+   {
+    "id": "x67",
+    "roadId": "x56",
+    "pkIni": 68.26,
+    "pkFin": 80.725,
+    "desc": "Cruce CM-332 - Las Fuentes"
    }
   ],
   "insp": [],
@@ -273,7 +280,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 67,
+  "seq": 68,
   "ajustes": {
    "sector": "ZONA 2"
   }
