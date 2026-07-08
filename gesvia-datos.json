@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:35:00.555Z",
+ "exportado": "2026-07-08T11:39:01.258Z",
  "datos": {
   "roads": [
    {
@@ -105,12 +105,6 @@
     "codigo": "CM-316",
     "nombre": "La Roda - Mahora",
     "sector": "ZONA 2.1"
-   },
-   {
-    "id": "x110",
-    "codigo": "CM-412",
-    "nombre": "Ontur - Almansa",
-    "sector": "ZONA 2.2"
    },
    {
     "id": "x111",
