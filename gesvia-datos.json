@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:39:21.427Z",
+ "exportado": "2026-07-08T11:50:20.897Z",
  "datos": {
   "roads": [
    {
@@ -562,9 +562,9 @@
     "fam": "FIRME",
     "desc": "Reposición de capa de firme y pintura señalización horizontal",
     "prio": "media",
-    "estado": "pendiente",
+    "estado": "completada",
     "creada": "2026-06-01",
-    "cerrada": null,
+    "cerrada": "2026-07-08",
     "fotos": []
    },
    {
@@ -573,9 +573,9 @@
     "fam": "DRE",
     "desc": "Hormigonar cuneta recién perfilada.",
     "prio": "media",
-    "estado": "completada",
+    "estado": "pendiente",
     "creada": "2026-07-08",
-    "cerrada": "2026-07-08",
+    "cerrada": null,
     "fotos": []
    }
   ],
