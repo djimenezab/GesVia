@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-07T11:31:04.938Z",
+ "exportado": "2026-07-08T06:08:12.343Z",
  "datos": {
   "roads": [
    {
@@ -33,6 +33,12 @@
     "codigo": "CM-3124",
     "nombre": "Ledaña - Villamalea",
     "sector": "ZONA 2.1"
+   },
+   {
+    "id": "x56",
+    "codigo": "CM-3201",
+    "nombre": "Villamalea - A-31",
+    "sector": "ZONA 2.1 - 2.2"
    }
   ],
   "tramos": [
@@ -197,7 +203,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 56,
+  "seq": 57,
   "ajustes": {
    "sector": "ZONA 2"
   }
