@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T10:21:41.283Z",
+ "exportado": "2026-07-08T10:22:22.388Z",
  "datos": {
   "roads": [
    {
@@ -382,6 +382,13 @@
     "pkIni": 30.7,
     "pkFin": 35.025,
     "desc": "Paso Sup. Tren - Bonete"
+   },
+   {
+    "id": "x85",
+    "roadId": "x77",
+    "pkIni": 35.025,
+    "pkFin": 36.6,
+    "desc": "Trav. Bonete"
    }
   ],
   "insp": [],
@@ -397,7 +404,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 85,
+  "seq": 86,
   "ajustes": {
    "sector": "ZONA 2"
   }
