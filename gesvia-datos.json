@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:16:48.304Z",
+ "exportado": "2026-07-08T11:17:42.113Z",
  "datos": {
   "roads": [
    {
@@ -416,6 +416,13 @@
     "pkIni": 0,
     "pkFin": 11.433,
     "desc": "Est. Chinchilla - Horna"
+   },
+   {
+    "id": "x91",
+    "roadId": "x89",
+    "pkIni": 11.433,
+    "pkFin": 14.935,
+    "desc": "Horna - Pétrola"
    }
   ],
   "insp": [],
@@ -443,7 +450,7 @@
     "fotos": []
    }
   ],
-  "seq": 91,
+  "seq": 92,
   "ajustes": {
    "sector": "ZONA 2"
   }
