@@ -1,5 +1,14 @@
 # GesVía · Gestión de la conservación de carreteras (PWA)
 
+## Novedades v1.41
+- **Fotos, observaciones y GPS en órdenes de trabajo** (y fotos múltiples también en inspecciones).
+- Las **fotos se guardan como archivos sueltos** en la carpeta `fotos/` del repositorio de GitHub
+  (no dentro del JSON), de modo que el archivo de datos se mantiene ligero y las fotos no rompen
+  el límite de tamaño de la sincronización. En el JSON solo queda la ruta de cada foto.
+- Si haces una foto sin conexión, queda pendiente en el dispositivo y se sube automáticamente
+  cuando vuelve la conexión (junto con el resto de cambios).
+- Las fotos antiguas (que se guardaban dentro del JSON) se migran solas al nuevo sistema.
+
 ## Novedades v1.40
 - **Sincronización de bajada mejorada**: además de descargar al abrir la app, ahora también
   se comprueba GitHub al **volver a la app** (desbloqueo, cambio de aplicación, foco) y de forma
@@ -97,7 +106,7 @@ LEEME.md
 ## Cuando actualices la app
 
 Si subes un `index.html` nuevo, edita en `sw.js` la primera línea y sube la versión
-(`gesvia-v1.14` → `gesvia-v1.15`). Así los móviles descargan la versión nueva en vez
+(`gesvia-v1.15` → `gesvia-v1.16`). Así los móviles descargan la versión nueva en vez
 de seguir usando la copia guardada en caché.
 
 ## Sincronización automática con GitHub (como RegIn 1.91)
