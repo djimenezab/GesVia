@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:17:42.113Z",
+ "exportado": "2026-07-08T11:18:20.441Z",
  "datos": {
   "roads": [
    {
@@ -423,6 +423,13 @@
     "pkIni": 11.433,
     "pkFin": 14.935,
     "desc": "Horna - Pétrola"
+   },
+   {
+    "id": "x92",
+    "roadId": "x89",
+    "pkIni": 14.935,
+    "pkFin": 17.38,
+    "desc": "Variante Pétrola"
    }
   ],
   "insp": [],
@@ -450,7 +457,7 @@
     "fotos": []
    }
   ],
-  "seq": 92,
+  "seq": 93,
   "ajustes": {
    "sector": "ZONA 2"
   }
