@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T10:23:19.456Z",
+ "exportado": "2026-07-08T10:24:45.926Z",
  "datos": {
   "roads": [
    {
@@ -396,6 +396,13 @@
     "pkIni": 36.6,
     "pkFin": 46.056,
     "desc": "Bonete - Cruce CM-412"
+   },
+   {
+    "id": "x87",
+    "roadId": "x77",
+    "pkIni": 46.493,
+    "pkFin": 55.375,
+    "desc": "Montealegre - L.P. Murcia"
    }
   ],
   "insp": [],
@@ -411,7 +418,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 87,
+  "seq": 88,
   "ajustes": {
    "sector": "ZONA 2"
   }
