@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:23:07.648Z",
+ "exportado": "2026-07-08T11:23:48.817Z",
  "datos": {
   "roads": [
    {
@@ -56,6 +56,12 @@
     "id": "x89",
     "codigo": "CM-3211",
     "nombre": "Est. Chinchilla - L.P. Murcia",
+    "sector": "ZONA 2.2"
+   },
+   {
+    "id": "x98",
+    "codigo": "CM-3214",
+    "nombre": "Las Anorias - A-30 Tobarra",
     "sector": "ZONA 2.2"
    }
   ],
@@ -492,7 +498,7 @@
     "fotos": []
    }
   ],
-  "seq": 98,
+  "seq": 99,
   "ajustes": {
    "sector": "ZONA 2"
   }
