@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:50:30.801Z",
+ "exportado": "2026-07-08T11:51:27.655Z",
  "datos": {
   "roads": [
    {
@@ -564,8 +564,10 @@
     "prio": "media",
     "estado": "completada",
     "creada": "2026-06-01",
-    "cerrada": "2026-07-08",
-    "fotos": []
+    "cerrada": "2026-06-01",
+    "fotos": [],
+    "obs": "",
+    "gps": ""
    },
    {
     "id": "x88",
