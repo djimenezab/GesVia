@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T10:20:59.837Z",
+ "exportado": "2026-07-08T10:21:41.283Z",
  "datos": {
   "roads": [
    {
@@ -375,6 +375,13 @@
     "pkIni": 21.131,
     "pkFin": 30.7,
     "desc": "Higueruela - Paso Sup. tren"
+   },
+   {
+    "id": "x84",
+    "roadId": "x77",
+    "pkIni": 30.7,
+    "pkFin": 35.025,
+    "desc": "Paso Sup. Tren - Bonete"
    }
   ],
   "insp": [],
@@ -390,7 +397,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 84,
+  "seq": 85,
   "ajustes": {
    "sector": "ZONA 2"
   }
