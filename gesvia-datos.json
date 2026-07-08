@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T06:13:43.553Z",
+ "exportado": "2026-07-08T06:15:01.122Z",
  "datos": {
   "roads": [
    {
@@ -195,6 +195,13 @@
     "pkIni": 22.073,
     "pkFin": 25.225,
     "desc": "L.P. Cuenca - Cruce CM-3124"
+   },
+   {
+    "id": "x58",
+    "roadId": "x56",
+    "pkIni": 25.225,
+    "pkFin": 36.5,
+    "desc": "Cruce CM-3124 - Entrada C. Ibañez"
    }
   ],
   "insp": [],
@@ -210,7 +217,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 58,
+  "seq": 59,
   "ajustes": {
    "sector": "ZONA 2"
   }
