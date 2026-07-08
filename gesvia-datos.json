@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:34:23.894Z",
+ "exportado": "2026-07-08T11:34:42.680Z",
  "datos": {
   "roads": [
    {
@@ -111,6 +111,12 @@
     "codigo": "CM-412",
     "nombre": "Ontur - Almansa",
     "sector": "ZONA 2.2"
+   },
+   {
+    "id": "x111",
+    "codigo": "CM-332",
+    "nombre": "Albacete - Casas J.N.",
+    "sector": "ZONA 2.1"
    }
   ],
   "tramos": [
@@ -567,7 +573,7 @@
     "fotos": []
    }
   ],
-  "seq": 111,
+  "seq": 112,
   "ajustes": {
    "sector": "ZONA 2"
   }
