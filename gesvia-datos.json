@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:31:43.104Z",
+ "exportado": "2026-07-08T11:32:04.271Z",
  "datos": {
   "roads": [
    {
@@ -92,6 +92,12 @@
     "id": "x106",
     "codigo": "CM-3261",
     "nombre": "Pétrola - Bonete",
+    "sector": "ZONA 2.2"
+   },
+   {
+    "id": "x107",
+    "codigo": "CM-3265",
+    "nombre": "Pétrola - A-31",
     "sector": "ZONA 2.2"
    }
   ],
@@ -549,7 +555,7 @@
     "fotos": []
    }
   ],
-  "seq": 107,
+  "seq": 108,
   "ajustes": {
    "sector": "ZONA 2"
   }
