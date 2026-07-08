@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T10:18:58.909Z",
+ "exportado": "2026-07-08T10:19:44.435Z",
  "datos": {
   "roads": [
    {
@@ -361,6 +361,13 @@
     "pkIni": 17.478,
     "pkFin": 20.01,
     "desc": "Casa Molinos - Higueruela"
+   },
+   {
+    "id": "x82",
+    "roadId": "x77",
+    "pkIni": 20.01,
+    "pkFin": 21.131,
+    "desc": "Trav. Higueruela"
    }
   ],
   "insp": [],
@@ -376,7 +383,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 82,
+  "seq": 83,
   "ajustes": {
    "sector": "ZONA 2"
   }
