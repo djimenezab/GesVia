@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T10:18:16.595Z",
+ "exportado": "2026-07-08T10:18:58.909Z",
  "datos": {
   "roads": [
    {
@@ -354,6 +354,13 @@
     "pkIni": 5,
     "pkFin": 17.478,
     "desc": "Pozo Lorente - Casa de los Molinos"
+   },
+   {
+    "id": "x81",
+    "roadId": "x77",
+    "pkIni": 17.478,
+    "pkFin": 20.01,
+    "desc": "Casa Molinos - Higueruela"
    }
   ],
   "insp": [],
@@ -369,7 +376,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 81,
+  "seq": 82,
   "ajustes": {
    "sector": "ZONA 2"
   }
