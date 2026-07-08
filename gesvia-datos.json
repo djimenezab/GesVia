@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T10:16:08.717Z",
+ "exportado": "2026-07-08T10:16:36.875Z",
  "datos": {
   "roads": [
    {
@@ -340,6 +340,13 @@
     "pkIni": 0,
     "pkFin": 4.3,
     "desc": "CM-332 - Pozo Lorente"
+   },
+   {
+    "id": "x79",
+    "roadId": "x77",
+    "pkIni": 4.3,
+    "pkFin": 5,
+    "desc": "Trav. Pozo Lorente"
    }
   ],
   "insp": [],
@@ -355,7 +362,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 79,
+  "seq": 80,
   "ajustes": {
    "sector": "ZONA 2"
   }
