@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T06:27:14.914Z",
+ "exportado": "2026-07-08T06:28:46.066Z",
  "datos": {
   "roads": [
    {
@@ -265,6 +265,13 @@
     "pkIni": 68.26,
     "pkFin": 80.725,
     "desc": "Cruce CM-332 - Las Fuentes"
+   },
+   {
+    "id": "x68",
+    "roadId": "x56",
+    "pkIni": 80.725,
+    "pkFin": 89.19,
+    "desc": "Las Fuentes - Rot. Alpera"
    }
   ],
   "insp": [],
@@ -280,7 +287,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 68,
+  "seq": 69,
   "ajustes": {
    "sector": "ZONA 2"
   }
