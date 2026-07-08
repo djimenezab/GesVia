@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T06:51:57.818Z",
+ "exportado": "2026-07-08T06:52:59.257Z",
  "datos": {
   "roads": [
    {
@@ -299,6 +299,13 @@
     "pkIni": 0,
     "pkFin": 6.3,
     "desc": "Alborea - Casas de Ves"
+   },
+   {
+    "id": "x73",
+    "roadId": "x71",
+    "pkIni": 6.3,
+    "pkFin": 7.1,
+    "desc": "Trav. Casas de Ves"
    }
   ],
   "insp": [],
@@ -314,7 +321,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 73,
+  "seq": 74,
   "ajustes": {
    "sector": "ZONA 2"
   }
