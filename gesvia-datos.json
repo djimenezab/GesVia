@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T06:19:14.876Z",
+ "exportado": "2026-07-08T06:20:29.781Z",
  "datos": {
   "roads": [
    {
@@ -223,6 +223,13 @@
     "pkIni": 37.945,
     "pkFin": 46.935,
     "desc": "N-322 - Las Eras"
+   },
+   {
+    "id": "x62",
+    "roadId": "x56",
+    "pkIni": 46.935,
+    "pkFin": 47.665,
+    "desc": "Trav. Las Eras"
    }
   ],
   "insp": [],
@@ -238,7 +245,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 62,
+  "seq": 63,
   "ajustes": {
    "sector": "ZONA 2"
   }
