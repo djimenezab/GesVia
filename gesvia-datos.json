@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:32:48.379Z",
+ "exportado": "2026-07-08T11:33:16.892Z",
  "datos": {
   "roads": [
    {
@@ -111,6 +111,12 @@
     "codigo": "CM-332",
     "nombre": "Albacete - L.P. Valencia",
     "sector": "ZONA 2.1 - 2.2"
+   },
+   {
+    "id": "x110",
+    "codigo": "CM-412",
+    "nombre": "Ontur - Almansa",
+    "sector": "ZONA 2.2"
    }
   ],
   "tramos": [
@@ -567,7 +573,7 @@
     "fotos": []
    }
   ],
-  "seq": 110,
+  "seq": 111,
   "ajustes": {
    "sector": "ZONA 2"
   }
