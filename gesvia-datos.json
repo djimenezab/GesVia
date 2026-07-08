@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:30:45.847Z",
+ "exportado": "2026-07-08T11:31:15.578Z",
  "datos": {
   "roads": [
    {
@@ -81,6 +81,12 @@
     "codigo": "CM-3222",
     "nombre": "N-322 - L.P. Cuenca",
     "sector": "ZONA 2.1"
+   },
+   {
+    "id": "x105",
+    "codigo": "CM-3227",
+    "nombre": "CM-332 - Alcalá del Jucar",
+    "sector": "ZONA 2.2"
    }
   ],
   "tramos": [
@@ -537,7 +543,7 @@
     "fotos": []
    }
   ],
-  "seq": 105,
+  "seq": 106,
   "ajustes": {
    "sector": "ZONA 2"
   }
