@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T06:23:53.903Z",
+ "exportado": "2026-07-08T06:25:43.165Z",
  "datos": {
   "roads": [
    {
@@ -251,6 +251,13 @@
     "pkIni": 51.4,
     "pkFin": 55,
     "desc": "Subida - Cruce CM-3227"
+   },
+   {
+    "id": "x66",
+    "roadId": "x56",
+    "pkIni": 55,
+    "pkFin": 68.26,
+    "desc": "Cruce CM-3227 - Cruce CM-332"
    }
   ],
   "insp": [],
@@ -266,7 +273,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 66,
+  "seq": 67,
   "ajustes": {
    "sector": "ZONA 2"
   }
