@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:21:30.797Z",
+ "exportado": "2026-07-08T11:22:18.512Z",
  "datos": {
   "roads": [
    {
@@ -451,6 +451,13 @@
     "pkIni": 26.085,
     "pkFin": 36.982,
     "desc": "Cruce CM-3214 - Rot. CM-412"
+   },
+   {
+    "id": "x96",
+    "roadId": "x89",
+    "pkIni": 36.982,
+    "pkFin": 38.692,
+    "desc": "Trav. Fuente Álamo"
    }
   ],
   "insp": [],
@@ -478,7 +485,7 @@
     "fotos": []
    }
   ],
-  "seq": 96,
+  "seq": 97,
   "ajustes": {
    "sector": "ZONA 2"
   }
