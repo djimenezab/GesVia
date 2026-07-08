@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:19:11.495Z",
+ "exportado": "2026-07-08T11:20:15.280Z",
  "datos": {
   "roads": [
    {
@@ -437,6 +437,13 @@
     "pkIni": 17.38,
     "pkFin": 24.596,
     "desc": "Pétrola - Las Anorias"
+   },
+   {
+    "id": "x94",
+    "roadId": "x89",
+    "pkIni": 24.596,
+    "pkFin": 26.085,
+    "desc": "Las Anorias - Cruce CM-3214"
    }
   ],
   "insp": [],
@@ -464,7 +471,7 @@
     "fotos": []
    }
   ],
-  "seq": 94,
+  "seq": 95,
   "ajustes": {
    "sector": "ZONA 2"
   }
