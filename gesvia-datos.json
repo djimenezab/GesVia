@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T06:20:29.781Z",
+ "exportado": "2026-07-08T06:22:04.709Z",
  "datos": {
   "roads": [
    {
@@ -230,6 +230,13 @@
     "pkIni": 46.935,
     "pkFin": 47.665,
     "desc": "Trav. Las Eras"
+   },
+   {
+    "id": "x63",
+    "roadId": "x56",
+    "pkIni": 47.665,
+    "pkFin": 50.525,
+    "desc": "Bajada Alcalá"
    }
   ],
   "insp": [],
@@ -245,7 +252,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 63,
+  "seq": 64,
   "ajustes": {
    "sector": "ZONA 2"
   }
