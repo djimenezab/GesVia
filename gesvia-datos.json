@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:30:03.302Z",
+ "exportado": "2026-07-08T11:30:24.402Z",
  "datos": {
   "roads": [
    {
@@ -69,6 +69,12 @@
     "codigo": "CM-3218",
     "nombre": "Albacete - Casas Ibañez",
     "sector": "ZONA 2.1"
+   },
+   {
+    "id": "x103",
+    "codigo": "CM-3220",
+    "nombre": "Almansa - L.P. Murcia",
+    "sector": "ZONA 2.2"
    }
   ],
   "tramos": [
@@ -525,7 +531,7 @@
     "fotos": []
    }
   ],
-  "seq": 103,
+  "seq": 104,
   "ajustes": {
    "sector": "ZONA 2"
   }
