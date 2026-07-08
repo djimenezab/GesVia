@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:25:50.907Z",
+ "exportado": "2026-07-08T11:26:50.881Z",
  "datos": {
   "roads": [
    {
@@ -478,6 +478,13 @@
     "pkIni": 0,
     "pkFin": 5.252,
     "desc": "A-30 - Cruce San Isidro"
+   },
+   {
+    "id": "x100",
+    "roadId": "x98",
+    "pkIni": 5.252,
+    "pkFin": 13.235,
+    "desc": "Cruce San Isidro - Pinilla"
    }
   ],
   "insp": [],
@@ -505,7 +512,7 @@
     "fotos": []
    }
   ],
-  "seq": 100,
+  "seq": 101,
   "ajustes": {
    "sector": "ZONA 2"
   }
