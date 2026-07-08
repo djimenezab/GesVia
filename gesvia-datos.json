@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:13:47.825Z",
+ "exportado": "2026-07-08T11:15:49.283Z",
  "datos": {
   "roads": [
    {
@@ -50,6 +50,12 @@
     "id": "x77",
     "codigo": "CM-3209",
     "nombre": "Casas J.N. - L.P. Murcia",
+    "sector": "ZONA 2.2"
+   },
+   {
+    "id": "x89",
+    "codigo": "CM-3211",
+    "nombre": "Est. Chinchilla - L.P. Murcia",
     "sector": "ZONA 2.2"
    }
   ],
@@ -430,7 +436,7 @@
     "fotos": []
    }
   ],
-  "seq": 89,
+  "seq": 90,
   "ajustes": {
    "sector": "ZONA 2"
   }
