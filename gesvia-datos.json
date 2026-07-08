@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T06:15:01.122Z",
+ "exportado": "2026-07-08T06:16:52.115Z",
  "datos": {
   "roads": [
    {
@@ -202,6 +202,13 @@
     "pkIni": 25.225,
     "pkFin": 36.5,
     "desc": "Cruce CM-3124 - Entrada C. Ibañez"
+   },
+   {
+    "id": "x59",
+    "roadId": "x56",
+    "pkIni": 36.5,
+    "pkFin": 37.475,
+    "desc": "Entrada C. Ibañez - N-322"
    }
   ],
   "insp": [],
@@ -217,7 +224,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 59,
+  "seq": 60,
   "ajustes": {
    "sector": "ZONA 2"
   }
