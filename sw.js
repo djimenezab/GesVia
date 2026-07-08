@@ -1,10 +1,11 @@
-const CACHE_NAME = 'gesvia-v1.15';
+const CACHE_NAME = 'gesvia-v1.17';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './icons/icon-192x192.png',
-  './icons/icon-512x512.png'
+  './icons/icon-512x512.png',
+  './plano_zona2.jpg'
 ];
 
 self.addEventListener('install', e => {

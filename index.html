@@ -204,6 +204,16 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   nav button{padding:.45rem .5rem;font-size:.85rem}
 }
 @media (prefers-reduced-motion:reduce){ .celda{transition:none} }
+
+/* ---------- Plano (editor y visor) ---------- */
+.plano-wrap{position:relative;width:100%;border:1px solid var(--borde);border-radius:var(--radio);overflow:hidden;background:#fff;touch-action:none}
+.plano-wrap img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+.plano-svg{position:absolute;inset:0;width:100%;height:100%}
+.plano-editor .plano-wrap{cursor:crosshair}
+.plano-toolbar{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin:.6rem 0}
+.trazo-item{display:flex;align-items:center;gap:.5rem;padding:.4rem .5rem;border-bottom:1px solid var(--borde);font-size:.9rem}
+.trazo-item .via{font-weight:700;min-width:80px}
+.trazo-swatch{width:16px;height:16px;border-radius:3px;flex:0 0 auto}
 </style>
 </head>
 <body>
@@ -426,6 +436,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
         <option value="listado">Listado de tramos con defecto o críticos (sin gráfica)</option>
         <option value="ordenes">Órdenes de trabajo pendientes</option>
         <option value="completadas">Órdenes de trabajo completadas (histórico)</option>
+        <option value="plano">Plano de estado (mapa de la zona)</option>
       </select>
     </label>
     <div class="form-grid">
@@ -446,6 +457,13 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
       </label>
       <label class="campo" id="wrap-hasta">Hasta
         <input type="date" id="f-hasta">
+      </label>
+      <label class="campo" id="wrap-nivel" style="display:none">Nivel a resaltar
+        <select id="f-nivel">
+          <option value="critico">Solo críticos</option>
+          <option value="ambos" selected>Críticos y defecto leve</option>
+          <option value="todos">Todos (con inspección)</option>
+        </select>
       </label>
     </div>
     <div class="acciones">
@@ -490,6 +508,33 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
     <p style="margin-top:1rem;color:var(--texto2);font-size:.9rem" id="infoAlmacen"></p>
   </div>
 
+  <div class="tarjeta" style="margin-bottom:1rem">
+    <h3 style="margin-bottom:.4rem">Plano de la zona · trazados de carreteras</h3>
+    <p style="color:var(--texto2);font-size:.9rem;margin-bottom:.7rem">
+      Dibuja el recorrido de cada <strong>tramo</strong> sobre el plano (una sola vez). Selecciona
+      carretera y tramo, haz clic a lo largo de su recorrido y pulsa «Terminar trazo». Repite con
+      cada tramo. Luego podrás generar «Planos de estado» que colorean cada tramo según su estado.
+    </p>
+    <div class="plano-toolbar">
+      <label class="campo" style="margin:0;min-width:180px">Carretera
+        <select id="ed-road" onchange="edFillTramos()" style="margin-top:.2rem"></select>
+      </label>
+      <label class="campo" style="margin:0;min-width:220px">Tramo a dibujar
+        <select id="ed-tramo" onchange="edRedibuja()" style="margin-top:.2rem"></select>
+      </label>
+      <button class="btn sec mini" id="ed-terminar" onclick="edTerminarTrazo()" style="display:none">✓ Terminar trazo</button>
+      <button class="btn sec mini" id="ed-deshacer" onclick="edDeshacerPunto()" style="display:none">↶ Deshacer punto</button>
+      <span class="ayuda" id="ed-estado"></span>
+    </div>
+    <div class="plano-editor">
+      <div class="plano-wrap" id="ed-wrap">
+        <img src="plano_zona2.jpg" id="ed-img" alt="Plano Zona 2" onload="if(window.edRedibuja)edRedibuja()">
+        <svg class="plano-svg" id="ed-svg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+      </div>
+    </div>
+    <div id="ed-lista" style="margin-top:.7rem"></div>
+  </div>
+
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
       Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.32</span></strong>
@@ -511,7 +556,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.41';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.43';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -563,6 +608,7 @@ function load(){
   try{ const raw = store.get('gesvia_v1'); if(raw) S = JSON.parse(raw); }catch(e){}
   if(!S || !Array.isArray(S.roads)) S = {roads:[],tramos:[],insp:[],ots:[],seq:1};
   if(!S.ajustes) S.ajustes = {sector:''};
+  if(!S.trazados) S.trazados = {};   // { tramoId: [ [x,y], [x,y], ... ] } en % del plano (0..100)
   migrarFotos();
 }
 let avisadoAlmacen = false;
@@ -627,12 +673,148 @@ function renderAjustes(){
   $('aj-sector').value = (S.ajustes && S.ajustes.sector) || '';
   aplicarCabecera();
   renderInfoAlmacen();
+  edInit();
 }
 function guardarAjustes(){
   if(!S.ajustes) S.ajustes = {};
   S.ajustes.sector = $('aj-sector').value;
   aplicarCabecera();
   save();
+}
+
+/* =====================================================
+   EDITOR DE TRAZADOS DEL PLANO (por TRAMO)
+   Los trazados se guardan en S.trazados[tramoId] = [[x,y],...] en % (0..100)
+   ===================================================== */
+let edTrazoActual = null;      // puntos del trazo en curso [[x,y],...]
+let edColor = {};              // color por carretera (para distinguir en el editor)
+const PALETA = ['#D0453B','#0B5FA5','#1F9D55','#E8A200','#8E44AD','#16A085','#E67E22','#2C3E50','#C0392B','#2980B9'];
+
+function colorDe(codigo){
+  if(edColor[codigo]) return edColor[codigo];
+  const idx = Object.keys(edColor).length % PALETA.length;
+  edColor[codigo] = PALETA[idx];
+  return edColor[codigo];
+}
+function edInit(){
+  const sel = $('ed-road'); if(!sel) return;
+  sel.innerHTML = S.roads.length
+    ? S.roads.map(r=>`<option value="${r.id}">${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('')
+    : '<option value="">— crea antes carreteras en «Red» —</option>';
+  S.roads.forEach(r=>colorDe(r.codigo));
+  edFillTramos();
+  edTrazoActual = null;
+  edActualizarBotones();
+  edRedibuja();
+  edRenderLista();
+  const wrap = $('ed-wrap');
+  if(wrap && !wrap._enganchado){
+    wrap.addEventListener('click', edClicPlano);
+    wrap._enganchado = true;
+  }
+}
+function edFillTramos(){
+  const rid = $('ed-road').value;
+  const sel = $('ed-tramo'); if(!sel) return;
+  const ts = tramosDe(rid);
+  sel.innerHTML = ts.length
+    ? ts.map(t=>{
+        const hecho = (S.trazados||{})[t.id] ? ' ✓' : '';
+        return `<option value="${t.id}">PK ${pk(t.pkIni)} – ${pk(t.pkFin)}${t.desc?' · '+esc(t.desc):''}${hecho}</option>`;
+      }).join('')
+    : '<option value="">— sin tramos (créalos en «Red») —</option>';
+  edTrazoActual = null;
+  edActualizarBotones();
+  edRedibuja();
+}
+function edClicPlano(e){
+  const tid = $('ed-tramo').value;
+  if(!tid) return toast('Selecciona carretera y tramo primero.');
+  const img = $('ed-img');
+  const rect = img.getBoundingClientRect();
+  const x = ((e.clientX - rect.left) / rect.width) * 100;
+  const y = ((e.clientY - rect.top) / rect.height) * 100;
+  if(x<0||x>100||y<0||y>100) return;
+  if(!edTrazoActual) edTrazoActual = [];
+  edTrazoActual.push([+x.toFixed(2), +y.toFixed(2)]);
+  edActualizarBotones();
+  edRedibuja();
+}
+function edActualizarBotones(){
+  const hay = edTrazoActual && edTrazoActual.length>0;
+  $('ed-terminar').style.display = hay ? '' : 'none';
+  $('ed-deshacer').style.display = hay ? '' : 'none';
+  $('ed-estado').textContent = hay ? `${edTrazoActual.length} punto(s) — haz clic para seguir el trazado` : '';
+}
+function edDeshacerPunto(){
+  if(edTrazoActual && edTrazoActual.length){ edTrazoActual.pop(); edActualizarBotones(); edRedibuja(); }
+}
+function edTerminarTrazo(){
+  const tid = $('ed-tramo').value;
+  if(!tid || !edTrazoActual || edTrazoActual.length<2){ return toast('Marca al menos dos puntos del tramo.'); }
+  S.trazados[tid] = edTrazoActual;
+  edTrazoActual = null;
+  save(); edActualizarBotones(); edFillTramos(); edRedibuja(); edRenderLista();
+  const t = tramo(tid), r = t? road(t.roadId):null;
+  toast('Trazo guardado' + (r? ` · ${r.codigo} PK ${pk(t.pkIni)}–${pk(t.pkFin)}`:'') + '.');
+  // avanzar automáticamente al siguiente tramo sin trazado, si lo hay
+  const rid = $('ed-road').value;
+  const pend = tramosDe(rid).find(x=>!(S.trazados||{})[x.id]);
+  if(pend){ $('ed-tramo').value = pend.id; }
+}
+function edBorrarTrazo(tid){
+  const t = tramo(tid), r = t? road(t.roadId):null;
+  if(!confirm('¿Borrar el trazo de '+(r?r.codigo+' ':'')+(t?`PK ${pk(t.pkIni)}–${pk(t.pkFin)}`:'')+'?')) return;
+  delete S.trazados[tid];
+  save(); edFillTramos(); edRedibuja(); edRenderLista();
+}
+function poli(puntos){ return puntos.map(p=>p[0]+','+p[1]).join(' '); }
+function edRedibuja(){
+  const svg = $('ed-svg'); if(!svg) return;
+  const tidSel = $('ed-tramo') ? $('ed-tramo').value : '';
+  let s = '';
+  // trazos ya guardados (todos los tramos)
+  for(const [tid,pts] of Object.entries(S.trazados||{})){
+    if(!pts || pts.length<2) continue;
+    const t = tramo(tid); if(!t) continue;
+    const r = road(t.roadId); const col = colorDe(r? r.codigo : tid);
+    const activo = tid===tidSel;
+    s += `<polyline points="${poli(pts)}" fill="none" stroke="${col}" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:${activo?4:2.5}px;opacity:${activo?1:.75}"/>`;
+  }
+  // etiqueta de la carretera activa (una sola, en el tramo seleccionado si está dibujado)
+  const ptsSel = (S.trazados||{})[tidSel];
+  if(ptsSel && ptsSel.length){
+    const t = tramo(tidSel), r = t?road(t.roadId):null;
+    const m = ptsSel[Math.floor(ptsSel.length/2)];
+    s += `<text x="${m[0]}" y="${m[1]-1}" font-size="2.4" fill="${colorDe(r?r.codigo:tidSel)}" font-weight="bold" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="0.7">${esc(r?r.codigo:'')}</text>`;
+  }
+  // trazo en curso
+  if(edTrazoActual && edTrazoActual.length){
+    const t = tramo(tidSel), r = t?road(t.roadId):null;
+    const col = colorDe(r?r.codigo:tidSel);
+    s += `<polyline points="${poli(edTrazoActual)}" fill="none" stroke="${col}" stroke-dasharray="1.5 1" vector-effect="non-scaling-stroke" style="stroke-width:4px"/>`;
+    edTrazoActual.forEach(p=>{ s += `<circle cx="${p[0]}" cy="${p[1]}" r="0.8" fill="${col}"/>`; });
+  }
+  svg.innerHTML = s;
+}
+function edRenderLista(){
+  const box = $('ed-lista'); if(!box) return;
+  const tids = Object.keys(S.trazados||{}).filter(tid=>tramo(tid));
+  const totalTramos = S.tramos.length;
+  if(!tids.length){ box.innerHTML = `<p style="color:var(--texto2);font-size:.9rem">Aún no hay tramos dibujados (0 de ${totalTramos}).</p>`; return; }
+  // agrupar por carretera
+  const porRoad = {};
+  tids.forEach(tid=>{ const t=tramo(tid); const r=road(t.roadId); (porRoad[r.codigo]=porRoad[r.codigo]||[]).push({tid,t}); });
+  const bloques = Object.keys(porRoad).sort().map(cod=>{
+    const items = porRoad[cod].sort((a,b)=>a.t.pkIni-b.t.pkIni).map(({tid,t})=>`<div class="trazo-item">
+        <span class="trazo-swatch" style="background:${colorDe(cod)}"></span>
+        <span class="via" style="min-width:120px">PK ${pk(t.pkIni)}–${pk(t.pkFin)}</span>
+        <span style="color:var(--texto2)">${(S.trazados[tid]||[]).length} pts</span>
+        <button class="btn peligro mini" style="margin-left:auto" onclick="edBorrarTrazo('${tid}')">Borrar</button>
+      </div>`).join('');
+    return `<div style="font-weight:700;font-size:.92rem;margin:.5rem 0 .2rem">${esc(cod)}</div>${items}`;
+  }).join('');
+  box.innerHTML = `<div style="font-weight:700;font-size:.9rem;margin-bottom:.3rem">Tramos dibujados (${tids.length} de ${totalTramos})</div>${bloques}`;
 }
 
 /* =====================================================
@@ -1239,6 +1421,10 @@ function cambiaTipoInforme(){
   const verFechas = (tipo==='completadas') ? '' : 'none';
   $('wrap-desde').style.display = verFechas;
   $('wrap-hasta').style.display = verFechas;
+  // El nivel a resaltar solo aplica al plano de estado
+  $('wrap-nivel').style.display = (tipo==='plano') ? '' : 'none';
+  // En el plano, el ámbito por carretera no se usa (se ve toda la zona)
+  $('f-road').closest('.campo').style.display = (tipo==='plano') ? 'none' : '';
 }
 function informeRapido(fam){
   go('informe');
@@ -1249,10 +1435,11 @@ function informeRapido(fam){
 function verInforme(){
   const tipo = $('f-tipo').value;
   const road = $('f-road').value, fam = $('f-fam').value, modo = $('f-modo').value;
-  let html;
+  let html, esPlano = false;
   if(tipo==='listado')          html = informeListado(road, fam);
   else if(tipo==='ordenes')     html = informeOrdenes(road);
   else if(tipo==='completadas') html = informeCompletadas(road, fam, $('f-desde').value, $('f-hasta').value);
+  else if(tipo==='plano'){      html = informePlano(fam, $('f-nivel').value); esPlano = true; }
   else                          html = construirInforme(road, fam, modo);
   $('previaInforme').innerHTML = html;
   $('printArea').innerHTML = html;
@@ -1488,6 +1675,71 @@ function informeCompletadas(roadSel, famSel, desde, hasta){
   </div>`;
 }
 
+/* ---------- Informe: PLANO DE ESTADO (colorea cada TRAMO dibujado) ---------- */
+function nivelTramoFamilia(tid, famSel){
+  // Peor nivel del tramo para la familia (o todas las familias si '*')
+  const fams = famSel==='*' ? FAMILIAS.map(f=>f.id) : [famSel];
+  let peor = null; const rank = {critico:3, aviso:2, ok:1};
+  for(const fid of fams){
+    const n = nivel(estadoTramo(tid, fid));
+    if(n==='nd') continue;
+    if(!peor || rank[n] > rank[peor]) peor = n;
+  }
+  return peor;
+}
+function informePlano(famSel, nivelSel){
+  const trazados = S.trazados || {};
+  const tids = Object.keys(trazados).filter(tid=>tramo(tid));
+  const nombreFam = famSel==='*' ? 'Todas las familias' : famName(famSel);
+  const textoNivel = {critico:'Solo críticos', ambos:'Críticos y defecto leve', todos:'Todos los inspeccionados'}[nivelSel];
+
+  const COLHEX = {critico:'#D0453B', aviso:'#E8A200', ok:'#1F9D55'};
+  const incluir = n => nivelSel==='critico' ? n==='critico'
+                     : nivelSel==='ambos' ? (n==='critico'||n==='aviso')
+                     : (n==='critico'||n==='aviso'||n==='ok');
+
+  let lineas = '', filasResumen = '', nResaltados = 0;
+  // etiqueta de carretera: una por código (en el primer tramo resaltado de esa vía)
+  const yaEtiquetada = {};
+  // ordenar tramos por carretera y PK para el resumen
+  const info = tids.map(tid=>{ const t=tramo(tid); const r=road(t.roadId); return {tid,t,r,n:nivelTramoFamilia(tid,famSel)}; })
+                   .filter(x=>x.n && incluir(x.n))
+                   .sort((a,b)=> a.r.codigo.localeCompare(b.r.codigo) || a.t.pkIni-b.t.pkIni);
+
+  for(const {tid,t,r,n} of info){
+    const pts = trazados[tid];
+    nResaltados++;
+    lineas += `<polyline points="${pts.map(p=>p[0]+','+p[1]).join(' ')}" fill="none" stroke="${COLHEX[n]}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`;
+    if(!yaEtiquetada[r.codigo]){
+      const m = pts[Math.floor(pts.length/2)];
+      lineas += `<text x="${m[0]}" y="${m[1]-1}" font-size="2.2" fill="#222" font-weight="bold" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="0.7">${esc(r.codigo)}</text>`;
+      yaEtiquetada[r.codigo] = true;
+    }
+    filasResumen += `<tr><td><strong>${esc(r.codigo)}</strong></td><td class="num">PK ${pk(t.pkIni)}–${pk(t.pkFin)}</td><td>${esc(t.desc||'')}</td><td>${badge2(n)}</td></tr>`;
+  }
+
+  const sinTrazados = tids.length===0;
+  const svg = `<div class="plano-wrap" style="border:1px solid var(--borde)">
+      <img src="plano_zona2.jpg" alt="Plano de estado">
+      <svg class="plano-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${lineas}</svg>
+    </div>`;
+
+  return `<div class="informe">
+    ${cabInforme('Plano de estado de la vía', `${esc(nombreFam)} · ${textoNivel} · ${nResaltados} tramo(s) resaltado(s)`)}
+    ${sinTrazados
+      ? '<p style="color:var(--critico);padding:.5rem 0">Aún no has dibujado ningún tramo en el plano. Ve a <strong>Ajustes → Plano de la zona</strong> y dibuja los recorridos primero.</p>'
+      : (nResaltados
+          ? svg + `<h3>Tramos resaltados</h3><div style="overflow-x:auto"><table><thead><tr><th>Carretera</th><th>Tramo</th><th>Descripción</th><th>Estado</th></tr></thead><tbody>${filasResumen}</tbody></table></div>`
+          : `<p style="color:var(--texto2);padding:.5rem 0">✅ Ningún tramo dibujado cumple el filtro «${esc(nombreFam)} · ${textoNivel}».</p>` + svg)}
+    <div class="pie"><span>Colores: rojo = crítico · ámbar = defecto leve · verde = bueno. Estado de cada tramo dibujado.</span><span>Generado con GesVía</span></div>
+  </div>`;
+}
+function badge2(n){
+  const txt = {critico:'Crítico', aviso:'Defecto leve', ok:'Bueno'}[n] || '—';
+  const cls = {critico:'b-critico', aviso:'b-aviso', ok:'b-ok'}[n] || 'b-nd';
+  return `<span class="badge ${cls}">${txt}</span>`;
+}
+
 /* =====================================================
    DATOS: exportar / importar / demo
    ===================================================== */
@@ -1511,7 +1763,7 @@ function importJSON(input){
       const d = JSON.parse(rd.result);
       if(!Array.isArray(d.roads)) throw 0;
       if(!confirm('Esto sustituirá los datos actuales por los del archivo. ¿Continuar?')) return;
-      S = d; if(!S.ajustes) S.ajustes={sector:''}; migrarFotos(); save(); aplicarCabecera(); go('panel'); toast('Copia importada correctamente.');
+      S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; migrarFotos(); save(); aplicarCabecera(); go('panel'); toast('Copia importada correctamente.');
     }catch(e){ toast('El archivo no parece una copia válida de GesVía.'); }
     input.value='';
   };
@@ -1766,7 +2018,7 @@ async function descargarDeGitHub(){
     const parsed = decodifica((await res.json()).content);
     const d = parsed.datos || parsed; // admite también un JSON exportado a mano
     if(!d || !Array.isArray(d.roads)){ setSyncEstado('❌ El archivo no tiene el formato de GesVía', 'var(--critico)'); return; }
-    S = d; if(!S.ajustes) S.ajustes={sector:''}; migrarFotos(); saveLocal(); aplicarCabecera(); go('panel');
+    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; migrarFotos(); saveLocal(); aplicarCabecera(); go('panel');
     setSyncEstado(`✅ Descargado: ${S.roads.length} carreteras · ${S.insp.length} inspecciones`, 'var(--ok)');
     setSyncDot('var(--ok)', 'Sincronizado ✓'); toast('📥 Datos descargados de GitHub');
   }catch(e){ setSyncEstado('❌ Error: '+e.message, 'var(--critico)'); }
@@ -1818,7 +2070,7 @@ async function autoDescargar(){
       const parsed = decodifica((await res.json()).content);
       const d = parsed.datos || parsed;
       if(d && Array.isArray(d.roads)){
-        S = d; if(!S.ajustes) S.ajustes={sector:''}; migrarFotos(); saveLocal(); aplicarCabecera();
+        S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; migrarFotos(); saveLocal(); aplicarCabecera();
         setSyncDot('var(--ok)', 'Sincronizado ✓');
         const activa = document.querySelector('nav button.activo');
         go(activa? activa.dataset.v || 'panel' : 'panel');
@@ -1853,7 +2105,7 @@ async function refrescarSiHayNovedades(motivo){
     const local  = JSON.stringify(S);
     if(remoto === local) return;              // ya estamos al día, no tocamos nada
     if(pendienteSubir) return;                // por si cambió mientras descargábamos
-    S = d; if(!S.ajustes) S.ajustes={sector:''}; migrarFotos();
+    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; migrarFotos();
     saveLocal(); aplicarCabecera();
     const activa = document.querySelector('nav button.activo');
     go(activa? activa.dataset.v || 'panel' : 'panel');

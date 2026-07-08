@@ -1,5 +1,21 @@
 # GesVía · Gestión de la conservación de carreteras (PWA)
 
+## Novedades v1.43
+- El plano funciona **por tramo**, no por carretera entera: en el editor seleccionas carretera y
+  tramo y dibujas solo ese tramo (se marca con ✓ y avanza al siguiente pendiente). El «Plano de
+  estado» colorea **cada tramo con su propio estado real**, así que en una misma carretera puedes
+  ver un tramo en verde, otro en ámbar y otro en rojo. El resumen indica el PK exacto de cada tramo.
+
+## Novedades v1.42
+- **Plano de la Zona 2 incrustado** en la app (funciona sin conexión).
+- **Editor de trazados** en Ajustes: dibuja el recorrido de cada carretera sobre el plano una sola
+  vez (seleccionas la carretera, haces clic a lo largo de su trazado y pulsas «Terminar trazo»).
+  Los trazados se guardan y se sincronizan como el resto de datos.
+- Nuevo informe **«Plano de estado»**: eliges familia y nivel (p. ej. Señalización horizontal ·
+  Solo críticos) y la app colorea sobre el mapa únicamente esas carreteras, listo para imprimir.
+
+Archivo nuevo en el repositorio: `plano_zona2.jpg` (imagen de fondo del plano).
+
 ## Novedades v1.41
 - **Fotos, observaciones y GPS en órdenes de trabajo** (y fotos múltiples también en inspecciones).
 - Las **fotos se guardan como archivos sueltos** en la carpeta `fotos/` del repositorio de GitHub
@@ -106,7 +122,7 @@ LEEME.md
 ## Cuando actualices la app
 
 Si subes un `index.html` nuevo, edita en `sw.js` la primera línea y sube la versión
-(`gesvia-v1.15` → `gesvia-v1.16`). Así los móviles descargan la versión nueva en vez
+(`gesvia-v1.17` → `gesvia-v1.18`). Así los móviles descargan la versión nueva en vez
 de seguir usando la copia guardada en caché.
 
 ## Sincronización automática con GitHub (como RegIn 1.91)
