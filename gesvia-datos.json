@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:22:18.512Z",
+ "exportado": "2026-07-08T11:23:07.648Z",
  "datos": {
   "roads": [
    {
@@ -458,6 +458,13 @@
     "pkIni": 36.982,
     "pkFin": 38.692,
     "desc": "Trav. Fuente Álamo"
+   },
+   {
+    "id": "x97",
+    "roadId": "x89",
+    "pkIni": 38.692,
+    "pkFin": 41.475,
+    "desc": "Fuente Álamo - L.P. Murcia"
    }
   ],
   "insp": [],
@@ -485,7 +492,7 @@
     "fotos": []
    }
   ],
-  "seq": 97,
+  "seq": 98,
   "ajustes": {
    "sector": "ZONA 2"
   }
