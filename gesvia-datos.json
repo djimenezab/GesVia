@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:39:01.258Z",
+ "exportado": "2026-07-08T11:39:21.427Z",
  "datos": {
   "roads": [
    {
@@ -116,6 +116,12 @@
     "id": "x112",
     "codigo": "CM-332",
     "nombre": "Casas J.N. - L.P. Valencia",
+    "sector": "ZONA 2.2"
+   },
+   {
+    "id": "x113",
+    "codigo": "CM-412",
+    "nombre": "Ontur - Almansa",
     "sector": "ZONA 2.2"
    }
   ],
@@ -573,7 +579,7 @@
     "fotos": []
    }
   ],
-  "seq": 113,
+  "seq": 114,
   "ajustes": {
    "sector": "ZONA 2"
   }
