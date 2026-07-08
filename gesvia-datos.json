@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:26:50.881Z",
+ "exportado": "2026-07-08T11:27:57.538Z",
  "datos": {
   "roads": [
    {
@@ -485,6 +485,13 @@
     "pkIni": 5.252,
     "pkFin": 13.235,
     "desc": "Cruce San Isidro - Pinilla"
+   },
+   {
+    "id": "x101",
+    "roadId": "x98",
+    "pkIni": 13.235,
+    "pkFin": 17.436,
+    "desc": "Pinilla - Cruce CM-3211"
    }
   ],
   "insp": [],
@@ -512,7 +519,7 @@
     "fotos": []
    }
   ],
-  "seq": 101,
+  "seq": 102,
   "ajustes": {
    "sector": "ZONA 2"
   }
