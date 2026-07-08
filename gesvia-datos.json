@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:51:27.655Z",
+ "exportado": "2026-07-08T11:52:30.943Z",
  "datos": {
   "roads": [
    {
@@ -573,12 +573,14 @@
     "id": "x88",
     "tramoId": "x87",
     "fam": "DRE",
-    "desc": "Hormigonar cuneta recién perfilada.",
+    "desc": "Hormigonar cuneta con problemas de erosión, recién perfilada.",
     "prio": "media",
     "estado": "pendiente",
     "creada": "2026-07-08",
     "cerrada": null,
-    "fotos": []
+    "fotos": [],
+    "obs": "",
+    "gps": ""
    }
   ],
   "seq": 114,
