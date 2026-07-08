@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T06:16:52.115Z",
+ "exportado": "2026-07-08T06:18:15.172Z",
  "datos": {
   "roads": [
    {
@@ -209,6 +209,13 @@
     "pkIni": 36.5,
     "pkFin": 37.475,
     "desc": "Entrada C. Ibañez - N-322"
+   },
+   {
+    "id": "x60",
+    "roadId": "x56",
+    "pkIni": 37.475,
+    "pkFin": 37.945,
+    "desc": "N-322a - N-322"
    }
   ],
   "insp": [],
@@ -224,7 +231,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 60,
+  "seq": 61,
   "ajustes": {
    "sector": "ZONA 2"
   }
