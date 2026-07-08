@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T10:14:58.890Z",
+ "exportado": "2026-07-08T10:16:08.717Z",
  "datos": {
   "roads": [
    {
@@ -333,6 +333,13 @@
     "pkIni": 19.451,
     "pkFin": 21.65,
     "desc": "Balsa de Ve - L.P. Valencia"
+   },
+   {
+    "id": "x78",
+    "roadId": "x77",
+    "pkIni": 0,
+    "pkFin": 4.3,
+    "desc": "CM-332 - Pozo Lorente"
    }
   ],
   "insp": [],
@@ -348,7 +355,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 78,
+  "seq": 79,
   "ajustes": {
    "sector": "ZONA 2"
   }
