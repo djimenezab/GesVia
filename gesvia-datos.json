@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:32:04.271Z",
+ "exportado": "2026-07-08T11:32:24.378Z",
  "datos": {
   "roads": [
    {
@@ -99,6 +99,12 @@
     "codigo": "CM-3265",
     "nombre": "Pétrola - A-31",
     "sector": "ZONA 2.2"
+   },
+   {
+    "id": "x108",
+    "codigo": "CM-316",
+    "nombre": "La Roda - Mahora",
+    "sector": "ZONA 2.1"
    }
   ],
   "tramos": [
@@ -555,7 +561,7 @@
     "fotos": []
    }
   ],
-  "seq": 108,
+  "seq": 109,
   "ajustes": {
    "sector": "ZONA 2"
   }
