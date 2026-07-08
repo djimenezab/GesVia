@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:27:57.538Z",
+ "exportado": "2026-07-08T11:30:03.302Z",
  "datos": {
   "roads": [
    {
@@ -63,6 +63,12 @@
     "codigo": "CM-3214",
     "nombre": "Las Anorias - A-30 Tobarra",
     "sector": "ZONA 2.2"
+   },
+   {
+    "id": "x102",
+    "codigo": "CM-3218",
+    "nombre": "Albacete - Casas Ibañez",
+    "sector": "ZONA 2.1"
    }
   ],
   "tramos": [
@@ -519,7 +525,7 @@
     "fotos": []
    }
   ],
-  "seq": 102,
+  "seq": 103,
   "ajustes": {
    "sector": "ZONA 2"
   }
