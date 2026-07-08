@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T10:16:36.875Z",
+ "exportado": "2026-07-08T10:18:16.595Z",
  "datos": {
   "roads": [
    {
@@ -347,6 +347,13 @@
     "pkIni": 4.3,
     "pkFin": 5,
     "desc": "Trav. Pozo Lorente"
+   },
+   {
+    "id": "x80",
+    "roadId": "x77",
+    "pkIni": 5,
+    "pkFin": 17.478,
+    "desc": "Pozo Lorente - Casa de los Molinos"
    }
   ],
   "insp": [],
@@ -362,7 +369,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 80,
+  "seq": 81,
   "ajustes": {
    "sector": "ZONA 2"
   }
