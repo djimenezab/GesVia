@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T06:28:46.066Z",
+ "exportado": "2026-07-08T06:29:40.927Z",
  "datos": {
   "roads": [
    {
@@ -272,6 +272,13 @@
     "pkIni": 80.725,
     "pkFin": 89.19,
     "desc": "Las Fuentes - Rot. Alpera"
+   },
+   {
+    "id": "x69",
+    "roadId": "x56",
+    "pkIni": 89.19,
+    "pkFin": 90.47,
+    "desc": "Trav. Alpera"
    }
   ],
   "insp": [],
@@ -287,7 +294,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 69,
+  "seq": 70,
   "ajustes": {
    "sector": "ZONA 2"
   }
