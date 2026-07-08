@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:31:15.578Z",
+ "exportado": "2026-07-08T11:31:43.104Z",
  "datos": {
   "roads": [
    {
@@ -86,6 +86,12 @@
     "id": "x105",
     "codigo": "CM-3227",
     "nombre": "CM-332 - Alcalá del Jucar",
+    "sector": "ZONA 2.2"
+   },
+   {
+    "id": "x106",
+    "codigo": "CM-3261",
+    "nombre": "Pétrola - Bonete",
     "sector": "ZONA 2.2"
    }
   ],
@@ -543,7 +549,7 @@
     "fotos": []
    }
   ],
-  "seq": 106,
+  "seq": 107,
   "ajustes": {
    "sector": "ZONA 2"
   }
