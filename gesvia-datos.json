@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T10:27:40.785Z",
+ "exportado": "2026-07-08T10:29:36.089Z",
  "datos": {
   "roads": [
    {
@@ -416,9 +416,19 @@
     "estado": "completada",
     "creada": "2026-06-01",
     "cerrada": "2026-06-01"
+   },
+   {
+    "id": "x88",
+    "tramoId": "x87",
+    "fam": "DRE",
+    "desc": "Hormigonar cuneta recién perfilada.",
+    "prio": "media",
+    "estado": "pendiente",
+    "creada": "2026-07-08",
+    "cerrada": null
    }
   ],
-  "seq": 88,
+  "seq": 89,
   "ajustes": {
    "sector": "ZONA 2"
   }
