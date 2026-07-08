@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T06:29:40.927Z",
+ "exportado": "2026-07-08T06:30:31.300Z",
  "datos": {
   "roads": [
    {
@@ -279,6 +279,13 @@
     "pkIni": 89.19,
     "pkFin": 90.47,
     "desc": "Trav. Alpera"
+   },
+   {
+    "id": "x70",
+    "roadId": "x56",
+    "pkIni": 90.47,
+    "pkFin": 98.89,
+    "desc": "Alpera - A-31"
    }
   ],
   "insp": [],
@@ -294,7 +301,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 70,
+  "seq": 71,
   "ajustes": {
    "sector": "ZONA 2"
   }
