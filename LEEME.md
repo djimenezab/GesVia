@@ -1,5 +1,17 @@
 # GesVía · Gestión de la conservación de carreteras (PWA)
 
+## Novedades v1.40
+- **Sincronización de bajada mejorada**: además de descargar al abrir la app, ahora también
+  se comprueba GitHub al **volver a la app** (desbloqueo, cambio de aplicación, foco) y de forma
+  **periódica cada 3 minutos** mientras está abierta. Así los cambios hechos en otro dispositivo
+  aparecen solos.
+- Protección de datos: el refresco automático **nunca pisa** cambios locales que aún no se hayan
+  subido, ni interrumpe una edición en curso (modal abierto).
+
+## Novedades v1.39
+- Botón ✏️ para **editar una orden de trabajo** (carretera, tramo, familia, prioridad, estado
+  y descripción) sin borrarla. Si se pasa a «Completada» se puede indicar la fecha de ejecución.
+
 ## Novedades v1.38
 - Corregida la alineación de la escala de PK del esquema: cada marca cae ahora exactamente
   en la línea que separa los cuadros de cada tramo (antes se desviaba en tramos cortos).
@@ -85,7 +97,7 @@ LEEME.md
 ## Cuando actualices la app
 
 Si subes un `index.html` nuevo, edita en `sw.js` la primera línea y sube la versión
-(`gesvia-v1.11` → `gesvia-v1.12`). Así los móviles descargan la versión nueva en vez
+(`gesvia-v1.14` → `gesvia-v1.15`). Así los móviles descargan la versión nueva en vez
 de seguir usando la copia guardada en caché.
 
 ## Sincronización automática con GitHub (como RegIn 1.91)

@@ -491,7 +491,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.38';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.40';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -1010,6 +1010,75 @@ function cicloOT(oid){
   if(o.estado==='completada') toast('Orden completada. Recuerda registrar una nueva inspección para actualizar el indicador.');
 }
 function delOT(oid){ if(!confirm('¿Eliminar la orden?')) return; S.ots = S.ots.filter(o=>o.id!==oid); save(); listOT(); }
+function editarOT(oid){
+  const o = S.ots.find(x=>x.id===oid); if(!o) return;
+  const t = tramo(o.tramoId);
+  const optRoads = S.roads.map(r=>`<option value="${r.id}" ${t&&t.roadId===r.id?'selected':''}>${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('');
+  const optFam = FAMILIAS.map(f=>`<option value="${f.id}" ${o.fam===f.id?'selected':''}>${esc(f.nombre)}</option>`).join('');
+  abrirModal(`<button class="cerrar-x" onclick="cerrarModal()">✕</button>
+    <h3>Editar orden de trabajo</h3>
+    <div class="form-grid">
+      <label class="campo">Carretera
+        <select id="eo-road" onchange="eoFillTramos()">${optRoads}</select></label>
+      <label class="campo">Tramo
+        <select id="eo-tramo"></select></label>
+      <label class="campo">Familia
+        <select id="eo-fam">${optFam}</select></label>
+      <label class="campo">Prioridad
+        <select id="eo-prio">
+          <option value="alta" ${o.prio==='alta'?'selected':''}>Alta</option>
+          <option value="media" ${o.prio==='media'?'selected':''}>Media</option>
+          <option value="baja" ${o.prio==='baja'?'selected':''}>Baja</option>
+        </select></label>
+      <label class="campo">Estado
+        <select id="eo-estado" onchange="eoToggleFecha()">
+          <option value="pendiente" ${o.estado==='pendiente'?'selected':''}>Pendiente</option>
+          <option value="en curso" ${o.estado==='en curso'?'selected':''}>En curso</option>
+          <option value="completada" ${o.estado==='completada'?'selected':''}>Completada</option>
+        </select></label>
+      <label class="campo" id="eo-wrap-fecha" style="${o.estado==='completada'?'':'display:none'}">Fecha de ejecución
+        <input type="date" id="eo-fecha" value="${o.cerrada||''}"></label>
+      <label class="campo" style="grid-column:1/-1">Descripción de los trabajos
+        <input id="eo-desc" value="${esc(o.desc)}"></label>
+    </div>
+    <div class="acciones">
+      <button class="btn" onclick="guardarEdicionOT('${oid}')">Guardar cambios</button>
+      <button class="btn sec" onclick="cerrarModal()">Cancelar</button>
+    </div>`);
+  eoFillTramos(o.tramoId);
+}
+function eoFillTramos(selId){
+  const rid = $('eo-road').value;
+  const ts = tramosDe(rid);
+  $('eo-tramo').innerHTML = ts.map(t=>`<option value="${t.id}" ${t.id===selId?'selected':''}>PK ${pk(t.pkIni)} – ${pk(t.pkFin)} ${t.desc?'· '+esc(t.desc):''}</option>`).join('') || '<option value="">— sin tramos —</option>';
+}
+function eoToggleFecha(){
+  const comp = $('eo-estado').value==='completada';
+  $('eo-wrap-fecha').style.display = comp ? '' : 'none';
+  if(comp && !$('eo-fecha').value) $('eo-fecha').value = hoy();
+}
+function guardarEdicionOT(oid){
+  const o = S.ots.find(x=>x.id===oid); if(!o) return;
+  const tid = $('eo-tramo').value;
+  if(!tid) return toast('Selecciona un tramo.');
+  const desc = $('eo-desc').value.trim();
+  if(!desc) return toast('Describe brevemente los trabajos.');
+  const estado = $('eo-estado').value;
+  o.tramoId = tid;
+  o.fam = $('eo-fam').value;
+  o.prio = $('eo-prio').value;
+  o.desc = desc;
+  o.estado = estado;
+  if(estado==='completada'){
+    const f = $('eo-fecha').value;
+    if(!f) return toast('Indica la fecha en que se realizó el trabajo.');
+    o.cerrada = f;
+    if(f < o.creada) o.creada = f;
+  } else {
+    o.cerrada = null;
+  }
+  save(); cerrarModal(); listOT(); toast('Orden actualizada.');
+}
 function listOT(){
   const orden = {alta:0, media:1, baja:2}, est = {pendiente:0,'en curso':1,completada:2};
   const fsel = $('ot-filtro-road');
@@ -1029,7 +1098,7 @@ function listOT(){
         <td>${esc(famName(o.fam))}</td>
         <td>${esc(o.desc)}</td>
         <td class="num">${fFecha(o.creada)}${o.cerrada? '<br>✔ '+fFecha(o.cerrada):''}</td>
-        <td><button class="btn peligro mini" onclick="delOT('${o.id}')">✕</button></td></tr>`;
+        <td style="white-space:nowrap"><button class="btn sec mini" title="Editar orden" onclick="editarOT('${o.id}')">✏️</button> <button class="btn peligro mini" onclick="delOT('${o.id}')">✕</button></td></tr>`;
     }).join('')}</tbody></table></div>
     <p class="ayuda" style="margin-top:.5rem">Pulsa sobre el estado para avanzar: pendiente → en curso → completada.</p>`
     : `<p style="color:var(--texto2)">${filtroRoad && filtroRoad!=='*'? 'No hay órdenes para esta carretera.':'No hay órdenes de trabajo.'}</p>`;
@@ -1393,6 +1462,9 @@ function cargaDemo(confirmar){
    ===================================================== */
 const GH_KEY = 'gesvia_gh';
 let autoSubidaTimer = null, sincronizando = false, appLista = false;
+let pendienteSubir = false;   // hay cambios locales aún no subidos
+let refrescoTimer = null;     // temporizador de comprobación periódica
+const INTERVALO_REFRESCO = 180000; // 3 minutos
 
 function cargarConfigGH(){
   try{ return JSON.parse(store.get(GH_KEY)) || {}; }catch(e){ return {}; }
@@ -1466,6 +1538,7 @@ function guardarConfigGH(){
   store.set(GH_KEY, JSON.stringify(cfg));
   est.textContent = '✅ Guardado en este dispositivo'; est.style.color = 'var(--ok)';
   setSyncDot('var(--aviso)', 'Configurado, pendiente de sincronizar');
+  iniciarRefrescoPeriodico();
 }
 
 function payloadGH(){
@@ -1521,6 +1594,7 @@ async function descargarDeGitHub(){
 /* Agrupa cambios seguidos en una sola subida (3 s después del último) */
 function programarAutoSubida(){
   if(!appLista || !ghConfigurado()) return;
+  pendienteSubir = true;
   clearTimeout(autoSubidaTimer);
   setSyncDot('var(--aviso)', 'Cambios pendientes de subir...');
   autoSubidaTimer = setTimeout(autoSubir, 3000);
@@ -1539,6 +1613,7 @@ async function autoSubir(){
       headers: {...ghHeaders(c), 'Content-Type':'application/json'},
       body: JSON.stringify({message:`GESVIA auto-sync ${new Date().toLocaleString('es-ES')}`, content:codifica(payloadGH()), ...(sha?{sha}:{})})
     });
+    if(pr.ok){ pendienteSubir = false; }
     setSyncDot(pr.ok? 'var(--ok)' : 'var(--critico)', pr.ok? 'Sincronizado ✓' : 'Error al subir — abre ⬆⬇ para reintentar');
   }catch(e){
     setSyncDot('var(--critico)', 'Sin conexión — los cambios quedan guardados en el dispositivo');
@@ -1574,6 +1649,42 @@ async function autoDescargar(){
   }
   sincronizando = false;
   appLista = true;
+  iniciarRefrescoPeriodico();
+}
+
+/* Comprobación silenciosa: baja cambios de otros dispositivos sin pisar los tuyos */
+async function refrescarSiHayNovedades(motivo){
+  if(!appLista || !ghConfigurado() || sincronizando) return;
+  // Si este dispositivo tiene cambios sin subir, no descargamos (evita pisar tu trabajo)
+  if(pendienteSubir){ return; }
+  // No interrumpir si estás con un modal abierto (editando algo)
+  if($('velo') && $('velo').classList.contains('abierto')) return;
+  const c = cargarConfigGH();
+  try{
+    const res = await fetch(ghUrl(c), {headers: ghHeaders(c)});
+    if(!res.ok) return;
+    const parsed = decodifica((await res.json()).content);
+    const d = parsed.datos || parsed;
+    if(!d || !Array.isArray(d.roads)) return;
+    // ¿El remoto es distinto de lo que tenemos? Comparamos el contenido serializado.
+    const remoto = JSON.stringify(d);
+    const local  = JSON.stringify(S);
+    if(remoto === local) return;              // ya estamos al día, no tocamos nada
+    if(pendienteSubir) return;                // por si cambió mientras descargábamos
+    S = d; if(!S.ajustes) S.ajustes={sector:''};
+    saveLocal(); aplicarCabecera();
+    const activa = document.querySelector('nav button.activo');
+    go(activa? activa.dataset.v || 'panel' : 'panel');
+    setSyncDot('var(--ok)', 'Actualizado desde otro dispositivo ✓');
+    toast('🔄 Datos actualizados desde otro dispositivo');
+  }catch(e){ /* silencioso: sin conexión, se reintentará */ }
+}
+
+/* Arranca (o reinicia) la comprobación periódica cada 3 minutos */
+function iniciarRefrescoPeriodico(){
+  clearInterval(refrescoTimer);
+  if(!ghConfigurado()) return;
+  refrescoTimer = setInterval(()=>refrescarSiHayNovedades('periodico'), INTERVALO_REFRESCO);
 }
 
 /* ---------- arranque ---------- */
@@ -1581,6 +1692,12 @@ load();
 aplicarCabecera();
 renderPanel();
 autoDescargar();
+
+/* Comprobar novedades al volver a la app (desbloqueo, cambio de app, foco) */
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState === 'visible') refrescarSiHayNovedades('visible');
+});
+window.addEventListener('focus', ()=>refrescarSiHayNovedades('focus'));
 
 /* Reajustar las marcas de PK al girar/redimensionar la pantalla */
 let _reglaTimer = null;
