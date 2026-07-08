@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:23:48.817Z",
+ "exportado": "2026-07-08T11:25:50.907Z",
  "datos": {
   "roads": [
    {
@@ -471,6 +471,13 @@
     "pkIni": 38.692,
     "pkFin": 41.475,
     "desc": "Fuente Álamo - L.P. Murcia"
+   },
+   {
+    "id": "x99",
+    "roadId": "x98",
+    "pkIni": 0,
+    "pkFin": 5.252,
+    "desc": "A-30 - Cruce San Isidro"
    }
   ],
   "insp": [],
@@ -498,7 +505,7 @@
     "fotos": []
    }
   ],
-  "seq": 99,
+  "seq": 100,
   "ajustes": {
    "sector": "ZONA 2"
   }
