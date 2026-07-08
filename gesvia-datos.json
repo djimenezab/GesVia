@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:20:15.280Z",
+ "exportado": "2026-07-08T11:21:30.797Z",
  "datos": {
   "roads": [
    {
@@ -444,6 +444,13 @@
     "pkIni": 24.596,
     "pkFin": 26.085,
     "desc": "Las Anorias - Cruce CM-3214"
+   },
+   {
+    "id": "x95",
+    "roadId": "x89",
+    "pkIni": 26.085,
+    "pkFin": 36.982,
+    "desc": "Cruce CM-3214 - Rot. CM-412"
    }
   ],
   "insp": [],
@@ -471,7 +478,7 @@
     "fotos": []
    }
   ],
-  "seq": 95,
+  "seq": 96,
   "ajustes": {
    "sector": "ZONA 2"
   }
