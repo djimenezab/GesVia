@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T06:52:59.257Z",
+ "exportado": "2026-07-08T06:54:00.433Z",
  "datos": {
   "roads": [
    {
@@ -306,6 +306,13 @@
     "pkIni": 6.3,
     "pkFin": 7.1,
     "desc": "Trav. Casas de Ves"
+   },
+   {
+    "id": "x74",
+    "roadId": "x71",
+    "pkIni": 7.1,
+    "pkFin": 14.848,
+    "desc": "Casas de Ves - Cantoblanco"
    }
   ],
   "insp": [],
@@ -321,7 +328,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 74,
+  "seq": 75,
   "ajustes": {
    "sector": "ZONA 2"
   }
