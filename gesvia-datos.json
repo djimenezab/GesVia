@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T06:33:37.653Z",
+ "exportado": "2026-07-08T06:51:57.818Z",
  "datos": {
   "roads": [
    {
@@ -292,6 +292,13 @@
     "pkIni": 90.47,
     "pkFin": 98.89,
     "desc": "Alpera - A-31"
+   },
+   {
+    "id": "x72",
+    "roadId": "x71",
+    "pkIni": 0,
+    "pkFin": 6.3,
+    "desc": "Alborea - Casas de Ves"
    }
   ],
   "insp": [],
@@ -307,7 +314,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 72,
+  "seq": 73,
   "ajustes": {
    "sector": "ZONA 2"
   }
