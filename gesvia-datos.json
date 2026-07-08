@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T11:33:16.892Z",
+ "exportado": "2026-07-08T11:34:23.894Z",
  "datos": {
   "roads": [
    {
@@ -105,12 +105,6 @@
     "codigo": "CM-316",
     "nombre": "La Roda - Mahora",
     "sector": "ZONA 2.1"
-   },
-   {
-    "id": "x109",
-    "codigo": "CM-332",
-    "nombre": "Albacete - L.P. Valencia",
-    "sector": "ZONA 2.1 - 2.2"
    },
    {
     "id": "x110",
