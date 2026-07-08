@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T10:22:22.388Z",
+ "exportado": "2026-07-08T10:23:19.456Z",
  "datos": {
   "roads": [
    {
@@ -389,6 +389,13 @@
     "pkIni": 35.025,
     "pkFin": 36.6,
     "desc": "Trav. Bonete"
+   },
+   {
+    "id": "x86",
+    "roadId": "x77",
+    "pkIni": 36.6,
+    "pkFin": 46.056,
+    "desc": "Bonete - Cruce CM-412"
    }
   ],
   "insp": [],
@@ -404,7 +411,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 86,
+  "seq": 87,
   "ajustes": {
    "sector": "ZONA 2"
   }
