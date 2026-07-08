@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-08T06:55:50.730Z",
+ "exportado": "2026-07-08T10:14:58.890Z",
  "datos": {
   "roads": [
    {
@@ -44,6 +44,12 @@
     "id": "x71",
     "codigo": "CM-3207",
     "nombre": "Alborea - L.P. Valencia",
+    "sector": "ZONA 2.2"
+   },
+   {
+    "id": "x77",
+    "codigo": "CM-3209",
+    "nombre": "Casas J.N. - L.P. Murcia",
     "sector": "ZONA 2.2"
    }
   ],
@@ -342,7 +348,7 @@
     "cerrada": "2026-06-01"
    }
   ],
-  "seq": 77,
+  "seq": 78,
   "ajustes": {
    "sector": "ZONA 2"
   }
