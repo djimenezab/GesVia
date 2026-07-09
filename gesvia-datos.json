@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:54:12.492Z",
+ "exportado": "2026-07-09T11:54:52.032Z",
  "datos": {
   "roads": [
    {
@@ -694,6 +694,13 @@
     "pkIni": 0,
     "pkFin": 4.243,
     "desc": "A-31 - La Torrecica"
+   },
+   {
+    "id": "x143",
+    "roadId": "x140",
+    "pkIni": 4.243,
+    "pkFin": 12.181,
+    "desc": "Carcel - Rot. La Felipa"
    }
   ],
   "insp": [],
@@ -725,7 +732,7 @@
     "gps": ""
    }
   ],
-  "seq": 143,
+  "seq": 144,
   "ajustes": {
    "sector": "ZONA 2"
   },
