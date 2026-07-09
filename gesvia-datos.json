@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T12:10:29.091Z",
+ "exportado": "2026-07-09T12:11:34.551Z",
  "datos": {
   "roads": [
    {
@@ -792,6 +792,13 @@
     "pkIni": 324.07,
     "pkFin": 336.474,
     "desc": "Montealegre - Cruce Santuario"
+   },
+   {
+    "id": "x157",
+    "roadId": "x141",
+    "pkIni": 336.474,
+    "pkFin": 344.453,
+    "desc": "Santuario - Cruce A-31"
    }
   ],
   "insp": [],
@@ -823,7 +830,7 @@
     "gps": ""
    }
   ],
-  "seq": 157,
+  "seq": 158,
   "ajustes": {
    "sector": "ZONA 2"
   },
