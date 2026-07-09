@@ -120,6 +120,8 @@ section.vista.activa{display:block}
 .regla .marca{position:absolute;top:0;bottom:0;width:0;border-left:1px solid var(--borde)}
 .regla .marca > span{position:absolute;top:0;left:0;padding-left:2px;font-size:.72rem;color:var(--texto2);font-variant-numeric:tabular-nums;white-space:nowrap}
 .regla .marca.fin > span{left:auto;right:0;padding-left:0;padding-right:2px}
+/* Etiqueta bajada un renglón cuando el PK está muy cerca del anterior */
+.regla .marca.nivel2 > span{top:1rem}
 .leyenda{display:flex;gap:1rem;flex-wrap:wrap;font-size:.85rem;color:var(--texto2);margin-top:.6rem}
 .leyenda span{display:flex;align-items:center;gap:.35rem}
 
@@ -221,7 +223,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.45</span></span></h1>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.46</span></span></h1>
       <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
@@ -537,7 +539,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
-      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.45</span></strong>
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.46</span></strong>
     </p>
   </div>
 </section>
@@ -556,7 +558,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.45';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.46';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -936,13 +938,38 @@ function posicionarReglas(cont){
     const rectBarra = barra.getBoundingClientRect();
     const baseLeft = rectBarra.left, ancho = rectBarra.width;
     if(ancho<=0) return;
-    const bordes = celdas.map(c=> c.getBoundingClientRect().left - baseLeft );
-    bordes.push( celdas[celdas.length-1].getBoundingClientRect().right - baseLeft );
+    // posición en px del borde izquierdo de cada marca (y el borde final)
+    const bordesPx = celdas.map(c=> c.getBoundingClientRect().left - baseLeft );
+    bordesPx.push( celdas[celdas.length-1].getBoundingClientRect().right - baseLeft );
+
+    // Anchura aproximada de cada etiqueta (px) según nº de caracteres
+    const anchoChar = 6;       // ~6px por carácter a .72rem
+    const margen = 4;          // separación mínima entre etiquetas
+    // Asignar "nivel" (0 = renglón normal, 1 = un renglón por debajo) evitando solapes
+    let finNivel = [-Infinity, -Infinity]; // px donde termina la última etiqueta de cada nivel
+    const niveles = marcas.map((txt,i)=>{
+      const esFin = i===marcas.length-1;
+      const wpx = String(txt).length * anchoChar;
+      // el texto de la marca normal va a la derecha del borde; el "fin" va a la izquierda
+      const ini = esFin ? bordesPx[i]-wpx : bordesPx[i];
+      const fin = esFin ? bordesPx[i]     : bordesPx[i]+wpx;
+      // elegir el primer nivel donde no solape
+      let nivel = 0;
+      if(ini < finNivel[0] + margen){ nivel = 1; }
+      // si en el nivel 1 también solaparía con lo último de ese nivel, igualmente lo dejamos en 1
+      finNivel[nivel] = fin;
+      return nivel;
+    });
+
     barra.innerHTML = marcas.map((txt,i)=>{
-      const pct = Math.max(0, Math.min(100, (bordes[i]/ancho)*100 ));
+      const pct = Math.max(0, Math.min(100, (bordesPx[i]/ancho)*100 ));
       const fin = i===marcas.length-1 ? ' fin' : '';
-      return `<div class="marca${fin}" style="left:${pct}%"><span>${txt}</span></div>`;
+      const bajo = niveles[i]===1 ? ' nivel2' : '';
+      return `<div class="marca${fin}${bajo}" style="left:${pct}%"><span>${txt}</span></div>`;
     }).join('');
+    // Si algún PK está en el segundo nivel, la barra necesita algo más de alto
+    const hayNivel2 = niveles.some(n=>n===1);
+    barra.style.height = hayNivel2 ? '2.1rem' : '';
   });
 }
 
