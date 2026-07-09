@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T12:06:32.752Z",
+ "exportado": "2026-07-09T12:07:12.078Z",
  "datos": {
   "roads": [
    {
@@ -778,6 +778,13 @@
     "pkIni": 309.532,
     "pkFin": 322.48,
     "desc": "Fuente Álamo - Montealegre"
+   },
+   {
+    "id": "x155",
+    "roadId": "x141",
+    "pkIni": 322.48,
+    "pkFin": 324.07,
+    "desc": "Trav. Montealegre"
    }
   ],
   "insp": [],
@@ -809,7 +816,7 @@
     "gps": ""
    }
   ],
-  "seq": 155,
+  "seq": 156,
   "ajustes": {
    "sector": "ZONA 2"
   },
