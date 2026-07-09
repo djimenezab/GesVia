@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:16:07.556Z",
+ "exportado": "2026-07-09T11:17:11.507Z",
  "datos": {
   "roads": [
    {
@@ -643,6 +643,13 @@
     "pkIni": 13.725,
     "pkFin": 17.99,
     "desc": "Rot. Madrigueras - L.P. Cuenca"
+   },
+   {
+    "id": "x132",
+    "roadId": "x105",
+    "pkIni": 0,
+    "pkFin": 3.277,
+    "desc": "CM-332 - Villavaliente"
    }
   ],
   "insp": [],
@@ -674,7 +681,7 @@
     "gps": ""
    }
   ],
-  "seq": 132,
+  "seq": 133,
   "ajustes": {
    "sector": "ZONA 2"
   },
