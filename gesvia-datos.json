@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:06:28.920Z",
+ "exportado": "2026-07-09T11:07:24.568Z",
  "datos": {
   "roads": [
    {
@@ -580,6 +580,13 @@
     "pkIni": 20.26,
     "pkFin": 25,
     "desc": "Salida Valdeganga - Puente Torres"
+   },
+   {
+    "id": "x123",
+    "roadId": "x102",
+    "pkIni": 25,
+    "pkFin": 28.338,
+    "desc": "Puente Torres - Cruce AB-206"
    }
   ],
   "insp": [],
@@ -611,7 +618,7 @@
     "gps": ""
    }
   ],
-  "seq": 123,
+  "seq": 124,
   "ajustes": {
    "sector": "ZONA 2"
   },
