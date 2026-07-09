@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:08:00.874Z",
+ "exportado": "2026-07-09T11:08:46.161Z",
  "datos": {
   "roads": [
    {
@@ -594,6 +594,13 @@
     "pkIni": 28.338,
     "pkFin": 32,
     "desc": "Cruce AB-206 - Bormate"
+   },
+   {
+    "id": "x125",
+    "roadId": "x102",
+    "pkIni": 32,
+    "pkFin": 37.432,
+    "desc": "Bormate - Abengibre"
    }
   ],
   "insp": [],
@@ -625,7 +632,7 @@
     "gps": ""
    }
   ],
-  "seq": 125,
+  "seq": 126,
   "ajustes": {
    "sector": "ZONA 2"
   },
