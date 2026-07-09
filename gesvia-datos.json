@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:07:24.568Z",
+ "exportado": "2026-07-09T11:08:00.874Z",
  "datos": {
   "roads": [
    {
@@ -587,6 +587,13 @@
     "pkIni": 25,
     "pkFin": 28.338,
     "desc": "Puente Torres - Cruce AB-206"
+   },
+   {
+    "id": "x124",
+    "roadId": "x102",
+    "pkIni": 28.338,
+    "pkFin": 32,
+    "desc": "Cruce AB-206 - Bormate"
    }
   ],
   "insp": [],
@@ -618,7 +625,7 @@
     "gps": ""
    }
   ],
-  "seq": 124,
+  "seq": 125,
   "ajustes": {
    "sector": "ZONA 2"
   },
