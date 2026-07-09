@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:55:35.326Z",
+ "exportado": "2026-07-09T11:57:04.156Z",
  "datos": {
   "roads": [
    {
@@ -708,6 +708,13 @@
     "pkIni": 12.181,
     "pkFin": 13.379,
     "desc": "Trav. La Felipa"
+   },
+   {
+    "id": "x145",
+    "roadId": "x140",
+    "pkIni": 13.379,
+    "pkFin": 25.417,
+    "desc": "La Felipa - C. Firme Casas J.N."
    }
   ],
   "insp": [],
@@ -739,7 +746,7 @@
     "gps": ""
    }
   ],
-  "seq": 145,
+  "seq": 146,
   "ajustes": {
    "sector": "ZONA 2"
   },
