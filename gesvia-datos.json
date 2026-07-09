@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:52:20.654Z",
+ "exportado": "2026-07-09T11:54:12.492Z",
  "datos": {
   "roads": [
    {
@@ -687,6 +687,13 @@
     "pkIni": 0,
     "pkFin": 9.265,
     "desc": "A-31 - Pétrola"
+   },
+   {
+    "id": "x142",
+    "roadId": "x140",
+    "pkIni": 0,
+    "pkFin": 4.243,
+    "desc": "A-31 - La Torrecica"
    }
   ],
   "insp": [],
@@ -718,7 +725,7 @@
     "gps": ""
    }
   ],
-  "seq": 142,
+  "seq": 143,
   "ajustes": {
    "sector": "ZONA 2"
   },
