@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:14:55.047Z",
+ "exportado": "2026-07-09T11:15:27.127Z",
  "datos": {
   "roads": [
    {
@@ -629,6 +629,13 @@
     "pkIni": 4,
     "pkFin": 7,
     "desc": "Motilleja - Rot. Madrigueras"
+   },
+   {
+    "id": "x130",
+    "roadId": "x104",
+    "pkIni": 7,
+    "pkFin": 13.725,
+    "desc": "Variante Madrigueras"
    }
   ],
   "insp": [],
@@ -660,7 +667,7 @@
     "gps": ""
    }
   ],
-  "seq": 130,
+  "seq": 131,
   "ajustes": {
    "sector": "ZONA 2"
   },
