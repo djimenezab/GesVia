@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:51:25.081Z",
+ "exportado": "2026-07-09T11:51:36.671Z",
  "datos": {
   "roads": [
    {
@@ -98,12 +98,6 @@
     "id": "x107",
     "codigo": "CM-3265",
     "nombre": "Pétrola - A-31",
-    "sector": "ZONA 2.2"
-   },
-   {
-    "id": "x113",
-    "codigo": "CM-412",
-    "nombre": "Ontur - Almansa",
     "sector": "ZONA 2.2"
    }
   ],
