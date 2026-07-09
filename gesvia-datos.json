@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:08:46.161Z",
+ "exportado": "2026-07-09T11:10:00.164Z",
  "datos": {
   "roads": [
    {
@@ -601,6 +601,13 @@
     "pkIni": 32,
     "pkFin": 37.432,
     "desc": "Bormate - Abengibre"
+   },
+   {
+    "id": "x126",
+    "roadId": "x102",
+    "pkIni": 37.432,
+    "pkFin": 48.744,
+    "desc": "Abengibre - Casas Ib."
    }
   ],
   "insp": [],
@@ -632,7 +639,7 @@
     "gps": ""
    }
   ],
-  "seq": 126,
+  "seq": 127,
   "ajustes": {
    "sector": "ZONA 2"
   },
