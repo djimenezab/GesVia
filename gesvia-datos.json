@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:54:52.032Z",
+ "exportado": "2026-07-09T11:55:35.326Z",
  "datos": {
   "roads": [
    {
@@ -701,6 +701,13 @@
     "pkIni": 4.243,
     "pkFin": 12.181,
     "desc": "Carcel - Rot. La Felipa"
+   },
+   {
+    "id": "x144",
+    "roadId": "x140",
+    "pkIni": 12.181,
+    "pkFin": 13.379,
+    "desc": "Trav. La Felipa"
    }
   ],
   "insp": [],
@@ -732,7 +739,7 @@
     "gps": ""
    }
   ],
-  "seq": 144,
+  "seq": 145,
   "ajustes": {
    "sector": "ZONA 2"
   },
