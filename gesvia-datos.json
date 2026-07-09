@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:04:13.032Z",
+ "exportado": "2026-07-09T11:04:51.159Z",
  "datos": {
   "roads": [
    {
@@ -559,6 +559,13 @@
     "pkIni": 0,
     "pkFin": 8.1,
     "desc": "Cruce CM-332 - Cruce Tinajeros"
+   },
+   {
+    "id": "x120",
+    "roadId": "x102",
+    "pkIni": 8.1,
+    "pkFin": 11.89,
+    "desc": "Variante Tinajeros"
    }
   ],
   "insp": [],
@@ -590,7 +597,7 @@
     "gps": ""
    }
   ],
-  "seq": 120,
+  "seq": 121,
   "ajustes": {
    "sector": "ZONA 2"
   },
