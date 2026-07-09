@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:12:39.308Z",
+ "exportado": "2026-07-09T11:14:27.355Z",
  "datos": {
   "roads": [
    {
@@ -615,6 +615,13 @@
     "pkIni": 0,
     "pkFin": 16.217,
     "desc": "Almansa - L.P. Murcia"
+   },
+   {
+    "id": "x128",
+    "roadId": "x104",
+    "pkIni": 0,
+    "pkFin": 4,
+    "desc": "N-322 - Motilleja"
    }
   ],
   "insp": [],
@@ -646,7 +653,7 @@
     "gps": ""
    }
   ],
-  "seq": 128,
+  "seq": 129,
   "ajustes": {
    "sector": "ZONA 2"
   },
