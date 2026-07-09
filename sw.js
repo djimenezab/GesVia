@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gesvia-v1.18';
+const CACHE_NAME = 'gesvia-v1.19';
 const ASSETS = [
   './',
   './index.html',
@@ -25,9 +25,28 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  // Solo cacheamos peticiones GET de la propia app; la API de GitHub pasa directa
+  // Solo gestionamos GET de la propia app; la API de GitHub y las fotos raw pasan directas
   if (e.request.method !== 'GET' || !e.request.url.startsWith(self.location.origin)) return;
-  e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
-  );
+
+  const url = new URL(e.request.url);
+  const esApp = url.pathname.endsWith('/') || url.pathname.endsWith('index.html') || url.pathname.endsWith('sw.js');
+
+  if (esApp) {
+    // La app (HTML/SW): SIEMPRE intentar red primero, así se ven las actualizaciones al momento.
+    // Si no hay conexión, usar la copia guardada.
+    e.respondWith(
+      fetch(e.request)
+        .then(resp => {
+          const copia = resp.clone();
+          caches.open(CACHE_NAME).then(c => c.put(e.request, copia));
+          return resp;
+        })
+        .catch(() => caches.match(e.request))
+    );
+  } else {
+    // Recursos estáticos (iconos, plano): caché primero (rápido y offline).
+    e.respondWith(
+      caches.match(e.request).then(cached => cached || fetch(e.request))
+    );
+  }
 });

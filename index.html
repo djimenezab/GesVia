@@ -221,7 +221,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">2.0</span></span></h1>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.45</span></span></h1>
       <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
@@ -537,7 +537,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
-      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.32</span></strong>
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.45</span></strong>
     </p>
   </div>
 </section>
@@ -556,7 +556,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.44';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.45';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -2133,10 +2133,30 @@ window.addEventListener('resize', ()=>{
   _reglaTimer = setTimeout(()=>{ posicionarReglas($('esquemas')); posicionarReglas($('previaInforme')); }, 150);
 });
 
-/* ---------- PWA: service worker (offline e instalable) ---------- */
+/* ---------- PWA: service worker (offline e instalable, con auto-actualización) ---------- */
 if ('serviceWorker' in navigator) {
+  let recargando = false;
+  // Cuando el service worker nuevo toma el control, recargar una vez para ver la versión nueva
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (recargando) return;
+    recargando = true;
+    window.location.reload();
+  });
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      // Comprobar si hay una versión nueva cada vez que se abre la app
+      reg.update();
+      reg.addEventListener('updatefound', () => {
+        const nuevo = reg.installing;
+        if (!nuevo) return;
+        nuevo.addEventListener('statechange', () => {
+          // Cuando el nuevo SW está listo y ya había uno activo, activarlo de inmediato
+          if (nuevo.state === 'installed' && navigator.serviceWorker.controller) {
+            nuevo.postMessage && reg.waiting && reg.waiting.postMessage('skipWaiting');
+          }
+        });
+      });
+    }).catch(() => {});
   });
 }
 </script>
