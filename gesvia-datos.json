@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:58:51.059Z",
+ "exportado": "2026-07-09T11:59:59.382Z",
  "datos": {
   "roads": [
    {
@@ -729,6 +729,13 @@
     "pkIni": 28.385,
     "pkFin": 33.792,
     "desc": "Casas J.N. - Cruce CM-3227"
+   },
+   {
+    "id": "x148",
+    "roadId": "x140",
+    "pkIni": 33.792,
+    "pkFin": 43.735,
+    "desc": "Cruce CM-3227 - Alatoz"
    }
   ],
   "insp": [],
@@ -760,7 +767,7 @@
     "gps": ""
    }
   ],
-  "seq": 148,
+  "seq": 149,
   "ajustes": {
    "sector": "ZONA 2"
   },
