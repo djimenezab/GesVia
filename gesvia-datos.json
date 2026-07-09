@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T12:07:12.078Z",
+ "exportado": "2026-07-09T12:10:29.091Z",
  "datos": {
   "roads": [
    {
@@ -785,6 +785,13 @@
     "pkIni": 322.48,
     "pkFin": 324.07,
     "desc": "Trav. Montealegre"
+   },
+   {
+    "id": "x156",
+    "roadId": "x141",
+    "pkIni": 324.07,
+    "pkFin": 336.474,
+    "desc": "Montealegre - Cruce Santuario"
    }
   ],
   "insp": [],
@@ -816,7 +823,7 @@
     "gps": ""
    }
   ],
-  "seq": 156,
+  "seq": 157,
   "ajustes": {
    "sector": "ZONA 2"
   },
