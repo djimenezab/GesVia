@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T12:03:12.148Z",
+ "exportado": "2026-07-09T12:04:25.263Z",
  "datos": {
   "roads": [
    {
@@ -757,6 +757,13 @@
     "pkIni": 49.122,
     "pkFin": 56,
     "desc": "Carcelén - L.P. Valencia"
+   },
+   {
+    "id": "x152",
+    "roadId": "x141",
+    "pkIni": 298,
+    "pkFin": 305.735,
+    "desc": "Ontur - Cruce CM-412a"
    }
   ],
   "insp": [],
@@ -788,7 +795,7 @@
     "gps": ""
    }
   ],
-  "seq": 152,
+  "seq": 153,
   "ajustes": {
    "sector": "ZONA 2"
   },
