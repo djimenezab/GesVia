@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T06:51:35.850Z",
+ "exportado": "2026-07-09T06:51:57.800Z",
  "datos": {
   "roads": [
    {
@@ -554,7 +554,50 @@
     "desc": "Pinilla - Cruce CM-3211"
    }
   ],
-  "insp": [],
+  "insp": [
+   {
+    "id": "x115",
+    "tramoId": "x46",
+    "fam": "SH",
+    "fecha": "2026-07-09",
+    "valor": 20,
+    "obs": "",
+    "inspector": "DJM",
+    "gps": "",
+    "params": {
+     "rl": 50
+    },
+    "fotos": []
+   },
+   {
+    "id": "x116",
+    "tramoId": "x47",
+    "fam": "SH",
+    "fecha": "2026-07-09",
+    "valor": 20,
+    "obs": "",
+    "inspector": "DJM",
+    "gps": "",
+    "params": {
+     "rl": 50
+    },
+    "fotos": []
+   },
+   {
+    "id": "x117",
+    "tramoId": "x48",
+    "fam": "SH",
+    "fecha": "2026-07-09",
+    "valor": 20,
+    "obs": "",
+    "inspector": "DJM",
+    "gps": "",
+    "params": {
+     "rl": 50
+    },
+    "fotos": []
+   }
+  ],
   "ots": [
    {
     "id": "x36",
@@ -583,7 +626,7 @@
     "gps": ""
    }
   ],
-  "seq": 115,
+  "seq": 118,
   "ajustes": {
    "sector": "ZONA 2"
   },
