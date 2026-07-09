@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:52:05.612Z",
+ "exportado": "2026-07-09T11:52:20.654Z",
  "datos": {
   "roads": [
    {
@@ -105,6 +105,12 @@
     "codigo": "CM-332",
     "nombre": "Albacete - Ayora",
     "sector": "ZONA 2.1 -2.2"
+   },
+   {
+    "id": "x141",
+    "codigo": "CM-412",
+    "nombre": "Ontur - Almansa",
+    "sector": "ZONA 2.2"
    }
   ],
   "tramos": [
@@ -712,7 +718,7 @@
     "gps": ""
    }
   ],
-  "seq": 141,
+  "seq": 142,
   "ajustes": {
    "sector": "ZONA 2"
   },
