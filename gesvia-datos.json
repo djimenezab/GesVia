@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:50:49.521Z",
+ "exportado": "2026-07-09T11:51:06.154Z",
  "datos": {
   "roads": [
    {
@@ -105,12 +105,6 @@
     "codigo": "CM-332",
     "nombre": "Albacete - Casas J.N.",
     "sector": "ZONA 2.1"
-   },
-   {
-    "id": "x112",
-    "codigo": "CM-332",
-    "nombre": "Casas J.N. - L.P. Valencia",
-    "sector": "ZONA 2.2"
    },
    {
     "id": "x113",
