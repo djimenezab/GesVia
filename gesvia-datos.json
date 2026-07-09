@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:10:00.164Z",
+ "exportado": "2026-07-09T11:12:39.308Z",
  "datos": {
   "roads": [
    {
@@ -608,6 +608,13 @@
     "pkIni": 37.432,
     "pkFin": 48.744,
     "desc": "Abengibre - Casas Ib."
+   },
+   {
+    "id": "x127",
+    "roadId": "x103",
+    "pkIni": 0,
+    "pkFin": 16.217,
+    "desc": "Almansa - L.P. Murcia"
    }
   ],
   "insp": [],
@@ -639,7 +646,7 @@
     "gps": ""
    }
   ],
-  "seq": 127,
+  "seq": 128,
   "ajustes": {
    "sector": "ZONA 2"
   },
