@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:05:29.826Z",
+ "exportado": "2026-07-09T11:06:28.920Z",
  "datos": {
   "roads": [
    {
@@ -573,6 +573,13 @@
     "pkIni": 11.89,
     "pkFin": 19,
     "desc": "Cruce Tinajeros - Entrada Valdeganga"
+   },
+   {
+    "id": "x122",
+    "roadId": "x102",
+    "pkIni": 20.26,
+    "pkFin": 25,
+    "desc": "Salida Valdeganga - Puente Torres"
    }
   ],
   "insp": [],
@@ -604,7 +611,7 @@
     "gps": ""
    }
   ],
-  "seq": 122,
+  "seq": 123,
   "ajustes": {
    "sector": "ZONA 2"
   },
