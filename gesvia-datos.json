@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:59:59.382Z",
+ "exportado": "2026-07-09T12:00:42.818Z",
  "datos": {
   "roads": [
    {
@@ -736,6 +736,13 @@
     "pkIni": 33.792,
     "pkFin": 43.735,
     "desc": "Cruce CM-3227 - Alatoz"
+   },
+   {
+    "id": "x149",
+    "roadId": "x140",
+    "pkIni": 43.735,
+    "pkFin": 45.181,
+    "desc": "Trav. Alatoz"
    }
   ],
   "insp": [],
@@ -767,7 +774,7 @@
     "gps": ""
    }
   ],
-  "seq": 149,
+  "seq": 150,
   "ajustes": {
    "sector": "ZONA 2"
   },
