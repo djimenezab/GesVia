@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T12:01:43.382Z",
+ "exportado": "2026-07-09T12:03:12.148Z",
  "datos": {
   "roads": [
    {
@@ -750,6 +750,13 @@
     "pkIni": 45.181,
     "pkFin": 49.122,
     "desc": "Alatoz - Cruce Carcelén"
+   },
+   {
+    "id": "x151",
+    "roadId": "x140",
+    "pkIni": 49.122,
+    "pkFin": 56,
+    "desc": "Carcelén - L.P. Valencia"
    }
   ],
   "insp": [],
@@ -781,7 +788,7 @@
     "gps": ""
    }
   ],
-  "seq": 151,
+  "seq": 152,
   "ajustes": {
    "sector": "ZONA 2"
   },
