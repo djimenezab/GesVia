@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:14:27.355Z",
+ "exportado": "2026-07-09T11:14:55.047Z",
  "datos": {
   "roads": [
    {
@@ -622,6 +622,13 @@
     "pkIni": 0,
     "pkFin": 4,
     "desc": "N-322 - Motilleja"
+   },
+   {
+    "id": "x129",
+    "roadId": "x104",
+    "pkIni": 4,
+    "pkFin": 7,
+    "desc": "Motilleja - Rot. Madrigueras"
    }
   ],
   "insp": [],
@@ -653,7 +660,7 @@
     "gps": ""
    }
   ],
-  "seq": 129,
+  "seq": 130,
   "ajustes": {
    "sector": "ZONA 2"
   },
