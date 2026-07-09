@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T12:04:25.263Z",
+ "exportado": "2026-07-09T12:05:08.280Z",
  "datos": {
   "roads": [
    {
@@ -764,6 +764,13 @@
     "pkIni": 298,
     "pkFin": 305.735,
     "desc": "Ontur - Cruce CM-412a"
+   },
+   {
+    "id": "x153",
+    "roadId": "x141",
+    "pkIni": 305.735,
+    "pkFin": 309.532,
+    "desc": "Variante Fuente Álamo"
    }
   ],
   "insp": [],
@@ -795,7 +802,7 @@
     "gps": ""
    }
   ],
-  "seq": 153,
+  "seq": 154,
   "ajustes": {
    "sector": "ZONA 2"
   },
