@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:51:36.671Z",
+ "exportado": "2026-07-09T11:52:05.612Z",
  "datos": {
   "roads": [
    {
@@ -99,6 +99,12 @@
     "codigo": "CM-3265",
     "nombre": "Pétrola - A-31",
     "sector": "ZONA 2.2"
+   },
+   {
+    "id": "x140",
+    "codigo": "CM-332",
+    "nombre": "Albacete - Ayora",
+    "sector": "ZONA 2.1 -2.2"
    }
   ],
   "tramos": [
@@ -706,7 +712,7 @@
     "gps": ""
    }
   ],
-  "seq": 140,
+  "seq": 141,
   "ajustes": {
    "sector": "ZONA 2"
   },
