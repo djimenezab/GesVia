@@ -1,5 +1,10 @@
 # GesVía · Gestión de la conservación de carreteras (PWA)
 
+## Novedades v1.44
+- En el «Plano de estado», el trazado resaltado es más **ancho** (se ve mejor al imprimir) y se
+  ha **quitado el rótulo** del código de carretera (el propio mapa ya lleva la nomenclatura),
+  para que destaque limpiamente el tramo afectado.
+
 ## Novedades v1.43
 - El plano funciona **por tramo**, no por carretera entera: en el editor seleccionas carretera y
   tramo y dibujas solo ese tramo (se marca con ✓ y avanza al siguiente pendiente). El «Plano de
@@ -122,7 +127,7 @@ LEEME.md
 ## Cuando actualices la app
 
 Si subes un `index.html` nuevo, edita en `sw.js` la primera línea y sube la versión
-(`gesvia-v1.17` → `gesvia-v1.18`). Así los móviles descargan la versión nueva en vez
+(`gesvia-v1.18` → `gesvia-v1.19`). Así los móviles descargan la versión nueva en vez
 de seguir usando la copia guardada en caché.
 
 ## Sincronización automática con GitHub (como RegIn 1.91)
