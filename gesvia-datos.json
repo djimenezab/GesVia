@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:58:01.464Z",
+ "exportado": "2026-07-09T11:58:51.059Z",
  "datos": {
   "roads": [
    {
@@ -722,6 +722,13 @@
     "pkIni": 25.417,
     "pkFin": 28.385,
     "desc": "Trav. Casas Juan N."
+   },
+   {
+    "id": "x147",
+    "roadId": "x140",
+    "pkIni": 28.385,
+    "pkFin": 33.792,
+    "desc": "Casas J.N. - Cruce CM-3227"
    }
   ],
   "insp": [],
@@ -753,7 +760,7 @@
     "gps": ""
    }
   ],
-  "seq": 147,
+  "seq": 148,
   "ajustes": {
    "sector": "ZONA 2"
   },
