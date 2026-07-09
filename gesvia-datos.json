@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:23:31.441Z",
+ "exportado": "2026-07-09T11:47:07.665Z",
  "datos": {
   "roads": [
    {
@@ -692,6 +692,13 @@
     "pkIni": 18.58,
     "pkFin": 19.911,
     "desc": "Trav. Bonete"
+   },
+   {
+    "id": "x139",
+    "roadId": "x107",
+    "pkIni": 0,
+    "pkFin": 9.265,
+    "desc": "A-31 - Pétrola"
    }
   ],
   "insp": [],
@@ -723,7 +730,7 @@
     "gps": ""
    }
   ],
-  "seq": 139,
+  "seq": 140,
   "ajustes": {
    "sector": "ZONA 2"
   },
