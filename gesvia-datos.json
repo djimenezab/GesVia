@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:21:19.111Z",
+ "exportado": "2026-07-09T11:22:03.990Z",
  "datos": {
   "roads": [
    {
@@ -671,6 +671,13 @@
     "pkIni": 0,
     "pkFin": 8.12,
     "desc": "Pétrola - Corral Rubio"
+   },
+   {
+    "id": "x136",
+    "roadId": "x106",
+    "pkIni": 8.12,
+    "pkFin": 13.7,
+    "desc": "Corral Rubio - El Bachiller"
    }
   ],
   "insp": [],
@@ -702,7 +709,7 @@
     "gps": ""
    }
   ],
-  "seq": 136,
+  "seq": 137,
   "ajustes": {
    "sector": "ZONA 2"
   },
