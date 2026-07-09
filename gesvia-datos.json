@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T07:21:24.965Z",
+ "exportado": "2026-07-09T11:04:13.032Z",
  "datos": {
   "roads": [
    {
@@ -552,6 +552,13 @@
     "pkIni": 13.235,
     "pkFin": 17.436,
     "desc": "Pinilla - Cruce CM-3211"
+   },
+   {
+    "id": "x119",
+    "roadId": "x102",
+    "pkIni": 0,
+    "pkFin": 8.1,
+    "desc": "Cruce CM-332 - Cruce Tinajeros"
    }
   ],
   "insp": [],
@@ -583,7 +590,7 @@
     "gps": ""
    }
   ],
-  "seq": 119,
+  "seq": 120,
   "ajustes": {
    "sector": "ZONA 2"
   },
