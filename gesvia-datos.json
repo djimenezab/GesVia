@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:22:50.234Z",
+ "exportado": "2026-07-09T11:23:31.441Z",
  "datos": {
   "roads": [
    {
@@ -685,6 +685,13 @@
     "pkIni": 13.7,
     "pkFin": 18.431,
     "desc": "El Bachiller - Rot. A-31"
+   },
+   {
+    "id": "x138",
+    "roadId": "x106",
+    "pkIni": 18.58,
+    "pkFin": 19.911,
+    "desc": "Trav. Bonete"
    }
   ],
   "insp": [],
@@ -716,7 +723,7 @@
     "gps": ""
    }
   ],
-  "seq": 138,
+  "seq": 139,
   "ajustes": {
    "sector": "ZONA 2"
   },
