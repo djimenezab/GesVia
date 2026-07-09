@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:18:21.791Z",
+ "exportado": "2026-07-09T11:20:08.082Z",
  "datos": {
   "roads": [
    {
@@ -657,6 +657,13 @@
     "pkIni": 3.3,
     "pkFin": 10.943,
     "desc": "Villavaliente - Casas del Cerro"
+   },
+   {
+    "id": "x134",
+    "roadId": "x105",
+    "pkIni": 10.943,
+    "pkFin": 11.72,
+    "desc": "Casas del Cerro - Cruce CM-3201"
    }
   ],
   "insp": [],
@@ -688,7 +695,7 @@
     "gps": ""
    }
   ],
-  "seq": 134,
+  "seq": 135,
   "ajustes": {
    "sector": "ZONA 2"
   },
