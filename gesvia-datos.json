@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:22:03.990Z",
+ "exportado": "2026-07-09T11:22:50.234Z",
  "datos": {
   "roads": [
    {
@@ -678,6 +678,13 @@
     "pkIni": 8.12,
     "pkFin": 13.7,
     "desc": "Corral Rubio - El Bachiller"
+   },
+   {
+    "id": "x137",
+    "roadId": "x106",
+    "pkIni": 13.7,
+    "pkFin": 18.431,
+    "desc": "El Bachiller - Rot. A-31"
    }
   ],
   "insp": [],
@@ -709,7 +716,7 @@
     "gps": ""
    }
   ],
-  "seq": 137,
+  "seq": 138,
   "ajustes": {
    "sector": "ZONA 2"
   },
