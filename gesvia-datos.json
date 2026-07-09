@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-09T11:17:11.507Z",
+ "exportado": "2026-07-09T11:18:21.791Z",
  "datos": {
   "roads": [
    {
@@ -650,6 +650,13 @@
     "pkIni": 0,
     "pkFin": 3.277,
     "desc": "CM-332 - Villavaliente"
+   },
+   {
+    "id": "x133",
+    "roadId": "x105",
+    "pkIni": 3.3,
+    "pkFin": 10.943,
+    "desc": "Villavaliente - Casas del Cerro"
    }
   ],
   "insp": [],
@@ -681,7 +688,7 @@
     "gps": ""
    }
   ],
-  "seq": 133,
+  "seq": 134,
   "ajustes": {
    "sector": "ZONA 2"
   },
