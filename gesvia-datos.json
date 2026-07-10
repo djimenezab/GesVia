@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-10T07:31:35.271Z",
+ "exportado": "2026-07-10T07:32:45.389Z",
  "datos": {
   "roads": [
    {
@@ -111,6 +111,12 @@
     "codigo": "CM-412",
     "nombre": "Ontur - Almansa",
     "sector": "ZONA 2.2"
+   },
+   {
+    "id": "x158",
+    "codigo": "CM-3226",
+    "nombre": "Mahora - Villamalea",
+    "sector": "ZONA 2.1"
    }
   ],
   "tramos": [
@@ -830,7 +836,7 @@
     "gps": ""
    }
   ],
-  "seq": 158,
+  "seq": 159,
   "ajustes": {
    "sector": "ZONA 2"
   },
