@@ -223,7 +223,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.47</span></span></h1>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.48</span></span></h1>
       <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
@@ -313,7 +313,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
         <input type="date" id="i-fecha">
       </label>
       <label class="campo">Inspector / vigilante
-        <input id="i-inspector" placeholder="Nombre o iniciales">
+        <select id="i-inspector"></select>
       </label>
     </div>
 
@@ -494,6 +494,20 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   </div>
 
   <div class="tarjeta" style="margin-bottom:1rem">
+    <h3 style="margin-bottom:.7rem">Vigilantes / inspectores</h3>
+    <p style="color:var(--texto2);font-size:.9rem;margin-bottom:.6rem">
+      Añade aquí los nombres del personal; aparecerán como desplegable al registrar una inspección.
+    </p>
+    <div class="plano-toolbar" style="margin:0">
+      <label class="campo" style="margin:0;flex:1;min-width:200px">Nuevo vigilante
+        <input id="aj-vig-nombre" placeholder="Nombre o iniciales" onkeydown="if(event.key==='Enter')addVigilante()" style="margin-top:.2rem">
+      </label>
+      <button class="btn" onclick="addVigilante()">Añadir</button>
+    </div>
+    <div id="aj-vig-lista" style="margin-top:.7rem"></div>
+  </div>
+
+  <div class="tarjeta" style="margin-bottom:1rem">
     <h3 style="margin-bottom:.7rem">Datos y copias de seguridad</h3>
     <div class="aviso-banda" style="margin-bottom:.9rem">
       <strong>Sincronización activada:</strong> si configuras GitHub en el botón ⬆⬇ de arriba, al abrir la app se descargan los datos del repositorio y cada cambio se sube automáticamente a los pocos segundos. El punto de color indica el estado: verde = sincronizado, ámbar = subiendo, rojo = error o sin conexión. La copia JSON manual sigue disponible como respaldo extra.
@@ -511,7 +525,11 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   </div>
 
   <div class="tarjeta" style="margin-bottom:1rem">
-    <h3 style="margin-bottom:.4rem">Plano de la zona · trazados de carreteras</h3>
+    <h3 style="margin:0;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="togglePlano()">
+      <span>Plano de la zona · trazados de carreteras</span>
+      <button class="btn sec mini" id="plano-toggle" type="button">▸ Desplegar</button>
+    </h3>
+    <div id="plano-cuerpo" style="display:none;margin-top:.7rem">
     <p style="color:var(--texto2);font-size:.9rem;margin-bottom:.7rem">
       Dibuja el recorrido de cada <strong>tramo</strong> sobre el plano (una sola vez). Selecciona
       carretera y tramo, haz clic a lo largo de su recorrido y pulsa «Terminar trazo». Repite con
@@ -535,11 +553,12 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
       </div>
     </div>
     <div id="ed-lista" style="margin-top:.7rem"></div>
+    </div>
   </div>
 
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
-      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.47</span></strong>
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.48</span></strong>
     </p>
   </div>
 </section>
@@ -558,7 +577,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.47';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.48';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -611,6 +630,7 @@ function load(){
   if(!S || !Array.isArray(S.roads)) S = {roads:[],tramos:[],insp:[],ots:[],seq:1};
   if(!S.ajustes) S.ajustes = {sector:''};
   if(!S.trazados) S.trazados = {};   // { tramoId: [ [x,y], [x,y], ... ] } en % del plano (0..100)
+  if(!Array.isArray(S.vigilantes)) S.vigilantes = [];
   migrarFotos();
 }
 let avisadoAlmacen = false;
@@ -678,6 +698,7 @@ function renderAjustes(){
   $('aj-sector').value = (S.ajustes && S.ajustes.sector) || '';
   aplicarCabecera();
   renderInfoAlmacen();
+  renderVigilantes();
   edInit();
 }
 function guardarAjustes(){
@@ -685,6 +706,48 @@ function guardarAjustes(){
   S.ajustes.sector = $('aj-sector').value;
   aplicarCabecera();
   save();
+}
+
+/* Plegar/desplegar la tarjeta del plano */
+let planoDesplegado = false;
+function togglePlano(){
+  planoDesplegado = !planoDesplegado;
+  $('plano-cuerpo').style.display = planoDesplegado ? '' : 'none';
+  $('plano-toggle').textContent = planoDesplegado ? '▾ Plegar' : '▸ Desplegar';
+  if(planoDesplegado){
+    edInit();
+    // reposicionar el SVG del editor cuando ya es visible
+    requestAnimationFrame(()=>{ if(window.edRedibuja) edRedibuja(); });
+  }
+}
+
+/* ---------- Vigilantes / inspectores ---------- */
+function renderVigilantes(){
+  const box = $('aj-vig-lista'); if(!box) return;
+  const vs = S.vigilantes || [];
+  if(!vs.length){ box.innerHTML = '<p style="color:var(--texto2);font-size:.9rem">Aún no hay vigilantes. Añade el primero arriba.</p>'; return; }
+  box.innerHTML = vs.map((v,i)=>`<div class="trazo-item">
+    <span style="flex:1">${esc(v)}</span>
+    <button class="btn peligro mini" onclick="delVigilante(${i})">Eliminar</button>
+  </div>`).join('');
+}
+function addVigilante(){
+  const inp = $('aj-vig-nombre');
+  const nombre = (inp.value||'').trim();
+  if(!nombre) return toast('Escribe un nombre.');
+  if(!S.vigilantes) S.vigilantes = [];
+  if(S.vigilantes.some(v=>v.toLowerCase()===nombre.toLowerCase())) return toast('Ese vigilante ya está en la lista.');
+  S.vigilantes.push(nombre);
+  S.vigilantes.sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+  inp.value='';
+  save(); renderVigilantes();
+  toast('Vigilante añadido.');
+}
+function delVigilante(i){
+  const v = S.vigilantes[i];
+  if(!confirm('¿Eliminar a '+v+' de la lista?')) return;
+  S.vigilantes.splice(i,1);
+  save(); renderVigilantes();
 }
 
 /* =====================================================
@@ -1165,8 +1228,21 @@ function fillSelectTramos(selRoad, selTramo){
 function renderInspeccion(){
   fillSelectRoads($('i-road')); fillTramos();
   $('i-fam').innerHTML = FAMILIAS.map(f=>`<option value="${f.id}">${esc(f.nombre)}</option>`).join('');
+  fillVigilantes();
   if(!$('i-fecha').value) $('i-fecha').value = hoy();
   renderParams(); pintaValor(); listInsp(); renderFotosBuffer('i');
+}
+function fillVigilantes(){
+  const sel = $('i-inspector'); if(!sel) return;
+  const prev = sel.value;
+  const vs = S.vigilantes || [];
+  sel.innerHTML = '<option value="">— sin especificar —</option>'
+    + vs.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
+  if(!vs.length){
+    sel.innerHTML += '<option value="" disabled>(añade vigilantes en Ajustes)</option>';
+  }
+  // conservar selección previa si sigue existiendo
+  if(prev && vs.includes(prev)) sel.value = prev;
 }
 function fillTramos(){ fillSelectTramos($('i-road'), $('i-tramo')); }
 function renderParams(){
@@ -1787,7 +1863,7 @@ function importJSON(input){
       const d = JSON.parse(rd.result);
       if(!Array.isArray(d.roads)) throw 0;
       if(!confirm('Esto sustituirá los datos actuales por los del archivo. ¿Continuar?')) return;
-      S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; migrarFotos(); save(); aplicarCabecera(); go('panel'); toast('Copia importada correctamente.');
+      S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; migrarFotos(); save(); aplicarCabecera(); go('panel'); toast('Copia importada correctamente.');
     }catch(e){ toast('El archivo no parece una copia válida de GesVía.'); }
     input.value='';
   };
@@ -2042,7 +2118,7 @@ async function descargarDeGitHub(){
     const parsed = decodifica((await res.json()).content);
     const d = parsed.datos || parsed; // admite también un JSON exportado a mano
     if(!d || !Array.isArray(d.roads)){ setSyncEstado('❌ El archivo no tiene el formato de GesVía', 'var(--critico)'); return; }
-    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; migrarFotos(); saveLocal(); aplicarCabecera(); go('panel');
+    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; migrarFotos(); saveLocal(); aplicarCabecera(); go('panel');
     setSyncEstado(`✅ Descargado: ${S.roads.length} carreteras · ${S.insp.length} inspecciones`, 'var(--ok)');
     setSyncDot('var(--ok)', 'Sincronizado ✓'); toast('📥 Datos descargados de GitHub');
   }catch(e){ setSyncEstado('❌ Error: '+e.message, 'var(--critico)'); }
@@ -2094,7 +2170,7 @@ async function autoDescargar(){
       const parsed = decodifica((await res.json()).content);
       const d = parsed.datos || parsed;
       if(d && Array.isArray(d.roads)){
-        S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; migrarFotos(); saveLocal(); aplicarCabecera();
+        S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; migrarFotos(); saveLocal(); aplicarCabecera();
         setSyncDot('var(--ok)', 'Sincronizado ✓');
         const activa = document.querySelector('nav button.activo');
         go(activa? activa.dataset.v || 'panel' : 'panel');
@@ -2129,7 +2205,7 @@ async function refrescarSiHayNovedades(motivo){
     const local  = JSON.stringify(S);
     if(remoto === local) return;              // ya estamos al día, no tocamos nada
     if(pendienteSubir) return;                // por si cambió mientras descargábamos
-    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; migrarFotos();
+    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; migrarFotos();
     saveLocal(); aplicarCabecera();
     const activa = document.querySelector('nav button.activo');
     go(activa? activa.dataset.v || 'panel' : 'panel');

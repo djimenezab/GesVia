@@ -1,5 +1,11 @@
 # GesVía · Gestión de la conservación de carreteras (PWA)
 
+## Novedades v1.48
+- La sección del **plano** en Ajustes está **plegada** por defecto (ocupa menos); se abre con el
+  botón «Desplegar» solo cuando hace falta editar trazados.
+- Nueva sección **Vigilantes / inspectores** en Ajustes: los nombres que añadas aparecen como
+  **desplegable** al registrar una inspección (en vez de escribirlos a mano cada vez).
+
 ## Novedades v1.47
 - Las carreteras aparecen **ordenadas por código** (orden natural: CM-316 antes que CM-3114) en
   todos los sitios: panel, inventario y desplegables. Ya no importa el orden en que se metieron.
@@ -140,7 +146,7 @@ LEEME.md
 ## Cuando actualices la app
 
 Si subes un `index.html` nuevo, edita en `sw.js` la primera línea y sube la versión
-(`gesvia-v1.21` → `gesvia-v1.22`). Así los móviles descargan la versión nueva en vez
+(`gesvia-v1.22` → `gesvia-v1.23`). Así los móviles descargan la versión nueva en vez
 de seguir usando la copia guardada en caché.
 
 ## Sincronización automática con GitHub (como RegIn 1.91)
