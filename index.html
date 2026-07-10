@@ -223,7 +223,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.46</span></span></h1>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.47</span></span></h1>
       <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
@@ -539,7 +539,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
-      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.46</span></strong>
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.47</span></strong>
     </p>
   </div>
 </section>
@@ -558,7 +558,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.46';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.47';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -631,6 +631,9 @@ const famName = id => (FAMILIAS.find(f=>f.id===id)||{}).nombre || id;
 const road = id => S.roads.find(r=>r.id===id);
 const tramo = id => S.tramos.find(t=>t.id===id);
 const tramosDe = rid => S.tramos.filter(t=>t.roadId===rid).sort((a,b)=>a.pkIni-b.pkIni);
+// Carreteras ordenadas por código con orden "natural" (CM-316 antes que CM-3114)
+const roadsOrdenadas = () => [...S.roads].sort((a,b)=>
+  (a.codigo||'').localeCompare(b.codigo||'', 'es', {numeric:true, sensitivity:'base'}));
 const pk = n => { const km=Math.floor(n), m=Math.round((n-km)*1000); return km+'+'+String(m).padStart(3,'0'); };
 const hoy = ()=> new Date().toISOString().slice(0,10);
 const fFecha = f => { if(!f) return '—'; const [a,m,d]=f.split('-'); return `${d}/${m}/${a}`; };
@@ -701,7 +704,7 @@ function colorDe(codigo){
 function edInit(){
   const sel = $('ed-road'); if(!sel) return;
   sel.innerHTML = S.roads.length
-    ? S.roads.map(r=>`<option value="${r.id}">${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('')
+    ? roadsOrdenadas().map(r=>`<option value="${r.id}">${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('')
     : '<option value="">— crea antes carreteras en «Red» —</option>';
   S.roads.forEach(r=>colorDe(r.codigo));
   edFillTramos();
@@ -860,7 +863,7 @@ function renderPanel(){
   }).join('');
 
   renderListaFiltrada();
-  $('esquemas').innerHTML = S.roads.map(r=>esquemaRoad(r,false)).join('');
+  $('esquemas').innerHTML = roadsOrdenadas().map(r=>esquemaRoad(r,false)).join('');
   requestAnimationFrame(()=>posicionarReglas($('esquemas')));
 }
 
@@ -1000,7 +1003,8 @@ function renderRed(){
   const box = $('listaRoads');
   if(!S.roads.length){ box.innerHTML = '<div class="tarjeta"><p style="color:var(--texto2)">Aún no hay carreteras. Crea la primera con el formulario de arriba.</p></div>'; const inf=$('red-buscar-info'); if(inf) inf.textContent=''; return; }
   const q = (($('red-buscar')||{}).value || '').trim().toLowerCase();
-  const lista = q? S.roads.filter(r=> (r.codigo+' '+(r.nombre||'')+' '+(r.sector||'')).toLowerCase().includes(q)) : S.roads;
+  const base = roadsOrdenadas();
+  const lista = q? base.filter(r=> (r.codigo+' '+(r.nombre||'')+' '+(r.sector||'')).toLowerCase().includes(q)) : base;
   const inf = $('red-buscar-info');
   if(inf) inf.textContent = q? `${lista.length} de ${S.roads.length} carreteras` : '';
   if(!lista.length){ box.innerHTML = `<div class="tarjeta"><p style="color:var(--texto2)">Ninguna carretera coincide con «${esc(q)}».</p></div>`; return; }
@@ -1152,7 +1156,7 @@ function verFotoGrande(src){
 }
 
 function fillSelectRoads(sel){
-  sel.innerHTML = S.roads.map(r=>`<option value="${r.id}">${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('') || '<option value="">— crea antes una carretera —</option>';
+  sel.innerHTML = roadsOrdenadas().map(r=>`<option value="${r.id}">${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('') || '<option value="">— crea antes una carretera —</option>';
 }
 function fillSelectTramos(selRoad, selTramo){
   const ts = tramosDe(selRoad.value);
@@ -1241,7 +1245,7 @@ function renderOrdenes(){
   fillSelectRoads($('o-road')); fillTramosOT();
   $('o-fam').innerHTML = FAMILIAS.map(f=>`<option value="${f.id}">${esc(f.nombre)}</option>`).join('');
   const fsel = $('ot-filtro-road'), prev = fsel.value;
-  fsel.innerHTML = '<option value="*">Todas las carreteras</option>' + S.roads.map(r=>`<option value="${r.id}">${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('');
+  fsel.innerHTML = '<option value="*">Todas las carreteras</option>' + roadsOrdenadas().map(r=>`<option value="${r.id}">${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('');
   if(prev && [...fsel.options].some(o=>o.value===prev)) fsel.value = prev;
   fotosBuffer.o = [];
   listOT(); renderFotosBuffer('o');
@@ -1289,7 +1293,7 @@ function delOT(oid){ if(!confirm('¿Eliminar la orden?')) return; S.ots = S.ots.
 function editarOT(oid){
   const o = S.ots.find(x=>x.id===oid); if(!o) return;
   const t = tramo(o.tramoId);
-  const optRoads = S.roads.map(r=>`<option value="${r.id}" ${t&&t.roadId===r.id?'selected':''}>${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('');
+  const optRoads = roadsOrdenadas().map(r=>`<option value="${r.id}" ${t&&t.roadId===r.id?'selected':''}>${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('');
   const optFam = FAMILIAS.map(f=>`<option value="${f.id}" ${o.fam===f.id?'selected':''}>${esc(f.nombre)}</option>`).join('');
   abrirModal(`<button class="cerrar-x" onclick="cerrarModal()">✕</button>
     <h3>Editar orden de trabajo</h3>
@@ -1433,7 +1437,7 @@ function listOT(){
    ===================================================== */
 function renderInformeForm(){
   const fr = $('f-road');
-  fr.innerHTML = '<option value="*">Toda la red</option>' + S.roads.map(r=>`<option value="${r.id}">${esc(r.codigo)}</option>`).join('');
+  fr.innerHTML = '<option value="*">Toda la red</option>' + roadsOrdenadas().map(r=>`<option value="${r.id}">${esc(r.codigo)}</option>`).join('');
   $('f-fam').innerHTML = '<option value="*">Todas las familias</option>' + FAMILIAS.map(f=>`<option value="${f.id}">${esc(f.nombre)}</option>`).join('');
   cambiaTipoInforme();
 }
@@ -1483,7 +1487,7 @@ function imprimir(){
   });
 }
 function construirInforme(roadSel, famSel, modo){
-  const roads = roadSel==='*'? S.roads : S.roads.filter(r=>r.id===roadSel);
+  const roads = roadSel==='*'? roadsOrdenadas() : S.roads.filter(r=>r.id===roadSel);
   const fams = famSel==='*'? FAMILIAS : FAMILIAS.filter(f=>f.id===famSel);
   const fechaTxt = new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
 
@@ -1578,7 +1582,7 @@ function cabInforme(titulo, subtitulo){
 
 /* ---------- Informe: listado de tramos con defecto/crítico (sin gráfica) ---------- */
 function informeListado(roadSel, famSel){
-  const roads = roadSel==='*'? S.roads : S.roads.filter(r=>r.id===roadSel);
+  const roads = roadSel==='*'? roadsOrdenadas() : S.roads.filter(r=>r.id===roadSel);
   const fams  = famSel==='*'? FAMILIAS : FAMILIAS.filter(f=>f.id===famSel);
   let bloques = '';
   let totalFilas = 0;

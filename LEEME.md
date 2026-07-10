@@ -1,5 +1,18 @@
 # GesVía · Gestión de la conservación de carreteras (PWA)
 
+## Novedades v1.47
+- Las carreteras aparecen **ordenadas por código** (orden natural: CM-316 antes que CM-3114) en
+  todos los sitios: panel, inventario y desplegables. Ya no importa el orden en que se metieron.
+
+## Novedades v1.46
+- En la escala de PK del esquema, cuando dos marcas caen muy juntas (tramos cortos), la segunda
+  etiqueta se **baja un renglón** automáticamente para que no se solapen y se lean bien.
+
+## Novedades v1.45
+- **Auto-actualización**: la app ahora carga siempre la última versión desde GitHub al abrirse
+  (antes se quedaba con la copia guardada y el número de versión no cambiaba). Cuando hay una
+  versión nueva, se recarga sola. El número de versión visible ya coincide con la publicada.
+
 ## Novedades v1.44
 - En el «Plano de estado», el trazado resaltado es más **ancho** (se ve mejor al imprimir) y se
   ha **quitado el rótulo** del código de carretera (el propio mapa ya lleva la nomenclatura),
@@ -127,7 +140,7 @@ LEEME.md
 ## Cuando actualices la app
 
 Si subes un `index.html` nuevo, edita en `sw.js` la primera línea y sube la versión
-(`gesvia-v1.18` → `gesvia-v1.19`). Así los móviles descargan la versión nueva en vez
+(`gesvia-v1.21` → `gesvia-v1.22`). Así los móviles descargan la versión nueva en vez
 de seguir usando la copia guardada en caché.
 
 ## Sincronización automática con GitHub (como RegIn 1.91)
