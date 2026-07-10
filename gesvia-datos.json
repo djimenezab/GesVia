@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-10T07:39:03.054Z",
+ "exportado": "2026-07-10T07:39:50.748Z",
  "datos": {
   "roads": [
    {
@@ -819,6 +819,13 @@
     "pkIni": 8,
     "pkFin": 9.186,
     "desc": "Variante Navas J."
+   },
+   {
+    "id": "x161",
+    "roadId": "x158",
+    "pkIni": 9.186,
+    "pkFin": 12.345,
+    "desc": "Navas J. - Cruce Cenizate"
    }
   ],
   "insp": [],
@@ -850,7 +857,7 @@
     "gps": ""
    }
   ],
-  "seq": 161,
+  "seq": 162,
   "ajustes": {
    "sector": "ZONA 2"
   },
