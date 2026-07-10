@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-10T07:40:28.914Z",
+ "exportado": "2026-07-10T07:41:27.550Z",
  "datos": {
   "roads": [
    {
@@ -833,6 +833,13 @@
     "pkIni": 12.345,
     "pkFin": 16.639,
     "desc": "Variante Cenizate"
+   },
+   {
+    "id": "x163",
+    "roadId": "x158",
+    "pkIni": 16.639,
+    "pkFin": 20.332,
+    "desc": "Cenizate - Cruce Champinter"
    }
   ],
   "insp": [],
@@ -864,7 +871,7 @@
     "gps": ""
    }
   ],
-  "seq": 163,
+  "seq": 164,
   "ajustes": {
    "sector": "ZONA 2"
   },
