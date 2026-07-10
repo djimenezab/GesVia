@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-10T10:08:23.204Z",
+ "exportado": "2026-07-10T10:50:40.471Z",
  "datos": {
   "roads": [
    {
@@ -849,7 +849,29 @@
     "desc": "Champinter - CM-3124"
    }
   ],
-  "insp": [],
+  "insp": [
+   {
+    "id": "x165",
+    "tramoId": "x142",
+    "fam": "FIRME",
+    "fecha": "2026-07-10",
+    "valor": 48,
+    "obs": "",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {
+     "iri": 3,
+     "det": 10
+    },
+    "fotos": [
+     {
+      "id": "auzduju",
+      "pendiente": false,
+      "ruta": "fotos/x165_auzduju.jpg"
+     }
+    ]
+   }
+  ],
   "ots": [
    {
     "id": "x36",
@@ -878,7 +900,7 @@
     "gps": ""
    }
   ],
-  "seq": 165,
+  "seq": 166,
   "ajustes": {
    "sector": "ZONA 2"
   },
