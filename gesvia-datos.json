@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-10T10:50:40.471Z",
+ "exportado": "2026-07-10T10:54:08.057Z",
  "datos": {
   "roads": [
    {
@@ -870,6 +870,21 @@
       "ruta": "fotos/x165_auzduju.jpg"
      }
     ]
+   },
+   {
+    "id": "x166",
+    "tramoId": "x142",
+    "fam": "SH",
+    "fecha": "2026-07-10",
+    "valor": 69,
+    "obs": "",
+    "inspector": "David Jiménez",
+    "gps": "39.009323, -1.799192",
+    "params": {
+     "rl": 150,
+     "meses": 24
+    },
+    "fotos": []
    }
   ],
   "ots": [
@@ -900,7 +915,7 @@
     "gps": ""
    }
   ],
-  "seq": 166,
+  "seq": 167,
   "ajustes": {
    "sector": "ZONA 2"
   },
