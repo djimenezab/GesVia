@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-10T07:36:43.468Z",
+ "exportado": "2026-07-10T07:38:02.882Z",
  "datos": {
   "roads": [
    {
@@ -805,6 +805,13 @@
     "pkIni": 336.474,
     "pkFin": 344.453,
     "desc": "Santuario - Cruce A-31"
+   },
+   {
+    "id": "x159",
+    "roadId": "x158",
+    "pkIni": 0,
+    "pkFin": 8,
+    "desc": "N-322 - Navas de Jorquera"
    }
   ],
   "insp": [],
@@ -836,7 +843,7 @@
     "gps": ""
    }
   ],
-  "seq": 159,
+  "seq": 160,
   "ajustes": {
    "sector": "ZONA 2"
   },
