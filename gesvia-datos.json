@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-10T11:07:42.064Z",
+ "exportado": "2026-07-10T11:08:17.048Z",
  "datos": {
   "roads": [
    {
@@ -974,6 +974,18 @@
      "rl": 200
     },
     "fotos": []
+   },
+   {
+    "id": "x174",
+    "tramoId": "x119",
+    "fam": "SV",
+    "fecha": "2026-07-10",
+    "valor": 70,
+    "obs": "Las señales sentido Albacete están peor.",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -1004,7 +1016,7 @@
     "gps": ""
    }
   ],
-  "seq": 174,
+  "seq": 175,
   "ajustes": {
    "sector": "ZONA 2"
   },
