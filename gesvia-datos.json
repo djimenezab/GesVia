@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-10T11:23:33.768Z",
+ "exportado": "2026-07-10T11:25:18.595Z",
  "datos": {
   "roads": [
    {
@@ -1190,6 +1190,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x192",
+    "tramoId": "x121",
+    "fam": "MAR",
+    "fecha": "2026-07-10",
+    "valor": 71,
+    "obs": "Retallos se están empezando a meter en arcén, seguir controlando su estado, sobre todo al llegar a Valdeganga.",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -1220,7 +1232,7 @@
     "gps": ""
    }
   ],
-  "seq": 192,
+  "seq": 193,
   "ajustes": {
    "sector": "ZONA 2"
   },
