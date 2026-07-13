@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-13T11:17:28.696Z",
+ "exportado": "2026-07-13T11:17:55.378Z",
  "datos": {
   "roads": [
    {
@@ -1310,6 +1310,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x202",
+    "tramoId": "x86",
+    "fam": "MAR",
+    "fecha": "2026-07-13",
+    "valor": 87,
+    "obs": "Arbusto bajo",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -1340,7 +1352,7 @@
     "gps": ""
    }
   ],
-  "seq": 202,
+  "seq": 203,
   "ajustes": {
    "sector": "ZONA 2"
   },
