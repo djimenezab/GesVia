@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-13T11:17:55.378Z",
+ "exportado": "2026-07-13T11:19:53.297Z",
  "datos": {
   "roads": [
    {
@@ -1281,7 +1281,7 @@
     "fam": "BAL",
     "fecha": "2026-07-13",
     "valor": 71,
-    "obs": "",
+    "obs": "Captafaros próximos a cambiar",
     "inspector": "David Jiménez",
     "gps": "",
     "params": {},
