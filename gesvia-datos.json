@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-13T11:29:30.118Z",
+ "exportado": "2026-07-13T11:31:27.625Z",
  "datos": {
   "roads": [
    {
@@ -1359,7 +1359,7 @@
       "ruta": "fotos/x88_6ctwskc.jpg"
      }
     ],
-    "obs": "",
+    "obs": "150 metros 1,2x 0,4 x 0,8",
     "gps": "38.781149, -1.326241"
    }
   ],
