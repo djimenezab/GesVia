@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-13T12:49:20.065Z",
+ "exportado": "2026-07-13T15:06:33.816Z",
  "datos": {
   "roads": [
    {
@@ -1455,7 +1455,7 @@
       "ruta": "fotos/x88_6ctwskc.jpg"
      }
     ],
-    "obs": "PK 47 Margen Izquiereo\n150 metros 1,2x 0,4 x 0,8",
+    "obs": "PK 47 Margen Izquierdo\n150 metros 0,8x0,8",
     "gps": "38.781149, -1.326241"
    }
   ],
