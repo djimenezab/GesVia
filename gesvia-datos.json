@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-13T11:43:46.639Z",
+ "exportado": "2026-07-13T11:44:29.944Z",
  "datos": {
   "roads": [
    {
@@ -1346,6 +1346,30 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x205",
+    "tramoId": "x87",
+    "fam": "SH",
+    "fecha": "2026-07-13",
+    "valor": 8,
+    "obs": "Eje apenas se ve en mucho tramo.",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
+   },
+   {
+    "id": "x206",
+    "tramoId": "x87",
+    "fam": "SV",
+    "fecha": "2026-07-13",
+    "valor": 74,
+    "obs": "",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -1387,7 +1411,7 @@
     "gps": "38.781149, -1.326241"
    }
   ],
-  "seq": 205,
+  "seq": 207,
   "ajustes": {
    "sector": "ZONA 2"
   },
