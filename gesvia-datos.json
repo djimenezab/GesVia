@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-13T11:19:53.297Z",
+ "exportado": "2026-07-13T11:29:30.118Z",
  "datos": {
   "roads": [
    {
@@ -1347,9 +1347,20 @@
     "estado": "pendiente",
     "creada": "2026-07-08",
     "cerrada": null,
-    "fotos": [],
+    "fotos": [
+     {
+      "id": "0e8g04t",
+      "pendiente": false,
+      "ruta": "fotos/x88_0e8g04t.jpg"
+     },
+     {
+      "id": "6ctwskc",
+      "pendiente": false,
+      "ruta": "fotos/x88_6ctwskc.jpg"
+     }
+    ],
     "obs": "",
-    "gps": ""
+    "gps": "38.781149, -1.326241"
    }
   ],
   "seq": 203,
