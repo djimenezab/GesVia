@@ -191,12 +191,23 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 .informe h3{font-size:1.05rem;font-weight:800;margin:1.3rem 0 .5rem;border-left:5px solid var(--senal);padding-left:.5rem}
 .informe table{font-size:.87rem}
 .informe .pie{margin-top:2rem;padding-top:.6rem;border-top:1px solid var(--borde);font-size:.78rem;color:var(--texto2);display:flex;justify-content:space-between}
+/* Parte de trabajo */
+.pt-tabla{width:100%;border-collapse:collapse;margin-bottom:.5rem}
+.pt-tabla td{padding:.4rem .6rem;border:1px solid var(--borde);font-size:.95rem;vertical-align:top}
+.pt-tabla .pt-et{background:#f3f4f1;font-weight:700;width:34%;white-space:nowrap}
+.pt-fotos{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.3rem}
+.pt-foto{width:31%;max-width:260px;height:auto;border:1px solid var(--borde);border-radius:6px;object-fit:cover}
+.pt-firmas{display:flex;gap:1.5rem;margin-top:2.5rem;flex-wrap:wrap}
+.pt-firma{flex:1;min-width:150px;font-size:.85rem;color:var(--texto2);text-align:center}
+.pt-firma .pt-linea{border-top:1px solid #333;margin-bottom:.3rem;height:2.5rem}
 @media print{
   body.imprimiendo header, body.imprimiendo main{display:none!important}
   body.imprimiendo #printArea{display:block}
   .informe{border:0;margin:0;max-width:none;padding:0}
   .celda:hover{transform:none;outline:none}
   .esquema{box-shadow:none}
+  .pt-foto{width:30%}
+  .pt-fotos{page-break-inside:avoid}
   @page{margin:14mm}
 }
 
@@ -223,7 +234,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.49</span></span></h1>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.50</span></span></h1>
       <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
@@ -559,7 +570,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
-      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.49</span></strong>
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.50</span></strong>
     </p>
   </div>
 </section>
@@ -578,7 +589,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.49';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.50';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -1618,7 +1629,7 @@ function listOT(){
           ${o.fotos&&o.fotos.length? `<div style="margin-top:.4rem;display:flex;gap:.4rem;flex-wrap:wrap">${thumbsFotos(o)}</div>`:''}
         </td>
         <td class="num">${fFecha(o.creada)}${o.cerrada? '<br>✔ '+fFecha(o.cerrada):''}</td>
-        <td style="white-space:nowrap"><button class="btn sec mini" title="Editar orden" onclick="editarOT('${o.id}')">✏️</button> <button class="btn peligro mini" onclick="delOT('${o.id}')">✕</button></td></tr>`;
+        <td style="white-space:nowrap"><button class="btn sec mini" title="Imprimir parte de trabajo" onclick="imprimirOT('${o.id}')">🖨</button> <button class="btn sec mini" title="Editar orden" onclick="editarOT('${o.id}')">✏️</button> <button class="btn peligro mini" onclick="delOT('${o.id}')">✕</button></td></tr>`;
     }).join('')}</tbody></table></div>
     <p class="ayuda" style="margin-top:.5rem">Pulsa sobre el estado para avanzar: pendiente → en curso → completada.</p>`
     : `<p style="color:var(--texto2)">${filtroRoad && filtroRoad!=='*'? 'No hay órdenes para esta carretera.':'No hay órdenes de trabajo.'}</p>`;
@@ -1676,6 +1687,64 @@ function imprimir(){
   requestAnimationFrame(()=>{
     window.print();
     setTimeout(()=>document.body.classList.remove('imprimiendo'), 300);
+  });
+}
+
+/* ---------- Parte de trabajo imprimible (una orden) ---------- */
+function imprimirOT(oid){
+  const o = S.ots.find(x=>x.id===oid); if(!o) return;
+  const t = tramo(o.tramoId), r = t? road(t.roadId) : null;
+  const fechaTxt = new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
+  const estadoTxt = {pendiente:'Pendiente', 'en curso':'En curso', completada:'Completada'}[o.estado] || o.estado;
+  const prioTxt = {alta:'Alta', media:'Media', baja:'Baja'}[o.prio] || o.prio;
+  const sector = (S.ajustes&&S.ajustes.sector) ? esc(S.ajustes.sector) : '';
+
+  const filaDato = (et,val)=> val ? `<tr><td class="pt-et">${et}</td><td>${val}</td></tr>` : '';
+  const fotos = (o.fotos||[]).map(f=>{
+    const src = f.pendiente ? f.data : urlFoto(f.ruta);
+    return `<img src="${src}" class="pt-foto">`;
+  }).join('');
+
+  const html = `<div class="informe parte-trabajo">
+    <div class="cab">
+      <div><h2>Parte de trabajo</h2><div style="color:var(--texto2)">Orden de conservación${sector? ' · '+sector:''}</div></div>
+      <div style="text-align:right"><div class="display" style="font-weight:800">GesVía</div>
+        <div style="color:var(--texto2);font-size:.9rem">${fechaTxt}</div></div>
+    </div>
+
+    <table class="pt-tabla">
+      <tbody>
+        ${filaDato('Carretera', r? '<strong>'+esc(r.codigo)+'</strong>'+(r.nombre?' · '+esc(r.nombre):'') : '—')}
+        ${filaDato('Tramo (PK)', t? 'PK '+pk(t.pkIni)+' – '+pk(t.pkFin)+(t.desc?' · '+esc(t.desc):'') : '—')}
+        ${filaDato('Familia', esc(famName(o.fam)))}
+        ${filaDato('Estado', estadoTxt)}
+        ${filaDato('Prioridad', prioTxt)}
+        ${filaDato('Fecha de creación', fFecha(o.creada))}
+        ${o.cerrada? filaDato('Fecha de ejecución', fFecha(o.cerrada)) : ''}
+        ${filaDato('Coordenadas GPS', o.gps? esc(o.gps) : '')}
+      </tbody>
+    </table>
+
+    <h3>Trabajos a realizar</h3>
+    <p style="font-size:1.05rem;margin:.2rem 0 .6rem">${esc(o.desc||'')}</p>
+    ${o.obs? `<h3>Observaciones</h3><p style="margin:.2rem 0 .6rem">${esc(o.obs)}</p>`:''}
+
+    ${fotos? `<h3>Fotografías</h3><div class="pt-fotos">${fotos}</div>`:''}
+
+    <div class="pt-firmas">
+      <div class="pt-firma"><div class="pt-linea"></div>Responsable / encargado</div>
+      <div class="pt-firma"><div class="pt-linea"></div>Ejecutado por</div>
+      <div class="pt-firma"><div class="pt-linea"></div>Fecha de realización</div>
+    </div>
+
+    <div class="pie"><span>Parte generado para la ejecución de los trabajos indicados.</span><span>Generado con GesVía</span></div>
+  </div>`;
+
+  $('printArea').innerHTML = html;
+  document.body.classList.add('imprimiendo');
+  requestAnimationFrame(()=>{
+    window.print();
+    setTimeout(()=>document.body.classList.remove('imprimiendo'), 400);
   });
 }
 function construirInforme(roadSel, famSel, modo){
