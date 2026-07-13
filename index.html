@@ -223,7 +223,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.48</span></span></h1>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.49</span></span></h1>
       <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
@@ -232,7 +232,6 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
       <span id="sync-dot" style="width:10px;height:10px;border-radius:50%;background:#9aa1a7;display:inline-block;transition:background .3s"></span>⬆⬇
     </button>
     <button data-v="panel" class="activo" onclick="go('panel')">Panel</button>
-    <button data-v="red" onclick="go('red')">Red</button>
     <button data-v="inspeccion" onclick="go('inspeccion')">Inspección</button>
     <button data-v="ordenes" onclick="go('ordenes')">Órdenes</button>
     <button data-v="informe" onclick="go('informe')">Informe</button>
@@ -263,35 +262,6 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 </section>
 
 <!-- ================= RED ================= -->
-<section id="v-red" class="vista">
-  <div class="titulo-vista">
-    <h2>Inventario de la red</h2>
-    <p>Carreteras y tramificación por puntos kilométricos.</p>
-  </div>
-  <div class="tarjeta" style="margin-bottom:1rem">
-    <h3 style="margin-bottom:.6rem">Añadir carretera</h3>
-    <div class="form-grid">
-      <label class="campo">Código
-        <input id="r-codigo" placeholder="Ej.: CM-3203">
-      </label>
-      <label class="campo">Denominación
-        <input id="r-nombre" placeholder="Ej.: Albacete – Peñas de San Pedro">
-      </label>
-      <label class="campo">Sector / zona
-        <input id="r-sector" placeholder="Ej.: Sector AB-2">
-      </label>
-    </div>
-    <div class="acciones"><button class="btn" onclick="addRoad()">Guardar carretera</button></div>
-  </div>
-  <div class="tarjeta" style="margin-bottom:1rem;padding:.7rem 1rem">
-    <label class="campo" style="margin:0">🔎 Buscar carretera
-      <input id="red-buscar" placeholder="Código, denominación o sector…" oninput="renderRed()" autocomplete="off">
-      <span class="ayuda" id="red-buscar-info"></span>
-    </label>
-  </div>
-  <div id="listaRoads"></div>
-</section>
-
 <!-- ================= INSPECCIÓN ================= -->
 <section id="v-inspeccion" class="vista">
   <div class="titulo-vista">
@@ -494,6 +464,37 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   </div>
 
   <div class="tarjeta" style="margin-bottom:1rem">
+    <h3 style="margin:0;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toggleRed()">
+      <span>Inventario de la red · carreteras y tramos</span>
+      <button class="btn sec mini" id="red-toggle" type="button">▸ Desplegar</button>
+    </h3>
+    <div id="red-cuerpo" style="display:none;margin-top:.7rem">
+      <div class="tarjeta" style="margin-bottom:1rem;background:#fafbf9">
+        <h3 style="margin-bottom:.6rem;font-size:1rem">Añadir carretera</h3>
+        <div class="form-grid">
+          <label class="campo">Código
+            <input id="r-codigo" placeholder="Ej.: CM-3203">
+          </label>
+          <label class="campo">Denominación
+            <input id="r-nombre" placeholder="Ej.: Albacete – Peñas de San Pedro">
+          </label>
+          <label class="campo">Sector / zona
+            <input id="r-sector" placeholder="Ej.: Sector AB-2">
+          </label>
+        </div>
+        <div class="acciones"><button class="btn" onclick="addRoad()">Guardar carretera</button></div>
+      </div>
+      <div class="tarjeta" style="margin-bottom:1rem;padding:.7rem 1rem;background:#fafbf9">
+        <label class="campo" style="margin:0">🔎 Buscar carretera
+          <input id="red-buscar" placeholder="Código, denominación o sector…" oninput="renderRed()" autocomplete="off">
+          <span class="ayuda" id="red-buscar-info"></span>
+        </label>
+      </div>
+      <div id="listaRoads"></div>
+    </div>
+  </div>
+
+  <div class="tarjeta" style="margin-bottom:1rem">
     <h3 style="margin-bottom:.7rem">Vigilantes / inspectores</h3>
     <p style="color:var(--texto2);font-size:.9rem;margin-bottom:.6rem">
       Añade aquí los nombres del personal; aparecerán como desplegable al registrar una inspección.
@@ -558,7 +559,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
-      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.48</span></strong>
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.49</span></strong>
     </p>
   </div>
 </section>
@@ -577,7 +578,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.48';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.49';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -683,7 +684,7 @@ function go(v){
   document.querySelectorAll('section.vista').forEach(s=>s.classList.remove('activa'));
   $('v-'+v).classList.add('activa');
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('activo', b.dataset.v===v));
-  ({panel:renderPanel, red:renderRed, inspeccion:renderInspeccion, ordenes:renderOrdenes, informe:renderInformeForm, ajustes:renderAjustes}[v])();
+  ({panel:renderPanel, inspeccion:renderInspeccion, ordenes:renderOrdenes, informe:renderInformeForm, ajustes:renderAjustes}[v])();
   window.scrollTo({top:0});
 }
 
@@ -699,7 +700,22 @@ function renderAjustes(){
   aplicarCabecera();
   renderInfoAlmacen();
   renderVigilantes();
+  renderRed();
   edInit();
+}
+
+/* Plegar/desplegar el inventario de la red */
+let redDesplegado = false;
+function toggleRed(){
+  redDesplegado = !redDesplegado;
+  $('red-cuerpo').style.display = redDesplegado ? '' : 'none';
+  $('red-toggle').textContent = redDesplegado ? '▾ Plegar' : '▸ Desplegar';
+  if(redDesplegado) renderRed();
+}
+function irACrearRed(){
+  go('ajustes');
+  if(!redDesplegado) toggleRed();
+  requestAnimationFrame(()=>{ const el=$('red-cuerpo'); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); });
 }
 function guardarAjustes(){
   if(!S.ajustes) S.ajustes = {};
@@ -768,7 +784,7 @@ function edInit(){
   const sel = $('ed-road'); if(!sel) return;
   sel.innerHTML = S.roads.length
     ? roadsOrdenadas().map(r=>`<option value="${r.id}">${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('')
-    : '<option value="">— crea antes carreteras en «Red» —</option>';
+    : '<option value="">— crea antes carreteras en Ajustes —</option>';
   S.roads.forEach(r=>colorDe(r.codigo));
   edFillTramos();
   edTrazoActual = null;
@@ -790,7 +806,7 @@ function edFillTramos(){
         const hecho = (S.trazados||{})[t.id] ? ' ✓' : '';
         return `<option value="${t.id}">PK ${pk(t.pkIni)} – ${pk(t.pkFin)}${t.desc?' · '+esc(t.desc):''}${hecho}</option>`;
       }).join('')
-    : '<option value="">— sin tramos (créalos en «Red») —</option>';
+    : '<option value="">— sin tramos (créalos en Ajustes) —</option>';
   edTrazoActual = null;
   edActualizarBotones();
   edRedibuja();
@@ -894,9 +910,9 @@ function renderPanel(){
   if(!S.roads.length){
     $('sinDatosPanel').innerHTML = `<div class="tarjeta" style="text-align:center;padding:2.2rem">
       <h3 style="font-size:1.2rem">Todavía no hay carreteras en el inventario</h3>
-      <p style="color:var(--texto2);margin:.5rem 0 1rem">Empieza creando tu red en la pestaña «Red», o carga los datos de ejemplo para ver cómo funciona.</p>
+      <p style="color:var(--texto2);margin:.5rem 0 1rem">Empieza creando tu red en «Ajustes → Inventario de la red», o carga los datos de ejemplo para ver cómo funciona.</p>
       <button class="btn" onclick="cargaDemo(true)">Cargar datos de ejemplo</button>
-      <button class="btn sec" onclick="go('red')">Crear mi red</button></div>`;
+      <button class="btn sec" onclick="irACrearRed()">Crear mi red</button></div>`;
     $('kpis').innerHTML=''; $('chipsPregunta').innerHTML=''; $('listaFiltrada').innerHTML=''; $('esquemas').innerHTML='';
     return;
   }
@@ -968,7 +984,7 @@ function renderListaFiltrada(){
 function esquemaRoad(r, paraInforme, soloFam){
   const ts = tramosDe(r.id);
   if(!ts.length) return `<div class="esquema"><h3>${esc(r.codigo)} <small>${esc(r.nombre||'')}</small></h3>
-    <p style="color:var(--texto2);margin-top:.4rem">Sin tramos definidos. Añádelos en «Red».</p></div>`;
+    <p style="color:var(--texto2);margin-top:.4rem">Sin tramos definidos. Añádelos en Ajustes → Inventario de la red.</p></div>`;
   const familiasMostrar = soloFam? FAMILIAS.filter(f=>f.id===soloFam) : FAMILIAS;
   const filas = familiasMostrar.map(f=>{
     const celdas = ts.map(t=>{
@@ -1172,7 +1188,7 @@ function renderFotosBuffer(prefijo){
       onclick="quitarFotoBuffer('${prefijo}','${f.id}')">✕</button>
   </div>`).join('');
   // Puede haber una lista en el formulario y otra en el modal de edición (órdenes)
-  const ids = prefijo==='o' ? ['o-fotos-lista','o-fotos-lista-edit'] : [prefijo+'-fotos-lista'];
+  const ids = prefijo==='o' ? ['o-fotos-lista','o-fotos-lista-edit'] : ['i-fotos-lista','i-fotos-lista-edit'];
   ids.forEach(id=>{ const el=$(id); if(el) el.innerHTML = html; });
 }
 async function anadirFotosBuffer(prefijo, fileList){
@@ -1278,7 +1294,7 @@ function pintaValor(){
 }
 function saveInsp(){
   const tid = $('i-tramo').value;
-  if(!tid) return toast('Selecciona un tramo (créalo antes en «Red» si no existe).');
+  if(!tid) return toast('Selecciona un tramo (créalo antes en Ajustes → Inventario de la red).');
   const params = {};
   (PARAMS[$('i-fam').value]||[]).forEach(p=>{ const el=$('p-'+p.k); if(el&&el.value!=='') params[p.k]=parseFloat(el.value); });
   S.insp.push({
@@ -1308,11 +1324,111 @@ function listInsp(){
         ${i.obs? `<div>${esc(i.obs)}</div>`:''}
         ${i.fotos&&i.fotos.length? `<div style="margin-top:.4rem;display:flex;gap:.4rem;flex-wrap:wrap">${thumbsFotos(i)}</div>`:''}
       </div>
-      <button class="btn peligro mini" onclick="delInsp('${i.id}')">Eliminar</button>
+      <div style="display:flex;flex-direction:column;gap:.35rem;align-items:flex-end">
+        <button class="btn sec mini" title="Editar inspección" onclick="editarInsp('${i.id}')">✏️</button>
+        <button class="btn peligro mini" onclick="delInsp('${i.id}')">Eliminar</button>
+      </div>
     </div>`;
   }).join('') : '<p style="color:var(--texto2)">Todavía no hay inspecciones.</p>';
 }
 function delInsp(iid){ if(!confirm('¿Eliminar esta inspección?')) return; S.insp = S.insp.filter(i=>i.id!==iid); save(); listInsp(); }
+
+function editarInsp(iid){
+  const ins = S.insp.find(x=>x.id===iid); if(!ins) return;
+  const t = tramo(ins.tramoId);
+  const optRoads = roadsOrdenadas().map(r=>`<option value="${r.id}" ${t&&t.roadId===r.id?'selected':''}>${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('');
+  const optFam = FAMILIAS.map(f=>`<option value="${f.id}" ${ins.fam===f.id?'selected':''}>${esc(f.nombre)}</option>`).join('');
+  const vs = S.vigilantes||[];
+  const optVig = '<option value="">— sin especificar —</option>' +
+    vs.map(v=>`<option value="${esc(v)}" ${ins.inspector===v?'selected':''}>${esc(v)}</option>`).join('') +
+    ( (ins.inspector && !vs.includes(ins.inspector)) ? `<option value="${esc(ins.inspector)}" selected>${esc(ins.inspector)} (no en lista)</option>` : '');
+  abrirModal(`<button class="cerrar-x" onclick="cerrarModal()">✕</button>
+    <h3>Editar inspección</h3>
+    <div class="form-grid">
+      <label class="campo">Carretera
+        <select id="ei-road" onchange="eiFillTramos()">${optRoads}</select></label>
+      <label class="campo">Tramo
+        <select id="ei-tramo"></select></label>
+      <label class="campo">Familia
+        <select id="ei-fam">${optFam}</select></label>
+      <label class="campo">Fecha
+        <input type="date" id="ei-fecha" value="${ins.fecha||''}"></label>
+      <label class="campo">Inspector / vigilante
+        <select id="ei-inspector">${optVig}</select></label>
+    </div>
+    <div style="margin-top:1rem">
+      <label class="campo">Indicador de estado (0–100)</label>
+      <div class="valorador">
+        <input type="range" id="ei-valor" min="0" max="100" value="${ins.valor}" oninput="eiPintaValor()">
+        <div class="valor-grande" id="ei-valorBox">${ins.valor}</div>
+      </div>
+    </div>
+    <div class="form-grid" style="margin-top:1rem">
+      <label class="campo">Observaciones
+        <textarea id="ei-obs">${esc(ins.obs||'')}</textarea></label>
+      <div>
+        <label class="campo">Coordenadas GPS
+          <input id="ei-gps" value="${esc(ins.gps||'')}" placeholder="lat, lon"></label>
+        <button class="btn sec mini" style="margin-top:.4rem" onclick="capturaGPSgen('ei-gps')">📍 Capturar mi posición</button>
+        <label class="campo" style="margin-top:.6rem">Añadir fotografías
+          <input type="file" id="ei-foto" accept="image/*" capture="environment" multiple onchange="anadirFotosBuffer('i', this.files); this.value='';"></label>
+        <div id="i-fotos-lista-edit" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem"></div>
+        <div id="ei-fotos-guardadas" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem"></div>
+      </div>
+    </div>
+    <div class="acciones">
+      <button class="btn" onclick="guardarEdicionInsp('${iid}')">Guardar cambios</button>
+      <button class="btn sec" onclick="cerrarModal()">Cancelar</button>
+    </div>`);
+  eiFillTramos(ins.tramoId);
+  eiPintaValor();
+  fotosBuffer.i = [];
+  renderFotosBuffer('i');
+  renderFotosGuardadasInsp(ins);
+}
+function eiFillTramos(selId){
+  const ts = tramosDe($('ei-road').value);
+  $('ei-tramo').innerHTML = ts.map(t=>`<option value="${t.id}" ${t.id===selId?'selected':''}>PK ${pk(t.pkIni)} – ${pk(t.pkFin)} ${t.desc?'· '+esc(t.desc):''}</option>`).join('') || '<option value="">— sin tramos —</option>';
+}
+function eiPintaValor(){
+  const v = +$('ei-valor').value, n = nivel(v);
+  const box = $('ei-valorBox');
+  box.textContent = v + ' · ' + NIVEL_TXT[n];
+  box.style.background = getComputedStyle(document.documentElement).getPropertyValue('--'+(n==='nd'?'nd':n));
+}
+function renderFotosGuardadasInsp(ins){
+  const cont = $('ei-fotos-guardadas'); if(!cont) return;
+  if(!ins.fotos || !ins.fotos.length){ cont.innerHTML=''; return; }
+  cont.innerHTML = ins.fotos.map(f=>{
+    const src = f.pendiente ? f.data : urlFoto(f.ruta);
+    return `<div style="position:relative;display:inline-block">
+      <img src="${src}" class="foto-mini" onclick="verFotoGrande('${src.replace(/'/g,"")}')">
+      <button class="btn peligro mini" title="Quitar" style="position:absolute;top:-6px;right:-6px;padding:.1rem .35rem;border-radius:50%"
+        onclick="quitarFotoGuardadaInsp('${ins.id}','${f.id}')">✕</button>
+    </div>`;
+  }).join('');
+}
+function quitarFotoGuardadaInsp(iid, fid){
+  const ins = S.insp.find(x=>x.id===iid); if(!ins||!ins.fotos) return;
+  ins.fotos = ins.fotos.filter(f=>f.id!==fid);
+  save(); renderFotosGuardadasInsp(ins);
+}
+function guardarEdicionInsp(iid){
+  const ins = S.insp.find(x=>x.id===iid); if(!ins) return;
+  const tid = $('ei-tramo').value;
+  if(!tid) return toast('Selecciona un tramo.');
+  ins.tramoId = tid;
+  ins.fam = $('ei-fam').value;
+  ins.fecha = $('ei-fecha').value || ins.fecha;
+  ins.inspector = $('ei-inspector').value;
+  ins.valor = +$('ei-valor').value;
+  ins.obs = $('ei-obs').value.trim();
+  ins.gps = $('ei-gps').value.trim();
+  const nuevas = volcarFotos('i');
+  ins.fotos = (ins.fotos || []).concat(nuevas);
+  save(); cerrarModal(); listInsp();
+  toast('Inspección actualizada.');
+}
 
 /* =====================================================
    ÓRDENES DE TRABAJO
