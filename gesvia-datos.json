@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-15T16:55:55.089Z",
+ "exportado": "2026-07-15T16:56:31.220Z",
  "datos": {
   "roads": [
    {
@@ -1430,6 +1430,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x212",
+    "tramoId": "x51",
+    "fam": "SH",
+    "fecha": "2026-07-15",
+    "valor": 6,
+    "obs": "Hay que pintar eje y bandas.",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -1471,7 +1483,7 @@
     "gps": "38.781149, -1.326241"
    }
   ],
-  "seq": 212,
+  "seq": 213,
   "ajustes": {
    "sector": "ZONA 2"
   },
