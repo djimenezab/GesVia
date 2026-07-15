@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-15T16:57:02.751Z",
+ "exportado": "2026-07-15T16:57:13.138Z",
  "datos": {
   "roads": [
    {
@@ -1478,6 +1478,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x216",
+    "tramoId": "x51",
+    "fam": "DRE",
+    "fecha": "2026-07-15",
+    "valor": 81,
+    "obs": "",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -1519,7 +1531,7 @@
     "gps": "38.781149, -1.326241"
    }
   ],
-  "seq": 216,
+  "seq": 217,
   "ajustes": {
    "sector": "ZONA 2"
   },
