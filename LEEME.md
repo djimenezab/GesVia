@@ -1,5 +1,20 @@
 # GesVía · Gestión de la conservación de carreteras (PWA)
 
+## Novedades v1.51
+- El indicador de color del estado se ha movido **encima** de la barra deslizante (antes iba al
+  lado y en tablet estorbaba al arrastrar con el dedo). La barra ocupa ahora todo el ancho.
+
+## Novedades v1.50
+- Botón 🖨 en cada orden de trabajo para generar un **parte de trabajo imprimible** (PDF): incluye
+  carretera y PK, familia, estado, prioridad, fechas, GPS, los trabajos a realizar, las observaciones,
+  las **fotos a tamaño grande** y un espacio para firmas. Ideal para entregárselo a quien ejecuta el trabajo.
+
+## Novedades v1.49
+- La pestaña **Red** se ha movido a **Ajustes** (como sección plegable «Inventario de la red»),
+  liberando espacio en el menú principal. El menú queda: Panel · Inspección · Órdenes · Informe · Ajustes.
+- Botón ✏️ en **«Últimas inspecciones realizadas»** para **editar una inspección** (tramo, familia,
+  fecha, inspector, indicador, observaciones, GPS y fotos) sin tener que borrarla y rehacerla.
+
 ## Novedades v1.48
 - La sección del **plano** en Ajustes está **plegada** por defecto (ocupa menos); se abre con el
   botón «Desplegar» solo cuando hace falta editar trazados.
@@ -146,7 +161,7 @@ LEEME.md
 ## Cuando actualices la app
 
 Si subes un `index.html` nuevo, edita en `sw.js` la primera línea y sube la versión
-(`gesvia-v1.22` → `gesvia-v1.23`). Así los móviles descargan la versión nueva en vez
+(`gesvia-v1.25` → `gesvia-v1.26`). Así los móviles descargan la versión nueva en vez
 de seguir usando la copia guardada en caché.
 
 ## Sincronización automática con GitHub (como RegIn 1.91)

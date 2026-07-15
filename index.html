@@ -155,11 +155,12 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 .acciones{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
 
 /* Valorador 0-100 */
-.valorador{display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;margin-top:.3rem}
-.valorador input[type=range]{flex:1;min-width:180px;accent-color:var(--senal)}
+.valorador{display:flex;flex-direction:column;align-items:stretch;gap:.5rem;margin-top:.3rem}
+.valorador input[type=range]{width:100%;accent-color:var(--senal);height:1.6rem;order:2}
 .valor-grande{
-  font-family:'Archivo';font-weight:800;font-size:1.5rem;min-width:5.6rem;text-align:center;
-  border-radius:8px;color:#fff;padding:.25rem .5rem;
+  order:1;align-self:center;
+  font-family:'Archivo';font-weight:800;font-size:1.5rem;min-width:6.5rem;text-align:center;
+  border-radius:8px;color:#fff;padding:.25rem .7rem;
 }
 .escala-ref{display:flex;font-size:.75rem;color:var(--texto2);justify-content:space-between;width:100%}
 
@@ -234,7 +235,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.50</span></span></h1>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.51</span></span></h1>
       <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
@@ -570,7 +571,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
-      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.50</span></strong>
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.51</span></strong>
     </p>
   </div>
 </section>
@@ -589,7 +590,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.50';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.51';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
