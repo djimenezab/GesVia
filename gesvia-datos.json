@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-16T11:05:09.545Z",
+ "exportado": "2026-07-16T21:22:32.312Z",
  "datos": {
   "roads": [
    {
@@ -2161,7 +2161,7 @@
     "gps": "38.781149, -1.326241"
    }
   ],
-  "seq": 269,
+  "seq": 270,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -5122,6 +5122,17 @@
   "vigilantes": [
    "David Jiménez",
    "Jose L. Moya"
-  ]
+  ],
+  "inventario": {
+   "x147": [
+    {
+     "id": "x269",
+     "elem": "Bionda margen derecho",
+     "valor": 4665,
+     "unidad": "m",
+     "nota": ""
+    }
+   ]
+  }
  }
 }
