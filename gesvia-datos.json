@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-16T09:50:09.256Z",
+ "exportado": "2026-07-16T09:50:32.721Z",
  "datos": {
   "roads": [
    {
@@ -1493,6 +1493,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x217",
+    "tramoId": "x143",
+    "fam": "MAR",
+    "fecha": "2026-07-16",
+    "valor": 78,
+    "obs": "Matorral bajo y algum retablo para quitar",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -1534,7 +1546,7 @@
     "gps": "38.781149, -1.326241"
    }
   ],
-  "seq": 217,
+  "seq": 218,
   "ajustes": {
    "sector": "ZONA 2"
   },
