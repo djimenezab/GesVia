@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-16T10:50:28.102Z",
+ "exportado": "2026-07-16T10:50:53.261Z",
  "datos": {
   "roads": [
    {
@@ -1940,6 +1940,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x254",
+    "tramoId": "x149",
+    "fam": "MAR",
+    "fecha": "2026-07-16",
+    "valor": 64,
+    "obs": "Retallos a retirar",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -1981,7 +1993,7 @@
     "gps": "38.781149, -1.326241"
    }
   ],
-  "seq": 254,
+  "seq": 255,
   "ajustes": {
    "sector": "ZONA 2"
   },
