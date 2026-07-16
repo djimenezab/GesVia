@@ -235,7 +235,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.51</span></span></h1>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.53</span></span></h1>
       <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
@@ -247,6 +247,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
     <button data-v="inspeccion" onclick="go('inspeccion')">Inspección</button>
     <button data-v="ordenes" onclick="go('ordenes')">Órdenes</button>
     <button data-v="informe" onclick="go('informe')">Informe</button>
+    <button data-v="inventario" onclick="go('inventario')">Inventario</button>
     <button data-v="ajustes" onclick="go('ajustes')">Ajustes</button>
   </nav>
 </header>
@@ -458,6 +459,25 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div id="previaInforme"></div>
 </section>
 
+<!-- ================= INVENTARIO (datos físicos del tramo) ================= -->
+<section id="v-inventario" class="vista">
+  <div class="titulo-vista">
+    <h2>Inventario del tramo</h2>
+    <p>Datos físicos que se toman una vez y quedan de referencia (metros de bionda, captafaros, señales…).</p>
+  </div>
+  <div class="tarjeta" style="margin-bottom:1rem">
+    <div class="form-grid">
+      <label class="campo">Carretera
+        <select id="inv-road" onchange="invFillTramos()"></select>
+      </label>
+      <label class="campo">Tramo
+        <select id="inv-tramo" onchange="renderInvTramo()"></select>
+      </label>
+    </div>
+  </div>
+  <div id="inv-detalle"></div>
+</section>
+
 <!-- ================= AJUSTES (incluye Datos) ================= -->
 <section id="v-ajustes" class="vista">
   <div class="titulo-vista">
@@ -571,7 +591,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
-      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.51</span></strong>
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.53</span></strong>
     </p>
   </div>
 </section>
@@ -590,7 +610,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.51';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.53';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -644,6 +664,8 @@ function load(){
   if(!S.ajustes) S.ajustes = {sector:''};
   if(!S.trazados) S.trazados = {};   // { tramoId: [ [x,y], [x,y], ... ] } en % del plano (0..100)
   if(!Array.isArray(S.vigilantes)) S.vigilantes = [];
+  if(!S.inventario) S.inventario = {};   // { tramoId: [ {id, elem, valor, unidad, nota} ] }
+  if(!S.inventario) S.inventario = {};   // { tramoId: [ {id, elem, valor, unidad, nota} ] }
   migrarFotos();
 }
 let avisadoAlmacen = false;
@@ -696,7 +718,7 @@ function go(v){
   document.querySelectorAll('section.vista').forEach(s=>s.classList.remove('activa'));
   $('v-'+v).classList.add('activa');
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('activo', b.dataset.v===v));
-  ({panel:renderPanel, inspeccion:renderInspeccion, ordenes:renderOrdenes, informe:renderInformeForm, ajustes:renderAjustes}[v])();
+  ({panel:renderPanel, inspeccion:renderInspeccion, ordenes:renderOrdenes, informe:renderInformeForm, inventario:renderInventario, ajustes:renderAjustes}[v])();
   window.scrollTo({top:0});
 }
 
@@ -1637,6 +1659,202 @@ function listOT(){
 }
 
 /* =====================================================
+   INVENTARIO FÍSICO DEL TRAMO
+   S.inventario[tramoId] = [ {id, elem, valor, unidad, nota} ]
+   ===================================================== */
+const INV_PREDEF = [
+  {grupo:'Contención (biondas)', items:[
+    {elem:'Bionda margen derecho', unidad:'m'},
+    {elem:'Bionda margen izquierdo', unidad:'m'},
+    {elem:'Barrera doble', unidad:'m'},
+    {elem:'Terminales / abatimientos', unidad:'ud'},
+  ]},
+  {grupo:'Balizamiento', items:[
+    {elem:'Captafaros', unidad:'ud'},
+    {elem:'Hitos de arista', unidad:'ud'},
+    {elem:'Hitos kilométricos', unidad:'ud'},
+    {elem:'Hitos de vértice', unidad:'ud'},
+  ]},
+  {grupo:'Señalización vertical', items:[
+    {elem:'Paneles direccionales', unidad:'ud'},
+    {elem:'Señales de código', unidad:'ud'},
+    {elem:'Carteles', unidad:'ud'},
+  ]},
+  {grupo:'Señalización horizontal / travesía', items:[
+    {elem:'Pasos de peatones', unidad:'ud'},
+    {elem:'Superficie a pintar', unidad:'m²'},
+    {elem:'Línea de eje', unidad:'m'},
+    {elem:'Líneas de borde', unidad:'m'},
+  ]},
+  {grupo:'Drenaje', items:[
+    {elem:'Cunetas', unidad:'m'},
+    {elem:'Caños / ODT', unidad:'ud'},
+    {elem:'Arquetas', unidad:'ud'},
+  ]},
+  {grupo:'Otros', items:[
+    {elem:'Otro (personalizado)', unidad:''},
+  ]},
+];
+const UNIDADES = ['m','ud','m²','km','t','—'];
+
+function renderInventario(){
+  fillSelectRoads($('inv-road'));
+  invFillTramos();
+}
+function invFillTramos(){
+  fillSelectTramos($('inv-road'), $('inv-tramo'));
+  renderInvTramo();
+}
+function formatoNum(n){
+  if(n==null || n==='') return '';
+  const num = Number(n);
+  if(isNaN(num)) return '';
+  // Separador de miles con punto y decimales con coma (es-ES), de forma fiable
+  const partes = num.toFixed(Math.min(2, (String(num).split('.')[1]||'').length)).split('.');
+  partes[0] = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  return partes.length>1 ? partes.join(',') : partes[0];
+}
+function renderInvTramo(){
+  const cont = $('inv-detalle');
+  const tid = $('inv-tramo').value;
+  if(!tid){ cont.innerHTML = '<div class="tarjeta"><p style="color:var(--texto2)">Selecciona una carretera y un tramo. Si no hay tramos, créalos en Ajustes → Inventario de la red.</p></div>'; return; }
+  const t = tramo(tid), r = road(t.roadId);
+  const datos = S.inventario[tid] || [];
+  const optPredef = INV_PREDEF.map(g=>
+    `<optgroup label="${esc(g.grupo)}">${g.items.map(it=>`<option value="${esc(it.elem)}" data-unidad="${esc(it.unidad)}">${esc(it.elem)}</option>`).join('')}</optgroup>`
+  ).join('');
+  const optUnidades = UNIDADES.map(u=>`<option value="${u==='—'?'':u}">${u}</option>`).join('');
+
+  const filas = datos.length ? datos.map(d=>`<tr>
+      <td>${esc(d.elem)}</td>
+      <td class="num" style="text-align:right;font-weight:700">${d.valor!=null? formatoNum(d.valor):''}</td>
+      <td>${esc(d.unidad||'')}</td>
+      <td>${esc(d.nota||'')}</td>
+      <td style="white-space:nowrap;text-align:right">
+        <button class="btn sec mini" title="Editar" onclick="invEditar('${tid}','${d.id}')">✏️</button>
+        <button class="btn peligro mini" onclick="invBorrar('${tid}','${d.id}')">✕</button>
+      </td></tr>`).join('')
+    : '<tr><td colspan="5" style="color:var(--texto2)">Aún no hay datos de inventario en este tramo.</td></tr>';
+
+  cont.innerHTML = `
+    <div class="tarjeta" style="margin-bottom:1rem">
+      <h3 style="margin-bottom:.2rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem">
+        <span>${esc(r.codigo)} · PK ${pk(t.pkIni)} – ${pk(t.pkFin)}</span>
+        ${datos.length? `<button class="btn sec mini" onclick="imprimirInvTramo('${tid}')">🖨 Imprimir ficha</button>`:''}
+      </h3>
+      <p style="color:var(--texto2);font-size:.9rem;margin-bottom:.8rem">${esc(t.desc||'')}</p>
+      <div style="overflow-x:auto">
+        <table><thead><tr><th>Elemento</th><th style="text-align:right">Cantidad</th><th>Unidad</th><th>Notas</th><th></th></tr></thead>
+        <tbody>${filas}</tbody></table>
+      </div>
+    </div>
+    <div class="tarjeta">
+      <h3 style="margin-bottom:.6rem">Añadir dato de inventario</h3>
+      <div class="form-grid">
+        <label class="campo">Elemento
+          <select id="inv-elem" onchange="invElemChange()">${optPredef}</select>
+        </label>
+        <label class="campo" id="inv-wrap-libre" style="display:none">Nombre del elemento
+          <input id="inv-elem-libre" placeholder="Ej.: Bionda margen derecho">
+        </label>
+        <label class="campo">Cantidad
+          <input type="number" step="any" min="0" id="inv-valor" placeholder="Ej.: 4710">
+        </label>
+        <label class="campo">Unidad
+          <select id="inv-unidad">${optUnidades}</select>
+        </label>
+        <label class="campo" style="grid-column:1/-1">Notas (opcional)
+          <input id="inv-nota" placeholder="Ej.: medido en campo, junio 2026">
+        </label>
+      </div>
+      <div class="acciones"><button class="btn" onclick="invAdd('${tid}')">Añadir al inventario</button></div>
+    </div>`;
+  invElemChange();
+}
+function invElemChange(){
+  const sel = $('inv-elem'); if(!sel) return;
+  const esLibre = sel.value === 'Otro (personalizado)';
+  $('inv-wrap-libre').style.display = esLibre ? '' : 'none';
+  const opt = sel.options[sel.selectedIndex];
+  const uni = opt ? opt.getAttribute('data-unidad') : '';
+  if(!esLibre && uni!=null && $('inv-unidad')){ $('inv-unidad').value = uni; }
+}
+function invAdd(tid){
+  const sel = $('inv-elem');
+  let elem = sel.value;
+  if(elem === 'Otro (personalizado)'){
+    elem = ($('inv-elem-libre').value||'').trim();
+    if(!elem) return toast('Escribe el nombre del elemento.');
+  }
+  const valorStr = $('inv-valor').value;
+  if(valorStr==='') return toast('Indica la cantidad.');
+  const valor = parseFloat(valorStr);
+  if(isNaN(valor)) return toast('La cantidad no es válida.');
+  if(!S.inventario[tid]) S.inventario[tid] = [];
+  S.inventario[tid].push({ id:uid(), elem, valor, unidad:$('inv-unidad').value, nota:($('inv-nota').value||'').trim() });
+  save(); renderInvTramo(); toast('Dato añadido al inventario.');
+}
+function invBorrar(tid, did){
+  if(!confirm('¿Eliminar este dato del inventario?')) return;
+  S.inventario[tid] = (S.inventario[tid]||[]).filter(d=>d.id!==did);
+  save(); renderInvTramo();
+}
+function invEditar(tid, did){
+  const d = (S.inventario[tid]||[]).find(x=>x.id===did); if(!d) return;
+  const optUnidades = UNIDADES.map(u=>{ const val=u==='—'?'':u; return `<option value="${val}" ${d.unidad===val?'selected':''}>${u}</option>`; }).join('');
+  abrirModal(`<button class="cerrar-x" onclick="cerrarModal()">✕</button>
+    <h3>Editar dato de inventario</h3>
+    <div class="form-grid">
+      <label class="campo" style="grid-column:1/-1">Elemento
+        <input id="invE-elem" value="${esc(d.elem)}"></label>
+      <label class="campo">Cantidad
+        <input type="number" step="any" min="0" id="invE-valor" value="${d.valor}"></label>
+      <label class="campo">Unidad
+        <select id="invE-unidad">${optUnidades}</select></label>
+      <label class="campo" style="grid-column:1/-1">Notas
+        <input id="invE-nota" value="${esc(d.nota||'')}"></label>
+    </div>
+    <div class="acciones">
+      <button class="btn" onclick="invGuardarEdicion('${tid}','${did}')">Guardar cambios</button>
+      <button class="btn sec" onclick="cerrarModal()">Cancelar</button>
+    </div>`);
+}
+function invGuardarEdicion(tid, did){
+  const d = (S.inventario[tid]||[]).find(x=>x.id===did); if(!d) return;
+  const elem = ($('invE-elem').value||'').trim();
+  if(!elem) return toast('El elemento no puede quedar vacío.');
+  const valor = parseFloat($('invE-valor').value);
+  if(isNaN(valor)) return toast('La cantidad no es válida.');
+  d.elem = elem; d.valor = valor; d.unidad = $('invE-unidad').value; d.nota = ($('invE-nota').value||'').trim();
+  save(); cerrarModal(); renderInvTramo(); toast('Dato actualizado.');
+}
+function imprimirInvTramo(tid){
+  const t = tramo(tid), r = road(t.roadId);
+  const datos = S.inventario[tid] || [];
+  const fechaTxt = new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
+  const sector = (S.ajustes&&S.ajustes.sector) ? esc(S.ajustes.sector) : '';
+  const filas = datos.map(d=>`<tr>
+    <td>${esc(d.elem)}</td>
+    <td style="text-align:right;font-weight:700">${d.valor!=null?formatoNum(d.valor):''}</td>
+    <td>${esc(d.unidad||'')}</td>
+    <td>${esc(d.nota||'')}</td></tr>`).join('');
+  const html = `<div class="informe">
+    <div class="cab">
+      <div><h2>Ficha de inventario del tramo</h2><div style="color:var(--texto2)">${esc(r.codigo)} · PK ${pk(t.pkIni)} – ${pk(t.pkFin)}${sector? ' · '+sector:''}</div></div>
+      <div style="text-align:right"><div class="display" style="font-weight:800">GesVía</div>
+        <div style="color:var(--texto2);font-size:.9rem">${fechaTxt}</div></div>
+    </div>
+    ${t.desc? `<p style="color:var(--texto2);margin-bottom:.8rem">${esc(t.desc)}</p>`:''}
+    <div style="overflow-x:auto"><table><thead><tr><th>Elemento</th><th style="text-align:right">Cantidad</th><th>Unidad</th><th>Notas</th></tr></thead>
+    <tbody>${filas||'<tr><td colspan="4">Sin datos.</td></tr>'}</tbody></table></div>
+    <div class="pie"><span>Datos de inventario del tramo (referencia para mediciones y actuaciones).</span><span>Generado con GesVía</span></div>
+  </div>`;
+  $('printArea').innerHTML = html;
+  document.body.classList.add('imprimiendo');
+  requestAnimationFrame(()=>{ window.print(); setTimeout(()=>document.body.classList.remove('imprimiendo'), 400); });
+}
+
+/* =====================================================
    INFORME
    ===================================================== */
 function renderInformeForm(){
@@ -2049,7 +2267,7 @@ function importJSON(input){
       const d = JSON.parse(rd.result);
       if(!Array.isArray(d.roads)) throw 0;
       if(!confirm('Esto sustituirá los datos actuales por los del archivo. ¿Continuar?')) return;
-      S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; migrarFotos(); save(); aplicarCabecera(); go('panel'); toast('Copia importada correctamente.');
+      S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; migrarFotos(); save(); aplicarCabecera(); go('panel'); toast('Copia importada correctamente.');
     }catch(e){ toast('El archivo no parece una copia válida de GesVía.'); }
     input.value='';
   };
@@ -2304,7 +2522,7 @@ async function descargarDeGitHub(){
     const parsed = decodifica((await res.json()).content);
     const d = parsed.datos || parsed; // admite también un JSON exportado a mano
     if(!d || !Array.isArray(d.roads)){ setSyncEstado('❌ El archivo no tiene el formato de GesVía', 'var(--critico)'); return; }
-    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; migrarFotos(); saveLocal(); aplicarCabecera(); go('panel');
+    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; migrarFotos(); saveLocal(); aplicarCabecera(); go('panel');
     setSyncEstado(`✅ Descargado: ${S.roads.length} carreteras · ${S.insp.length} inspecciones`, 'var(--ok)');
     setSyncDot('var(--ok)', 'Sincronizado ✓'); toast('📥 Datos descargados de GitHub');
   }catch(e){ setSyncEstado('❌ Error: '+e.message, 'var(--critico)'); }
@@ -2356,7 +2574,7 @@ async function autoDescargar(){
       const parsed = decodifica((await res.json()).content);
       const d = parsed.datos || parsed;
       if(d && Array.isArray(d.roads)){
-        S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; migrarFotos(); saveLocal(); aplicarCabecera();
+        S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; migrarFotos(); saveLocal(); aplicarCabecera();
         setSyncDot('var(--ok)', 'Sincronizado ✓');
         const activa = document.querySelector('nav button.activo');
         go(activa? activa.dataset.v || 'panel' : 'panel');
@@ -2391,7 +2609,7 @@ async function refrescarSiHayNovedades(motivo){
     const local  = JSON.stringify(S);
     if(remoto === local) return;              // ya estamos al día, no tocamos nada
     if(pendienteSubir) return;                // por si cambió mientras descargábamos
-    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; migrarFotos();
+    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; migrarFotos();
     saveLocal(); aplicarCabecera();
     const activa = document.querySelector('nav button.activo');
     go(activa? activa.dataset.v || 'panel' : 'panel');
