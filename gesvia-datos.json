@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-15T16:57:26.216Z",
+ "exportado": "2026-07-16T09:48:42.491Z",
  "datos": {
   "roads": [
    {
@@ -1421,86 +1421,17 @@
    },
    {
     "id": "x211",
-    "tramoId": "x51",
+    "tramoId": "x143",
     "fam": "FIRME",
-    "fecha": "2026-07-15",
-    "valor": 80,
-    "obs": "",
-    "inspector": "David Jiménez",
-    "gps": "",
-    "params": {},
-    "fotos": []
-   },
-   {
-    "id": "x212",
-    "tramoId": "x51",
-    "fam": "SH",
-    "fecha": "2026-07-15",
-    "valor": 6,
-    "obs": "Hay que pintar eje y bandas.",
-    "inspector": "David Jiménez",
-    "gps": "",
-    "params": {},
-    "fotos": []
-   },
-   {
-    "id": "x213",
-    "tramoId": "x51",
-    "fam": "SV",
-    "fecha": "2026-07-15",
-    "valor": 74,
-    "obs": "",
-    "inspector": "David Jiménez",
-    "gps": "",
-    "params": {},
-    "fotos": []
-   },
-   {
-    "id": "x214",
-    "tramoId": "x51",
-    "fam": "BAL",
-    "fecha": "2026-07-15",
-    "valor": 71,
-    "obs": "",
-    "inspector": "David Jiménez",
-    "gps": "",
-    "params": {},
-    "fotos": []
-   },
-   {
-    "id": "x215",
-    "tramoId": "x51",
-    "fam": "CON",
-    "fecha": "2026-07-15",
-    "valor": 71,
-    "obs": "",
-    "inspector": "David Jiménez",
-    "gps": "",
-    "params": {},
-    "fotos": []
-   },
-   {
-    "id": "x216",
-    "tramoId": "x51",
-    "fam": "DRE",
-    "fecha": "2026-07-15",
-    "valor": 81,
-    "obs": "",
-    "inspector": "David Jiménez",
-    "gps": "",
-    "params": {},
-    "fotos": []
-   },
-   {
-    "id": "x217",
-    "tramoId": "x51",
-    "fam": "MAR",
-    "fecha": "2026-07-15",
+    "fecha": "2026-07-16",
     "valor": 70,
     "obs": "",
     "inspector": "David Jiménez",
     "gps": "",
-    "params": {},
+    "params": {
+     "iri": 2,
+     "det": 20
+    },
     "fotos": []
    }
   ],
@@ -1543,7 +1474,7 @@
     "gps": "38.781149, -1.326241"
    }
   ],
-  "seq": 218,
+  "seq": 212,
   "ajustes": {
    "sector": "ZONA 2"
   },
