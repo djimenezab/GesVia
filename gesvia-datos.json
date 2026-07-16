@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-16T11:04:49.558Z",
+ "exportado": "2026-07-16T11:05:09.545Z",
  "datos": {
   "roads": [
    {
@@ -2108,6 +2108,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x268",
+    "tramoId": "x151",
+    "fam": "MAR",
+    "fecha": "2026-07-16",
+    "valor": 72,
+    "obs": "El matorral en bionda está ya alto",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -2149,7 +2161,7 @@
     "gps": "38.781149, -1.326241"
    }
   ],
-  "seq": 268,
+  "seq": 269,
   "ajustes": {
    "sector": "ZONA 2"
   },
