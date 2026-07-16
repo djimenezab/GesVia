@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-16T09:49:18.178Z",
+ "exportado": "2026-07-16T09:49:56.399Z",
  "datos": {
   "roads": [
    {
@@ -1457,6 +1457,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x214",
+    "tramoId": "x143",
+    "fam": "BAL",
+    "fecha": "2026-07-16",
+    "valor": 69,
+    "obs": "Captafaros con golpe",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -1498,7 +1510,7 @@
     "gps": "38.781149, -1.326241"
    }
   ],
-  "seq": 214,
+  "seq": 215,
   "ajustes": {
    "sector": "ZONA 2"
   },
