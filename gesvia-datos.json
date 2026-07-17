@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-17T11:37:14.359Z",
+ "exportado": "2026-07-17T11:38:07.910Z",
  "datos": {
   "roads": [
    {
@@ -2576,7 +2576,7 @@
     ]
    }
   ],
-  "seq": 333,
+  "seq": 334,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -5779,6 +5779,13 @@
      "valor": 14,
      "unidad": "ud",
      "nota": "Inst. 2026"
+    },
+    {
+     "id": "x333",
+     "elem": "Señales de código",
+     "valor": 1,
+     "unidad": "ud",
+     "nota": "Instaladas 2026"
     }
    ]
   }
