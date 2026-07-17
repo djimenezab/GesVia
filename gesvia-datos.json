@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-17T10:33:17.888Z",
+ "exportado": "2026-07-17T10:34:14.899Z",
  "datos": {
   "roads": [
    {
@@ -2197,7 +2197,7 @@
     "gps": "38.781149, -1.326241"
    }
   ],
-  "seq": 291,
+  "seq": 292,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -5311,6 +5311,13 @@
      "id": "x290",
      "elem": "Paneles direccionales",
      "valor": 2,
+     "unidad": "ud",
+     "nota": ""
+    },
+    {
+     "id": "x291",
+     "elem": "H-75 Verde",
+     "valor": 45,
      "unidad": "ud",
      "nota": ""
     }
