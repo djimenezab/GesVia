@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-17T11:02:46.874Z",
+ "exportado": "2026-07-17T11:03:34.675Z",
  "datos": {
   "roads": [
    {
@@ -445,7 +445,7 @@
    {
     "id": "x84",
     "roadId": "x77",
-    "pkIni": 31,
+    "pkIni": 30.7,
     "pkFin": 35.025,
     "desc": "Camb. Seccion - Bonete"
    },
