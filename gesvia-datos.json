@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-17T11:09:18.526Z",
+ "exportado": "2026-07-17T11:11:23.167Z",
  "datos": {
   "roads": [
    {
@@ -2279,9 +2279,28 @@
     ],
     "obs": "PK 47 Margen Izquierdo\n150 metros 0,4x1,2x0,8",
     "gps": "38.781149, -1.326241"
+   },
+   {
+    "id": "x305",
+    "tramoId": "x83",
+    "fam": "FIRME",
+    "desc": "Reparación firme",
+    "prio": "media",
+    "estado": "pendiente",
+    "creada": "2026-07-17",
+    "cerrada": null,
+    "obs": "Cruce con AB-2011",
+    "gps": "38.925368, -1.360913",
+    "fotos": [
+     {
+      "id": "v2gmeqf",
+      "pendiente": false,
+      "ruta": "fotos/x305_v2gmeqf.jpg"
+     }
+    ]
    }
   ],
-  "seq": 305,
+  "seq": 306,
   "ajustes": {
    "sector": "ZONA 2"
   },
