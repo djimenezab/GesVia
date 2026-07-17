@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-17T11:22:28.551Z",
+ "exportado": "2026-07-17T11:26:00.323Z",
  "datos": {
   "roads": [
    {
@@ -2420,7 +2420,7 @@
     ]
    }
   ],
-  "seq": 318,
+  "seq": 319,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -5603,6 +5603,15 @@
      "id": "x307",
      "elem": "Pasos de peatones",
      "valor": 6,
+     "unidad": "ud",
+     "nota": ""
+    }
+   ],
+   "x81": [
+    {
+     "id": "x318",
+     "elem": "Paneles direccionales",
+     "valor": 21,
      "unidad": "ud",
      "nota": ""
     }
