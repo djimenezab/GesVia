@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-17T11:09:05.220Z",
+ "exportado": "2026-07-17T11:09:18.526Z",
  "datos": {
   "roads": [
    {
@@ -2262,9 +2262,9 @@
     "fam": "DRE",
     "desc": "Hormigonar cuneta con problemas de erosión, recién perfilada.",
     "prio": "media",
-    "estado": "en curso",
+    "estado": "completada",
     "creada": "2026-07-08",
-    "cerrada": null,
+    "cerrada": "2026-07-17",
     "fotos": [
      {
       "id": "0e8g04t",
