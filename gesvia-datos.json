@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-17T10:34:14.899Z",
+ "exportado": "2026-07-17T10:37:05.072Z",
  "datos": {
   "roads": [
    {
@@ -2197,7 +2197,7 @@
     "gps": "38.781149, -1.326241"
    }
   ],
-  "seq": 292,
+  "seq": 293,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -5318,6 +5318,13 @@
      "id": "x291",
      "elem": "H-75 Verde",
      "valor": 45,
+     "unidad": "ud",
+     "nota": ""
+    },
+    {
+     "id": "x292",
+     "elem": "Pasos de peatones",
+     "valor": 11,
      "unidad": "ud",
      "nota": ""
     }
