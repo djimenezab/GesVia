@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-17T11:38:26.072Z",
+ "exportado": "2026-07-17T11:40:26.942Z",
  "datos": {
   "roads": [
    {
@@ -2576,7 +2576,7 @@
     ]
    }
   ],
-  "seq": 334,
+  "seq": 335,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -5786,6 +5786,15 @@
      "valor": 1,
      "unidad": "ud",
      "nota": "Instaladas 2026"
+    }
+   ],
+   "x79": [
+    {
+     "id": "x334",
+     "elem": "Pasos de peatones",
+     "valor": 5,
+     "unidad": "ud",
+     "nota": ""
     }
    ]
   }
