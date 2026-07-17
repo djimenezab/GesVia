@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-17T11:11:23.167Z",
+ "exportado": "2026-07-17T11:18:12.318Z",
  "datos": {
   "roads": [
    {
@@ -2300,7 +2300,7 @@
     ]
    }
   ],
-  "seq": 306,
+  "seq": 307,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -5465,6 +5465,15 @@
      "id": "x297",
      "elem": "Paneles direccionales",
      "valor": 20,
+     "unidad": "ud",
+     "nota": ""
+    }
+   ],
+   "x83": [
+    {
+     "id": "x306",
+     "elem": "Paneles direccionales",
+     "valor": 42,
      "unidad": "ud",
      "nota": ""
     }
