@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-17T10:26:39.598Z",
+ "exportado": "2026-07-17T10:27:15.587Z",
  "datos": {
   "roads": [
    {
@@ -2120,6 +2120,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x287",
+    "tramoId": "x138",
+    "fam": "FIRME",
+    "fecha": "2026-07-17",
+    "valor": 70,
+    "obs": "",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -2161,7 +2173,7 @@
     "gps": "38.781149, -1.326241"
    }
   ],
-  "seq": 287,
+  "seq": 288,
   "ajustes": {
    "sector": "ZONA 2"
   },
