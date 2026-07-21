@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-21T11:28:51.314Z",
+ "exportado": "2026-07-21T11:30:52.342Z",
  "datos": {
   "roads": [
    {
@@ -5979,7 +5979,7 @@
     {
      "id": "x357",
      "elem": "Bionda margen derecho",
-     "valor": 110,
+     "valor": 246,
      "unidad": "m",
      "nota": ""
     },
