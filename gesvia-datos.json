@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-22T10:36:40.417Z",
+ "exportado": "2026-07-22T10:36:55.259Z",
  "datos": {
   "roads": [
    {
@@ -2924,6 +2924,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x389",
+    "tramoId": "x131",
+    "fam": "BAL",
+    "fecha": "2026-07-22",
+    "valor": 64,
+    "obs": "Hay muchos rotos",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -2984,7 +2996,7 @@
     ]
    }
   ],
-  "seq": 389,
+  "seq": 390,
   "ajustes": {
    "sector": "ZONA 2"
   },
