@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-22T06:32:42.319Z",
+ "exportado": "2026-07-22T06:33:39.734Z",
  "datos": {
   "roads": [
    {
@@ -6043,6 +6043,10 @@
      },
      {
       "elem": "Barrera doble",
+      "unidad": "m"
+     },
+     {
+      "elem": "Barrera rígida hormigón",
       "unidad": "m"
      }
     ]
