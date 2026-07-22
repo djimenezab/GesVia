@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-22T06:31:13.498Z",
+ "exportado": "2026-07-22T06:32:32.287Z",
  "datos": {
   "roads": [
    {
@@ -6056,10 +6056,6 @@
      },
      {
       "elem": "Hitos de arista",
-      "unidad": "ud"
-     },
-     {
-      "elem": "Hitos kilométricos",
       "unidad": "ud"
      },
      {
