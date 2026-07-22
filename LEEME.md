@@ -1,5 +1,28 @@
 # GesVía · Gestión de la conservación de carreteras (PWA)
 
+## Novedades v1.55
+- El **catálogo de inventario** (familias y elementos) es totalmente **editable** en
+  Ajustes → «Catálogo de inventario»: puedes renombrar o borrar familias y elementos, cambiar sus
+  unidades, añadir nuevos, y restaurar el catálogo predefinido. Los cambios no afectan a los datos
+  de inventario ya registrados.
+
+## Novedades v1.54
+- Nuevo tipo de informe **«Inventario de elementos»** (en Informes): eliges carretera, alcance
+  (toda la carretera sumando tramos, o un tramo concreto) y elemento (uno concreto —p. ej. captafaros—
+  o todos). Muestra los totales de la carretera y el detalle por tramo. Útil para saber cuántas
+  unidades hay antes de una reposición.
+- En **Ajustes → Elementos de inventario** puedes añadir y quitar tus propios elementos; aparecen
+  en el grupo «Mis elementos» al registrar inventario (los predefinidos siguen estando).
+
+## Novedades v1.52 / 1.53
+- Nueva pestaña **Inventario** (a la derecha de Informe): registra datos físicos estables de cada
+  tramo (metros de bionda por margen, nº de captafaros, paneles direccionales, pasos de peatones,
+  superficie a pintar, cunetas…). Se toman una vez y quedan de referencia para futuras mediciones.
+- Se elige carretera y tramo (como en inspecciones); los elementos habituales están predefinidos y
+  agrupados por familia, con opción de añadir cualquier elemento personalizado. Cada dato lleva
+  cantidad, unidad y una nota. Los datos se editan, se borran y se puede **imprimir una ficha** del tramo.
+- Los números se muestran con separador de miles (4.710).
+
 ## Novedades v1.51
 - El indicador de color del estado se ha movido **encima** de la barra deslizante (antes iba al
   lado y en tablet estorbaba al arrastrar con el dedo). La barra ocupa ahora todo el ancho.
@@ -161,7 +184,7 @@ LEEME.md
 ## Cuando actualices la app
 
 Si subes un `index.html` nuevo, edita en `sw.js` la primera línea y sube la versión
-(`gesvia-v1.25` → `gesvia-v1.26`). Así los móviles descargan la versión nueva en vez
+(`gesvia-v1.29` → `gesvia-v1.30`). Así los móviles descargan la versión nueva en vez
 de seguir usando la copia guardada en caché.
 
 ## Sincronización automática con GitHub (como RegIn 1.91)
