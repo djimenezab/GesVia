@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-22T10:27:28.872Z",
+ "exportado": "2026-07-22T10:31:36.986Z",
  "datos": {
   "roads": [
    {
@@ -2948,7 +2948,7 @@
     ]
    }
   ],
-  "seq": 384,
+  "seq": 385,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -6309,6 +6309,15 @@
      "id": "x383",
      "elem": "Bionda margen derecho",
      "valor": 5280,
+     "unidad": "m",
+     "nota": ""
+    }
+   ],
+   "x131": [
+    {
+     "id": "x384",
+     "elem": "Bionda margen derecho",
+     "valor": 1356,
      "unidad": "m",
      "nota": ""
     }
