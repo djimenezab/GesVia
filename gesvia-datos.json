@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-21T11:30:52.342Z",
+ "exportado": "2026-07-22T06:31:13.498Z",
  "datos": {
   "roads": [
    {
@@ -6027,6 +6027,102 @@
      "nota": ""
     }
    ]
-  }
+  },
+  "invElementos": [],
+  "invCatalogo": [
+   {
+    "grupo": "Contención (biondas)",
+    "items": [
+     {
+      "elem": "Bionda margen derecho",
+      "unidad": "m"
+     },
+     {
+      "elem": "Bionda margen izquierdo",
+      "unidad": "m"
+     },
+     {
+      "elem": "Barrera doble",
+      "unidad": "m"
+     }
+    ]
+   },
+   {
+    "grupo": "Balizamiento",
+    "items": [
+     {
+      "elem": "Captafaros",
+      "unidad": "ud"
+     },
+     {
+      "elem": "Hitos de arista",
+      "unidad": "ud"
+     },
+     {
+      "elem": "Hitos kilométricos",
+      "unidad": "ud"
+     },
+     {
+      "elem": "Hitos de vértice",
+      "unidad": "ud"
+     }
+    ]
+   },
+   {
+    "grupo": "Señalización vertical",
+    "items": [
+     {
+      "elem": "Paneles direccionales",
+      "unidad": "ud"
+     },
+     {
+      "elem": "Señales de código",
+      "unidad": "ud"
+     },
+     {
+      "elem": "Carteles",
+      "unidad": "ud"
+     }
+    ]
+   },
+   {
+    "grupo": "Señalización horizontal / travesía",
+    "items": [
+     {
+      "elem": "Pasos de peatones",
+      "unidad": "ud"
+     },
+     {
+      "elem": "Superficie a pintar",
+      "unidad": "m²"
+     },
+     {
+      "elem": "Línea de eje",
+      "unidad": "m"
+     },
+     {
+      "elem": "Líneas de borde",
+      "unidad": "m"
+     }
+    ]
+   },
+   {
+    "grupo": "Drenaje",
+    "items": [
+     {
+      "elem": "Cunetas",
+      "unidad": "m"
+     },
+     {
+      "elem": "Caños / ODT",
+      "unidad": "ud"
+     },
+     {
+      "elem": "Arquetas",
+      "unidad": "ud"
+     }
+    ]
+   }
+  ]
  }
 }
