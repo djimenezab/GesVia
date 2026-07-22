@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-22T10:19:23.381Z",
+ "exportado": "2026-07-22T10:19:46.420Z",
  "datos": {
   "roads": [
    {
@@ -2792,6 +2792,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x375",
+    "tramoId": "x129",
+    "fam": "MAR",
+    "fecha": "2026-07-22",
+    "valor": 38,
+    "obs": "Unos 2 kms hierbas muy altas",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -2852,7 +2864,7 @@
     ]
    }
   ],
-  "seq": 375,
+  "seq": 376,
   "ajustes": {
    "sector": "ZONA 2"
   },
