@@ -235,7 +235,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.54</span></span></h1>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.55</span></span></h1>
       <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
@@ -555,31 +555,25 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 
   <div class="tarjeta" style="margin-bottom:1rem">
     <h3 style="margin:0;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toggleInvElem()">
-      <span>Elementos de inventario</span>
+      <span>Catálogo de inventario · familias y elementos</span>
       <button class="btn sec mini" id="invelem-toggle" type="button">▸ Desplegar</button>
     </h3>
     <div id="invelem-cuerpo" style="display:none;margin-top:.7rem">
       <p style="color:var(--texto2);font-size:.9rem;margin-bottom:.6rem">
-        Los elementos habituales ya vienen predefinidos. Aquí puedes añadir los tuyos propios, que
-        aparecerán en el grupo «Mis elementos» al registrar inventario.
+        Aquí puedes editar todo el catálogo que se usa al registrar inventario: renombrar o borrar
+        familias y elementos, cambiar sus unidades o añadir nuevos. Los cambios no afectan a los datos
+        ya registrados.
       </p>
-      <div class="plano-toolbar" style="margin:0;align-items:flex-end">
-        <label class="campo" style="margin:0;flex:1;min-width:180px">Nuevo elemento
-          <input id="aj-elem-nombre" placeholder="Ej.: Bolardos" style="margin-top:.2rem">
+      <div class="plano-toolbar" style="margin:0 0 .8rem 0;align-items:flex-end">
+        <label class="campo" style="margin:0;flex:1;min-width:200px">Nueva familia
+          <input id="aj-fam-nombre" placeholder="Ej.: Obras de fábrica" onkeydown="if(event.key==='Enter')addInvFamilia()" style="margin-top:.2rem">
         </label>
-        <label class="campo" style="margin:0;min-width:100px">Unidad
-          <select id="aj-elem-unidad" style="margin-top:.2rem">
-            <option value="ud">ud</option>
-            <option value="m">m</option>
-            <option value="m²">m²</option>
-            <option value="km">km</option>
-            <option value="t">t</option>
-            <option value="">—</option>
-          </select>
-        </label>
-        <button class="btn" onclick="addInvElemento()">Añadir</button>
+        <button class="btn" onclick="addInvFamilia()">Añadir familia</button>
       </div>
-      <div id="aj-elem-lista" style="margin-top:.7rem"></div>
+      <div id="aj-cat-lista"></div>
+      <div style="margin-top:1rem;border-top:1px solid var(--borde);padding-top:.7rem">
+        <button class="btn sec mini" onclick="restaurarCatalogoInv()">↺ Restaurar catálogo predefinido</button>
+      </div>
     </div>
   </div>
 
@@ -634,7 +628,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
-      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.54</span></strong>
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.55</span></strong>
     </p>
   </div>
 </section>
@@ -653,7 +647,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.54';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.55';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -708,7 +702,8 @@ function load(){
   if(!S.trazados) S.trazados = {};   // { tramoId: [ [x,y], [x,y], ... ] } en % del plano (0..100)
   if(!Array.isArray(S.vigilantes)) S.vigilantes = [];
   if(!S.inventario) S.inventario = {};   // { tramoId: [ {id, elem, valor, unidad, nota} ] }
-  if(!Array.isArray(S.invElementos)) S.invElementos = [];   // elementos personalizados {elem, unidad}
+  if(!Array.isArray(S.invElementos)) S.invElementos = [];   // (heredado) elementos personalizados sueltos
+  migrarCatalogoInv();
   migrarFotos();
 }
 let avisadoAlmacen = false;
@@ -843,43 +838,81 @@ function delVigilante(i){
   save(); renderVigilantes();
 }
 
-/* ---------- Elementos de inventario personalizados ---------- */
+/* ---------- Catálogo de inventario (familias y elementos editables) ---------- */
 let invElemDesplegado = false;
 function toggleInvElem(){
   invElemDesplegado = !invElemDesplegado;
   $('invelem-cuerpo').style.display = invElemDesplegado ? '' : 'none';
   $('invelem-toggle').textContent = invElemDesplegado ? '▾ Plegar' : '▸ Desplegar';
-  if(invElemDesplegado) renderInvElementos();
+  if(invElemDesplegado) renderCatalogoInv();
 }
-function renderInvElementos(){
-  const box = $('aj-elem-lista'); if(!box) return;
-  const els = S.invElementos || [];
-  if(!els.length){ box.innerHTML = '<p style="color:var(--texto2);font-size:.9rem">Aún no has añadido elementos propios. Los predefinidos ya están disponibles.</p>'; return; }
-  box.innerHTML = els.map((e,i)=>`<div class="trazo-item">
-    <span style="flex:1">${esc(e.elem)}</span>
-    <span style="color:var(--texto2);min-width:40px">${esc(e.unidad||'—')}</span>
-    <button class="btn peligro mini" onclick="delInvElemento(${i})">Eliminar</button>
-  </div>`).join('');
+const OPT_UNID = fn => UNIDADES.map(u=>{ const v=u==='—'?'':u; return `<option value="${v}" ${fn===v?'selected':''}>${u}</option>`; }).join('');
+function renderCatalogoInv(){
+  const box = $('aj-cat-lista'); if(!box) return;
+  const cat = S.invCatalogo || [];
+  if(!cat.length){ box.innerHTML = '<p style="color:var(--texto2);font-size:.9rem">Catálogo vacío. Añade una familia arriba.</p>'; return; }
+  box.innerHTML = cat.map((g,gi)=>`
+    <div class="tarjeta" style="margin-bottom:.7rem;background:#fafbf9;padding:.7rem .8rem">
+      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem">
+        <input value="${esc(g.grupo)}" onchange="renFamilia(${gi}, this.value)" style="flex:1;font-weight:700">
+        <button class="btn peligro mini" title="Borrar familia" onclick="delFamilia(${gi})">Borrar familia</button>
+      </div>
+      <div>
+        ${g.items.map((it,ii)=>`<div class="trazo-item" style="gap:.4rem">
+          <input value="${esc(it.elem)}" onchange="renElem(${gi},${ii},this.value)" style="flex:1">
+          <select onchange="renElemUnidad(${gi},${ii},this.value)" style="min-width:70px">${OPT_UNID(it.unidad||'')}</select>
+          <button class="btn peligro mini" onclick="delElem(${gi},${ii})">✕</button>
+        </div>`).join('') || '<p style="color:var(--texto2);font-size:.85rem;margin:.2rem 0">Sin elementos.</p>'}
+      </div>
+      <div class="plano-toolbar" style="margin:.5rem 0 0 0;align-items:flex-end">
+        <label class="campo" style="margin:0;flex:1;min-width:150px">Nuevo elemento
+          <input id="new-elem-${gi}" placeholder="Nombre del elemento" style="margin-top:.2rem"
+            onkeydown="if(event.key==='Enter')addElem(${gi})"></label>
+        <label class="campo" style="margin:0;min-width:80px">Unidad
+          <select id="new-unid-${gi}" style="margin-top:.2rem">${OPT_UNID('ud')}</select></label>
+        <button class="btn sec mini" onclick="addElem(${gi})">+ Añadir</button>
+      </div>
+    </div>`).join('');
 }
-function addInvElemento(){
-  const nombre = ($('aj-elem-nombre').value||'').trim();
+function addInvFamilia(){
+  const nombre = ($('aj-fam-nombre').value||'').trim();
+  if(!nombre) return toast('Escribe el nombre de la familia.');
+  if((S.invCatalogo||[]).some(g=>g.grupo.toLowerCase()===nombre.toLowerCase())) return toast('Esa familia ya existe.');
+  S.invCatalogo.push({grupo:nombre, items:[]});
+  $('aj-fam-nombre').value='';
+  save(); renderCatalogoInv();
+  toast('Familia añadida.');
+}
+function renFamilia(gi, val){
+  val = (val||'').trim(); if(!val){ renderCatalogoInv(); return; }
+  S.invCatalogo[gi].grupo = val; save();
+}
+function delFamilia(gi){
+  const g = S.invCatalogo[gi];
+  if(!confirm(`¿Borrar la familia «${g.grupo}» y sus ${g.items.length} elemento(s)? Los datos ya registrados no se tocan.`)) return;
+  S.invCatalogo.splice(gi,1); save(); renderCatalogoInv();
+}
+function addElem(gi){
+  const inp = $('new-elem-'+gi), uni = $('new-unid-'+gi);
+  const nombre = (inp.value||'').trim();
   if(!nombre) return toast('Escribe el nombre del elemento.');
-  if(!S.invElementos) S.invElementos = [];
-  // no duplicar (ni con predefinidos ni con los propios)
-  const yaPredef = INV_PREDEF.some(g=>g.items.some(it=>it.elem.toLowerCase()===nombre.toLowerCase()));
-  const yaMio = S.invElementos.some(e=>e.elem.toLowerCase()===nombre.toLowerCase());
-  if(yaPredef || yaMio) return toast('Ese elemento ya existe.');
-  S.invElementos.push({ elem:nombre, unidad:$('aj-elem-unidad').value });
-  S.invElementos.sort((a,b)=>a.elem.localeCompare(b.elem,'es',{sensitivity:'base'}));
-  $('aj-elem-nombre').value='';
-  save(); renderInvElementos();
-  toast('Elemento añadido.');
+  if(S.invCatalogo[gi].items.some(it=>it.elem.toLowerCase()===nombre.toLowerCase())) return toast('Ese elemento ya está en la familia.');
+  S.invCatalogo[gi].items.push({elem:nombre, unidad:uni.value});
+  save(); renderCatalogoInv();
 }
-function delInvElemento(i){
-  const e = S.invElementos[i];
-  if(!confirm('¿Eliminar «'+e.elem+'» de tus elementos?')) return;
-  S.invElementos.splice(i,1);
-  save(); renderInvElementos();
+function renElem(gi, ii, val){
+  val=(val||'').trim(); if(!val){ renderCatalogoInv(); return; }
+  S.invCatalogo[gi].items[ii].elem = val; save();
+}
+function renElemUnidad(gi, ii, val){ S.invCatalogo[gi].items[ii].unidad = val; save(); }
+function delElem(gi, ii){
+  S.invCatalogo[gi].items.splice(ii,1); save(); renderCatalogoInv();
+}
+function restaurarCatalogoInv(){
+  if(!confirm('¿Restaurar el catálogo predefinido? Se perderán las familias y elementos que hayas personalizado (los datos de inventario ya registrados NO se tocan).')) return;
+  S.invCatalogo = INV_SEMILLA.map(g=>({grupo:g.grupo, items:g.items.map(it=>({elem:it.elem, unidad:it.unidad}))}));
+  save(); renderCatalogoInv();
+  toast('Catálogo restaurado.');
 }
 
 /* =====================================================
@@ -1744,7 +1777,7 @@ function listOT(){
    INVENTARIO FÍSICO DEL TRAMO
    S.inventario[tramoId] = [ {id, elem, valor, unidad, nota} ]
    ===================================================== */
-const INV_PREDEF = [
+const INV_SEMILLA = [
   {grupo:'Contención (biondas)', items:[
     {elem:'Bionda margen derecho', unidad:'m'},
     {elem:'Bionda margen izquierdo', unidad:'m'},
@@ -1773,23 +1806,28 @@ const INV_PREDEF = [
     {elem:'Caños / ODT', unidad:'ud'},
     {elem:'Arquetas', unidad:'ud'},
   ]},
-  {grupo:'Otros', items:[
-    {elem:'Otro (personalizado)', unidad:''},
-  ]},
 ];
 const UNIDADES = ['m','ud','m²','km','t','—'];
 
-/* Construye las opciones del desplegable de elementos: predefinidos + «Mis elementos» + Otro */
-function opcionesElementos(){
-  let html = '';
-  INV_PREDEF.forEach(g=>{
-    if(g.grupo==='Otros') return; // lo dejamos para el final
-    html += `<optgroup label="${esc(g.grupo)}">${g.items.map(it=>`<option value="${esc(it.elem)}" data-unidad="${esc(it.unidad)}">${esc(it.elem)}</option>`).join('')}</optgroup>`;
-  });
-  const mios = S.invElementos || [];
-  if(mios.length){
-    html += `<optgroup label="Mis elementos">${mios.map(it=>`<option value="${esc(it.elem)}" data-unidad="${esc(it.unidad||'')}">${esc(it.elem)}</option>`).join('')}</optgroup>`;
+/* El catálogo de inventario (familias + elementos) es EDITABLE y vive en S.invCatalogo.
+   La primera vez se copia de la semilla; después se puede modificar libremente.
+   Si existían elementos sueltos antiguos (S.invElementos), se incorporan a «Mis elementos». */
+function migrarCatalogoInv(){
+  if(!Array.isArray(S.invCatalogo) || !S.invCatalogo.length){
+    // copia profunda de la semilla
+    S.invCatalogo = INV_SEMILLA.map(g=>({grupo:g.grupo, items:g.items.map(it=>({elem:it.elem, unidad:it.unidad}))}));
+    // incorporar los personalizados antiguos, si los hubiera
+    if(Array.isArray(S.invElementos) && S.invElementos.length){
+      S.invCatalogo.push({grupo:'Mis elementos', items:S.invElementos.map(e=>({elem:e.elem, unidad:e.unidad||''}))});
+    }
   }
+}
+
+/* Construye las opciones del desplegable de elementos a partir del catálogo editable */
+function opcionesElementos(){
+  let html = (S.invCatalogo||[]).map(g=>
+    g.items.length? `<optgroup label="${esc(g.grupo)}">${g.items.map(it=>`<option value="${esc(it.elem)}" data-unidad="${esc(it.unidad||'')}">${esc(it.elem)}</option>`).join('')}</optgroup>` : ''
+  ).join('');
   html += `<optgroup label="Otros"><option value="Otro (personalizado)" data-unidad="">Otro (personalizado)</option></optgroup>`;
   return html;
 }
@@ -2460,7 +2498,7 @@ function importJSON(input){
       const d = JSON.parse(rd.result);
       if(!Array.isArray(d.roads)) throw 0;
       if(!confirm('Esto sustituirá los datos actuales por los del archivo. ¿Continuar?')) return;
-      S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; migrarFotos(); save(); aplicarCabecera(); go('panel'); toast('Copia importada correctamente.');
+      S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; migrarCatalogoInv(); migrarFotos(); save(); aplicarCabecera(); go('panel'); toast('Copia importada correctamente.');
     }catch(e){ toast('El archivo no parece una copia válida de GesVía.'); }
     input.value='';
   };
@@ -2715,7 +2753,7 @@ async function descargarDeGitHub(){
     const parsed = decodifica((await res.json()).content);
     const d = parsed.datos || parsed; // admite también un JSON exportado a mano
     if(!d || !Array.isArray(d.roads)){ setSyncEstado('❌ El archivo no tiene el formato de GesVía', 'var(--critico)'); return; }
-    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; migrarFotos(); saveLocal(); aplicarCabecera(); go('panel');
+    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; migrarCatalogoInv(); migrarFotos(); saveLocal(); aplicarCabecera(); go('panel');
     setSyncEstado(`✅ Descargado: ${S.roads.length} carreteras · ${S.insp.length} inspecciones`, 'var(--ok)');
     setSyncDot('var(--ok)', 'Sincronizado ✓'); toast('📥 Datos descargados de GitHub');
   }catch(e){ setSyncEstado('❌ Error: '+e.message, 'var(--critico)'); }
@@ -2767,7 +2805,7 @@ async function autoDescargar(){
       const parsed = decodifica((await res.json()).content);
       const d = parsed.datos || parsed;
       if(d && Array.isArray(d.roads)){
-        S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; migrarFotos(); saveLocal(); aplicarCabecera();
+        S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; migrarCatalogoInv(); migrarFotos(); saveLocal(); aplicarCabecera();
         setSyncDot('var(--ok)', 'Sincronizado ✓');
         const activa = document.querySelector('nav button.activo');
         go(activa? activa.dataset.v || 'panel' : 'panel');
@@ -2802,7 +2840,7 @@ async function refrescarSiHayNovedades(motivo){
     const local  = JSON.stringify(S);
     if(remoto === local) return;              // ya estamos al día, no tocamos nada
     if(pendienteSubir) return;                // por si cambió mientras descargábamos
-    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; migrarFotos();
+    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; migrarCatalogoInv(); migrarFotos();
     saveLocal(); aplicarCabecera();
     const activa = document.querySelector('nav button.activo');
     go(activa? activa.dataset.v || 'panel' : 'panel');
