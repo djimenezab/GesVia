@@ -235,7 +235,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.53</span></span></h1>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.54</span></span></h1>
       <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
@@ -422,11 +422,24 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
         <option value="ordenes">Órdenes de trabajo pendientes</option>
         <option value="completadas">Órdenes de trabajo completadas (histórico)</option>
         <option value="plano">Plano de estado (mapa de la zona)</option>
+        <option value="inventario">Inventario de elementos</option>
       </select>
     </label>
     <div class="form-grid">
       <label class="campo">Ámbito
-        <select id="f-road"><option value="*">Toda la red</option></select>
+        <select id="f-road" onchange="if($('f-tipo').value==='inventario'){invInformeFillTramos();invInformeFillElementos();}"><option value="*">Toda la red</option></select>
+      </label>
+      <label class="campo" id="wrap-inv-ambito" style="display:none">Alcance
+        <select id="f-inv-ambito" onchange="cambiaTipoInforme()">
+          <option value="carretera">Toda la carretera (suma de tramos)</option>
+          <option value="tramo">Un tramo concreto</option>
+        </select>
+      </label>
+      <label class="campo" id="wrap-inv-tramo" style="display:none">Tramo
+        <select id="f-inv-tramo"></select>
+      </label>
+      <label class="campo" id="wrap-inv-elem" style="display:none">Elemento
+        <select id="f-inv-elem"></select>
       </label>
       <label class="campo" id="wrap-fam">Familia
         <select id="f-fam"><option value="*">Todas las familias</option></select>
@@ -541,6 +554,36 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   </div>
 
   <div class="tarjeta" style="margin-bottom:1rem">
+    <h3 style="margin:0;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toggleInvElem()">
+      <span>Elementos de inventario</span>
+      <button class="btn sec mini" id="invelem-toggle" type="button">▸ Desplegar</button>
+    </h3>
+    <div id="invelem-cuerpo" style="display:none;margin-top:.7rem">
+      <p style="color:var(--texto2);font-size:.9rem;margin-bottom:.6rem">
+        Los elementos habituales ya vienen predefinidos. Aquí puedes añadir los tuyos propios, que
+        aparecerán en el grupo «Mis elementos» al registrar inventario.
+      </p>
+      <div class="plano-toolbar" style="margin:0;align-items:flex-end">
+        <label class="campo" style="margin:0;flex:1;min-width:180px">Nuevo elemento
+          <input id="aj-elem-nombre" placeholder="Ej.: Bolardos" style="margin-top:.2rem">
+        </label>
+        <label class="campo" style="margin:0;min-width:100px">Unidad
+          <select id="aj-elem-unidad" style="margin-top:.2rem">
+            <option value="ud">ud</option>
+            <option value="m">m</option>
+            <option value="m²">m²</option>
+            <option value="km">km</option>
+            <option value="t">t</option>
+            <option value="">—</option>
+          </select>
+        </label>
+        <button class="btn" onclick="addInvElemento()">Añadir</button>
+      </div>
+      <div id="aj-elem-lista" style="margin-top:.7rem"></div>
+    </div>
+  </div>
+
+  <div class="tarjeta" style="margin-bottom:1rem">
     <h3 style="margin-bottom:.7rem">Datos y copias de seguridad</h3>
     <div class="aviso-banda" style="margin-bottom:.9rem">
       <strong>Sincronización activada:</strong> si configuras GitHub en el botón ⬆⬇ de arriba, al abrir la app se descargan los datos del repositorio y cada cambio se sube automáticamente a los pocos segundos. El punto de color indica el estado: verde = sincronizado, ámbar = subiendo, rojo = error o sin conexión. La copia JSON manual sigue disponible como respaldo extra.
@@ -591,7 +634,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
-      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.53</span></strong>
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.54</span></strong>
     </p>
   </div>
 </section>
@@ -610,7 +653,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.53';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.54';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -665,7 +708,7 @@ function load(){
   if(!S.trazados) S.trazados = {};   // { tramoId: [ [x,y], [x,y], ... ] } en % del plano (0..100)
   if(!Array.isArray(S.vigilantes)) S.vigilantes = [];
   if(!S.inventario) S.inventario = {};   // { tramoId: [ {id, elem, valor, unidad, nota} ] }
-  if(!S.inventario) S.inventario = {};   // { tramoId: [ {id, elem, valor, unidad, nota} ] }
+  if(!Array.isArray(S.invElementos)) S.invElementos = [];   // elementos personalizados {elem, unidad}
   migrarFotos();
 }
 let avisadoAlmacen = false;
@@ -798,6 +841,45 @@ function delVigilante(i){
   if(!confirm('¿Eliminar a '+v+' de la lista?')) return;
   S.vigilantes.splice(i,1);
   save(); renderVigilantes();
+}
+
+/* ---------- Elementos de inventario personalizados ---------- */
+let invElemDesplegado = false;
+function toggleInvElem(){
+  invElemDesplegado = !invElemDesplegado;
+  $('invelem-cuerpo').style.display = invElemDesplegado ? '' : 'none';
+  $('invelem-toggle').textContent = invElemDesplegado ? '▾ Plegar' : '▸ Desplegar';
+  if(invElemDesplegado) renderInvElementos();
+}
+function renderInvElementos(){
+  const box = $('aj-elem-lista'); if(!box) return;
+  const els = S.invElementos || [];
+  if(!els.length){ box.innerHTML = '<p style="color:var(--texto2);font-size:.9rem">Aún no has añadido elementos propios. Los predefinidos ya están disponibles.</p>'; return; }
+  box.innerHTML = els.map((e,i)=>`<div class="trazo-item">
+    <span style="flex:1">${esc(e.elem)}</span>
+    <span style="color:var(--texto2);min-width:40px">${esc(e.unidad||'—')}</span>
+    <button class="btn peligro mini" onclick="delInvElemento(${i})">Eliminar</button>
+  </div>`).join('');
+}
+function addInvElemento(){
+  const nombre = ($('aj-elem-nombre').value||'').trim();
+  if(!nombre) return toast('Escribe el nombre del elemento.');
+  if(!S.invElementos) S.invElementos = [];
+  // no duplicar (ni con predefinidos ni con los propios)
+  const yaPredef = INV_PREDEF.some(g=>g.items.some(it=>it.elem.toLowerCase()===nombre.toLowerCase()));
+  const yaMio = S.invElementos.some(e=>e.elem.toLowerCase()===nombre.toLowerCase());
+  if(yaPredef || yaMio) return toast('Ese elemento ya existe.');
+  S.invElementos.push({ elem:nombre, unidad:$('aj-elem-unidad').value });
+  S.invElementos.sort((a,b)=>a.elem.localeCompare(b.elem,'es',{sensitivity:'base'}));
+  $('aj-elem-nombre').value='';
+  save(); renderInvElementos();
+  toast('Elemento añadido.');
+}
+function delInvElemento(i){
+  const e = S.invElementos[i];
+  if(!confirm('¿Eliminar «'+e.elem+'» de tus elementos?')) return;
+  S.invElementos.splice(i,1);
+  save(); renderInvElementos();
 }
 
 /* =====================================================
@@ -1697,6 +1779,21 @@ const INV_PREDEF = [
 ];
 const UNIDADES = ['m','ud','m²','km','t','—'];
 
+/* Construye las opciones del desplegable de elementos: predefinidos + «Mis elementos» + Otro */
+function opcionesElementos(){
+  let html = '';
+  INV_PREDEF.forEach(g=>{
+    if(g.grupo==='Otros') return; // lo dejamos para el final
+    html += `<optgroup label="${esc(g.grupo)}">${g.items.map(it=>`<option value="${esc(it.elem)}" data-unidad="${esc(it.unidad)}">${esc(it.elem)}</option>`).join('')}</optgroup>`;
+  });
+  const mios = S.invElementos || [];
+  if(mios.length){
+    html += `<optgroup label="Mis elementos">${mios.map(it=>`<option value="${esc(it.elem)}" data-unidad="${esc(it.unidad||'')}">${esc(it.elem)}</option>`).join('')}</optgroup>`;
+  }
+  html += `<optgroup label="Otros"><option value="Otro (personalizado)" data-unidad="">Otro (personalizado)</option></optgroup>`;
+  return html;
+}
+
 function renderInventario(){
   fillSelectRoads($('inv-road'));
   invFillTramos();
@@ -1720,9 +1817,7 @@ function renderInvTramo(){
   if(!tid){ cont.innerHTML = '<div class="tarjeta"><p style="color:var(--texto2)">Selecciona una carretera y un tramo. Si no hay tramos, créalos en Ajustes → Inventario de la red.</p></div>'; return; }
   const t = tramo(tid), r = road(t.roadId);
   const datos = S.inventario[tid] || [];
-  const optPredef = INV_PREDEF.map(g=>
-    `<optgroup label="${esc(g.grupo)}">${g.items.map(it=>`<option value="${esc(it.elem)}" data-unidad="${esc(it.unidad)}">${esc(it.elem)}</option>`).join('')}</optgroup>`
-  ).join('');
+  const optPredef = opcionesElementos();
   const optUnidades = UNIDADES.map(u=>`<option value="${u==='—'?'':u}">${u}</option>`).join('');
 
   const filas = datos.length ? datos.map(d=>`<tr>
@@ -1866,10 +1961,11 @@ function renderInformeForm(){
 /* Muestra u oculta los filtros según el tipo de informe elegido */
 function cambiaTipoInforme(){
   const tipo = $('f-tipo').value;
+  const esInv = tipo==='inventario';
   // El "Contenido" (completo / solo problemas) solo tiene sentido en el informe de estado
   $('wrap-modo').style.display = (tipo==='estado') ? '' : 'none';
-  // La familia aplica a todo menos a "órdenes pendientes" (que ya listan su familia)
-  $('wrap-fam').style.display = (tipo==='ordenes') ? 'none' : '';
+  // La familia aplica a estado/listado/completadas/plano (no en órdenes ni inventario)
+  $('wrap-fam').style.display = (tipo==='ordenes'||esInv) ? 'none' : '';
   // El rango de fechas solo aplica al histórico de completadas
   const verFechas = (tipo==='completadas') ? '' : 'none';
   $('wrap-desde').style.display = verFechas;
@@ -1878,6 +1974,42 @@ function cambiaTipoInforme(){
   $('wrap-nivel').style.display = (tipo==='plano') ? '' : 'none';
   // En el plano, el ámbito por carretera no se usa (se ve toda la zona)
   $('f-road').closest('.campo').style.display = (tipo==='plano') ? 'none' : '';
+  // Campos propios del inventario
+  $('wrap-inv-ambito').style.display = esInv ? '' : 'none';
+  $('wrap-inv-elem').style.display = esInv ? '' : 'none';
+  const porTramo = esInv && $('f-inv-ambito').value==='tramo';
+  $('wrap-inv-tramo').style.display = porTramo ? '' : 'none';
+  if(esInv){
+    // el inventario necesita una carretera concreta: quitar "Toda la red"
+    const fr = $('f-road');
+    if(fr.querySelector('option[value="*"]')){
+      fr.innerHTML = roadsOrdenadas().map(r=>`<option value="${r.id}">${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('');
+    }
+    invInformeFillTramos();
+    invInformeFillElementos();
+  } else {
+    // restaurar "Toda la red" si venimos del inventario
+    const fr = $('f-road');
+    if(fr && !fr.querySelector('option[value="*"]')){
+      fr.innerHTML = '<option value="*">Toda la red</option>' + roadsOrdenadas().map(r=>`<option value="${r.id}">${esc(r.codigo)}</option>`).join('');
+    }
+  }
+}
+function invInformeFillTramos(){
+  const rid = $('f-road').value;
+  const sel = $('f-inv-tramo'); if(!sel) return;
+  const ts = tramosDe(rid);
+  sel.innerHTML = ts.map(t=>`<option value="${t.id}">PK ${pk(t.pkIni)} – ${pk(t.pkFin)}${t.desc?' · '+esc(t.desc):''}</option>`).join('') || '<option value="">— sin tramos —</option>';
+}
+function invInformeFillElementos(){
+  const sel = $('f-inv-elem'); if(!sel) return;
+  // elementos que existen realmente en el inventario de esa carretera + opción "todos"
+  const rid = $('f-road').value;
+  const tids = tramosDe(rid).map(t=>t.id);
+  const setEl = new Set();
+  tids.forEach(tid=>(S.inventario[tid]||[]).forEach(d=>setEl.add(d.elem)));
+  const els = [...setEl].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+  sel.innerHTML = '<option value="*">Todos los elementos</option>' + els.map(e=>`<option value="${esc(e)}">${esc(e)}</option>`).join('');
 }
 function informeRapido(fam){
   go('informe');
@@ -1893,6 +2025,7 @@ function verInforme(){
   else if(tipo==='ordenes')     html = informeOrdenes(road);
   else if(tipo==='completadas') html = informeCompletadas(road, fam, $('f-desde').value, $('f-hasta').value);
   else if(tipo==='plano'){      html = informePlano(fam, $('f-nivel').value); esPlano = true; }
+  else if(tipo==='inventario')  html = informeInventario(road, $('f-inv-ambito').value, $('f-inv-tramo').value, $('f-inv-elem').value);
   else                          html = construirInforme(road, fam, modo);
   $('previaInforme').innerHTML = html;
   $('printArea').innerHTML = html;
@@ -2244,6 +2377,66 @@ function badge2(n){
   return `<span class="badge ${cls}">${txt}</span>`;
 }
 
+/* ---------- Informe: INVENTARIO de elementos ---------- */
+function informeInventario(roadSel, ambito, tramoSel, elemSel){
+  const r = road(roadSel);
+  if(!r) return `<div class="informe">${cabInforme('Inventario de elementos','—')}<p style="color:var(--critico)">Selecciona una carretera.</p></div>`;
+  const fechaTxt = new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
+  const sector = (S.ajustes&&S.ajustes.sector) ? esc(S.ajustes.sector) : '';
+  // tramos en el ámbito elegido
+  let tramos = tramosDe(r.id);
+  if(ambito==='tramo' && tramoSel) tramos = tramos.filter(t=>t.id===tramoSel);
+
+  // recopilar filas: por cada tramo y cada dato de inventario que cumpla el filtro de elemento
+  const filas = [];
+  const totales = {}; // elem -> {unidad, total}
+  tramos.forEach(t=>{
+    (S.inventario[t.id]||[]).forEach(d=>{
+      if(elemSel!=='*' && d.elem!==elemSel) return;
+      filas.push({t, d});
+      const clave = d.elem + '||' + (d.unidad||'');
+      if(!totales[clave]) totales[clave] = {elem:d.elem, unidad:d.unidad||'', total:0};
+      totales[clave].total += Number(d.valor)||0;
+    });
+  });
+
+  const subtitulo = `${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''} · ${ambito==='tramo'?'Tramo concreto':'Toda la carretera'}${elemSel!=='*'?' · '+esc(elemSel):''}`;
+
+  if(!filas.length){
+    return `<div class="informe">${cabInforme('Inventario de elementos', subtitulo)}
+      <p style="color:var(--texto2);padding:.5rem 0">No hay datos de inventario para este filtro. Regístralos en la pestaña «Inventario».</p>
+      <div class="pie"><span>Inventario de elementos físicos de la vía.</span><span>Generado con GesVía</span></div></div>`;
+  }
+
+  // Tabla de detalle por tramo
+  const filasDetalle = filas.map(({t,d})=>`<tr>
+    <td>PK ${pk(t.pkIni)} – ${pk(t.pkFin)}${t.desc?'<br><span style="color:var(--texto2);font-size:.85rem">'+esc(t.desc)+'</span>':''}</td>
+    <td>${esc(d.elem)}</td>
+    <td style="text-align:right;font-weight:700">${formatoNum(d.valor)}</td>
+    <td>${esc(d.unidad||'')}</td>
+    <td>${esc(d.nota||'')}</td></tr>`).join('');
+
+  // Tabla de totales (solo si hay más de un tramo o varios elementos)
+  const clavesTot = Object.values(totales);
+  const filasTot = clavesTot.map(x=>`<tr>
+    <td><strong>${esc(x.elem)}</strong></td>
+    <td style="text-align:right;font-weight:700">${formatoNum(x.total)}</td>
+    <td>${esc(x.unidad)}</td></tr>`).join('');
+
+  const mostrarTotales = ambito==='carretera' && tramos.length>1;
+
+  return `<div class="informe">
+    ${cabInforme('Inventario de elementos', subtitulo)}
+    ${mostrarTotales? `<h3>Totales de la carretera</h3>
+      <div style="overflow-x:auto"><table><thead><tr><th>Elemento</th><th style="text-align:right">Total</th><th>Unidad</th></tr></thead>
+      <tbody>${filasTot}</tbody></table></div>` : ''}
+    <h3>Detalle por tramo</h3>
+    <div style="overflow-x:auto"><table><thead><tr><th>Tramo (PK)</th><th>Elemento</th><th style="text-align:right">Cantidad</th><th>Unidad</th><th>Notas</th></tr></thead>
+    <tbody>${filasDetalle}</tbody></table></div>
+    <div class="pie"><span>Inventario de elementos físicos de la vía (referencia para mediciones y actuaciones).</span><span>Generado con GesVía</span></div>
+  </div>`;
+}
+
 /* =====================================================
    DATOS: exportar / importar / demo
    ===================================================== */
@@ -2267,7 +2460,7 @@ function importJSON(input){
       const d = JSON.parse(rd.result);
       if(!Array.isArray(d.roads)) throw 0;
       if(!confirm('Esto sustituirá los datos actuales por los del archivo. ¿Continuar?')) return;
-      S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; migrarFotos(); save(); aplicarCabecera(); go('panel'); toast('Copia importada correctamente.');
+      S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; migrarFotos(); save(); aplicarCabecera(); go('panel'); toast('Copia importada correctamente.');
     }catch(e){ toast('El archivo no parece una copia válida de GesVía.'); }
     input.value='';
   };
@@ -2522,7 +2715,7 @@ async function descargarDeGitHub(){
     const parsed = decodifica((await res.json()).content);
     const d = parsed.datos || parsed; // admite también un JSON exportado a mano
     if(!d || !Array.isArray(d.roads)){ setSyncEstado('❌ El archivo no tiene el formato de GesVía', 'var(--critico)'); return; }
-    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; migrarFotos(); saveLocal(); aplicarCabecera(); go('panel');
+    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; migrarFotos(); saveLocal(); aplicarCabecera(); go('panel');
     setSyncEstado(`✅ Descargado: ${S.roads.length} carreteras · ${S.insp.length} inspecciones`, 'var(--ok)');
     setSyncDot('var(--ok)', 'Sincronizado ✓'); toast('📥 Datos descargados de GitHub');
   }catch(e){ setSyncEstado('❌ Error: '+e.message, 'var(--critico)'); }
@@ -2574,7 +2767,7 @@ async function autoDescargar(){
       const parsed = decodifica((await res.json()).content);
       const d = parsed.datos || parsed;
       if(d && Array.isArray(d.roads)){
-        S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; migrarFotos(); saveLocal(); aplicarCabecera();
+        S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; migrarFotos(); saveLocal(); aplicarCabecera();
         setSyncDot('var(--ok)', 'Sincronizado ✓');
         const activa = document.querySelector('nav button.activo');
         go(activa? activa.dataset.v || 'panel' : 'panel');
@@ -2609,7 +2802,7 @@ async function refrescarSiHayNovedades(motivo){
     const local  = JSON.stringify(S);
     if(remoto === local) return;              // ya estamos al día, no tocamos nada
     if(pendienteSubir) return;                // por si cambió mientras descargábamos
-    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; migrarFotos();
+    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; migrarFotos();
     saveLocal(); aplicarCabecera();
     const activa = document.querySelector('nav button.activo');
     go(activa? activa.dataset.v || 'panel' : 'panel');
