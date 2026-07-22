@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-22T06:32:32.287Z",
+ "exportado": "2026-07-22T06:32:42.319Z",
  "datos": {
   "roads": [
    {
@@ -6060,6 +6060,10 @@
      },
      {
       "elem": "Hitos de vértice",
+      "unidad": "ud"
+     },
+     {
+      "elem": "H-75 Verde",
       "unidad": "ud"
      }
     ]
