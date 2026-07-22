@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-22T10:10:36.963Z",
+ "exportado": "2026-07-22T10:11:01.146Z",
  "datos": {
   "roads": [
    {
@@ -2672,6 +2672,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x363",
+    "tramoId": "x128",
+    "fam": "BAL",
+    "fecha": "2026-07-22",
+    "valor": 51,
+    "obs": "Captafatos iniciales rotos",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -2732,7 +2744,7 @@
     ]
    }
   ],
-  "seq": 363,
+  "seq": 364,
   "ajustes": {
    "sector": "ZONA 2"
   },
