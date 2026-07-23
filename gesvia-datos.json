@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-23T11:04:45.424Z",
+ "exportado": "2026-07-23T11:05:01.187Z",
  "datos": {
   "roads": [
    {
@@ -3632,6 +3632,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x460",
+    "tramoId": "x96",
+    "fam": "MAR",
+    "fecha": "2026-07-23",
+    "valor": 55,
+    "obs": "Hiervas en entrada",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -3692,7 +3704,7 @@
     ]
    }
   ],
-  "seq": 460,
+  "seq": 461,
   "ajustes": {
    "sector": "ZONA 2"
   },
