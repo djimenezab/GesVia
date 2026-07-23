@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-23T11:00:20.245Z",
+ "exportado": "2026-07-23T11:03:46.353Z",
  "datos": {
   "roads": [
    {
@@ -3620,7 +3620,7 @@
     ]
    }
   ],
-  "seq": 452,
+  "seq": 453,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -7080,6 +7080,15 @@
      "elem": "Bionda margen derecho",
      "valor": 4322,
      "unidad": "m",
+     "nota": ""
+    }
+   ],
+   "x96": [
+    {
+     "id": "x452",
+     "elem": "Pasos de peatones",
+     "valor": 8,
+     "unidad": "ud",
      "nota": ""
     }
    ]
