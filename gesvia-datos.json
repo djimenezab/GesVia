@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-23T10:31:23.892Z",
+ "exportado": "2026-07-23T10:31:49.402Z",
  "datos": {
   "roads": [
    {
@@ -3080,6 +3080,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x407",
+    "tramoId": "x91",
+    "fam": "SV",
+    "fecha": "2026-07-23",
+    "valor": 98,
+    "obs": "Instaladas 2026",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -3140,7 +3152,7 @@
     ]
    }
   ],
-  "seq": 407,
+  "seq": 408,
   "ajustes": {
    "sector": "ZONA 2"
   },
