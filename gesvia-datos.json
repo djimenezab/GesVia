@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-23T10:59:43.117Z",
+ "exportado": "2026-07-23T11:00:02.774Z",
  "datos": {
   "roads": [
    {
@@ -3548,6 +3548,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x451",
+    "tramoId": "x95",
+    "fam": "MAR",
+    "fecha": "2026-07-23",
+    "valor": 70,
+    "obs": "Hiervas a media altura",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -3608,7 +3620,7 @@
     ]
    }
   ],
-  "seq": 451,
+  "seq": 452,
   "ajustes": {
    "sector": "ZONA 2"
   },
