@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-23T10:57:47.650Z",
+ "exportado": "2026-07-23T10:58:35.673Z",
  "datos": {
   "roads": [
    {
@@ -3410,7 +3410,7 @@
     "tramoId": "x94",
     "fam": "SH",
     "fecha": "2026-07-23",
-    "valor": 5,
+    "valor": 51,
     "obs": "Zonas de 0",
     "inspector": "David Jiménez",
     "gps": "",
