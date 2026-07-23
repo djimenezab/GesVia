@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-23T11:16:14.497Z",
+ "exportado": "2026-07-23T11:16:20.876Z",
  "datos": {
   "roads": [
    {
@@ -3716,6 +3716,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x469",
+    "tramoId": "x97",
+    "fam": "MAR",
+    "fecha": "2026-07-23",
+    "valor": 77,
+    "obs": "",
+    "inspector": "",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -3776,7 +3788,7 @@
     ]
    }
   ],
-  "seq": 469,
+  "seq": 470,
   "ajustes": {
    "sector": "ZONA 2"
   },
