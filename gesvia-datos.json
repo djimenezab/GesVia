@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-23T10:26:45.681Z",
+ "exportado": "2026-07-23T10:31:10.506Z",
  "datos": {
   "roads": [
    {
@@ -3056,6 +3056,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x405",
+    "tramoId": "x91",
+    "fam": "FIRME",
+    "fecha": "2026-07-23",
+    "valor": 45,
+    "obs": "Del 11+400 al 13+900 rodenas y piel cocodrilo",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -3116,7 +3128,7 @@
     ]
    }
   ],
-  "seq": 405,
+  "seq": 406,
   "ajustes": {
    "sector": "ZONA 2"
   },
