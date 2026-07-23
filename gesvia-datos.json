@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-23T11:00:02.774Z",
+ "exportado": "2026-07-23T11:00:20.245Z",
  "datos": {
   "roads": [
    {
@@ -3411,7 +3411,7 @@
     "fam": "SH",
     "fecha": "2026-07-23",
     "valor": 51,
-    "obs": "Zonas de 0",
+    "obs": "",
     "inspector": "David Jiménez",
     "gps": "",
     "params": {},
