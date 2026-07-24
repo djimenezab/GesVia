@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-24T11:53:37.902Z",
+ "exportado": "2026-07-24T11:54:05.978Z",
  "datos": {
   "roads": [
    {
@@ -4190,6 +4190,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x544",
+    "tramoId": "x41",
+    "fam": "BAL",
+    "fecha": "2026-07-24",
+    "valor": 40,
+    "obs": "Entrada Tarazona por Madrigueras rotos",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -4250,7 +4262,7 @@
     ]
    }
   ],
-  "seq": 544,
+  "seq": 545,
   "ajustes": {
    "sector": "ZONA 2"
   },
