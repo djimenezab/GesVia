@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-24T10:18:08.115Z",
+ "exportado": "2026-07-24T10:19:31.201Z",
  "datos": {
   "roads": [
    {
@@ -3812,6 +3812,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x493",
+    "tramoId": "x47",
+    "fam": "FIRME",
+    "fecha": "2026-07-24",
+    "valor": 39,
+    "obs": "Roderas, baches, piel cocodrilo",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -3872,7 +3884,7 @@
     ]
    }
   ],
-  "seq": 493,
+  "seq": 494,
   "ajustes": {
    "sector": "ZONA 2"
   },
