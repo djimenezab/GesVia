@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-24T10:57:06.542Z",
+ "exportado": "2026-07-24T10:59:01.495Z",
  "datos": {
   "roads": [
    {
@@ -4011,11 +4011,17 @@
     "fam": "SV",
     "fecha": "2026-07-24",
     "valor": 75,
-    "obs": "",
+    "obs": "Señal cruce Fuensanta defectuosa",
     "inspector": "David Jiménez",
     "gps": "",
     "params": {},
-    "fotos": []
+    "fotos": [
+     {
+      "id": "w9b5qcm",
+      "pendiente": false,
+      "ruta": "fotos/x518_w9b5qcm.jpg"
+     }
+    ]
    },
    {
     "id": "x519",
