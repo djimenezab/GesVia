@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-24T10:19:43.745Z",
+ "exportado": "2026-07-24T10:20:04.486Z",
  "datos": {
   "roads": [
    {
@@ -3836,6 +3836,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x495",
+    "tramoId": "x47",
+    "fam": "SV",
+    "fecha": "2026-07-24",
+    "valor": 77,
+    "obs": "Paneles dieeccionales en peor estado",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -3896,7 +3908,7 @@
     ]
    }
   ],
-  "seq": 495,
+  "seq": 496,
   "ajustes": {
    "sector": "ZONA 2"
   },
