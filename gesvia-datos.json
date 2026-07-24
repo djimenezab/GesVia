@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-24T11:55:52.895Z",
+ "exportado": "2026-07-24T12:00:52.704Z",
  "datos": {
   "roads": [
    {
@@ -4322,6 +4322,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x555",
+    "tramoId": "x35",
+    "fam": "FIRME",
+    "fecha": "2026-07-24",
+    "valor": 75,
+    "obs": "4 roderas en el carril izquierdo sent. AB",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -4382,7 +4394,7 @@
     ]
    }
   ],
-  "seq": 555,
+  "seq": 556,
   "ajustes": {
    "sector": "ZONA 2"
   },
