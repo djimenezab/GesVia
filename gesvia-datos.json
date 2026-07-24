@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-24T11:26:00.942Z",
+ "exportado": "2026-07-24T11:26:28.568Z",
  "datos": {
   "roads": [
    {
@@ -4082,6 +4082,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x530",
+    "tramoId": "x39",
+    "fam": "SH",
+    "fecha": "2026-07-24",
+    "valor": 66,
+    "obs": "Zonas eje muy baja pintura ya",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -4142,7 +4154,7 @@
     ]
    }
   ],
-  "seq": 530,
+  "seq": 531,
   "ajustes": {
    "sector": "ZONA 2"
   },
