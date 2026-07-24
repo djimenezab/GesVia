@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-24T12:19:52.039Z",
+ "exportado": "2026-07-24T12:20:23.137Z",
  "datos": {
   "roads": [
    {
@@ -4610,6 +4610,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x584",
+    "tramoId": "x30",
+    "fam": "BAL",
+    "fecha": "2026-07-24",
+    "valor": 67,
+    "obs": "Faltan hitos de arista unos 250 en toda la carretera",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -4670,7 +4682,7 @@
     ]
    }
   ],
-  "seq": 584,
+  "seq": 585,
   "ajustes": {
    "sector": "ZONA 2"
   },
