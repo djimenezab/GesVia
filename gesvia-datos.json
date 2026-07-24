@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-24T12:06:54.440Z",
+ "exportado": "2026-07-24T12:13:06.964Z",
  "datos": {
   "roads": [
    {
@@ -4550,7 +4550,7 @@
     ]
    }
   ],
-  "seq": 571,
+  "seq": 572,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -7861,6 +7861,13 @@
      "valor": 1,
      "unidad": "ud",
      "nota": "Instalas 2026"
+    },
+    {
+     "id": "x571",
+     "elem": "Paneles direccionales",
+     "valor": 28,
+     "unidad": "ud",
+     "nota": ""
     }
    ],
    "x34": [
