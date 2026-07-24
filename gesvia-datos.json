@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-24T12:01:53.449Z",
+ "exportado": "2026-07-24T12:05:55.889Z",
  "datos": {
   "roads": [
    {
@@ -4466,7 +4466,7 @@
     ]
    }
   ],
-  "seq": 563,
+  "seq": 564,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -7786,6 +7786,13 @@
      "valor": 1,
      "unidad": "ud",
      "nota": "Instalas 2026"
+    },
+    {
+     "id": "x563",
+     "elem": "Bionda margen izquierdo",
+     "valor": 735,
+     "unidad": "m",
+     "nota": ""
     }
    ],
    "x144": [
