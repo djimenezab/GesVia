@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-24T10:12:30.452Z",
+ "exportado": "2026-07-24T10:12:47.919Z",
  "datos": {
   "roads": [
    {
@@ -3764,6 +3764,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x487",
+    "tramoId": "x46",
+    "fam": "BAL",
+    "fecha": "2026-07-24",
+    "valor": 55,
+    "obs": "Captafaros defectuosos",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -3824,7 +3836,7 @@
     ]
    }
   ],
-  "seq": 487,
+  "seq": 488,
   "ajustes": {
    "sector": "ZONA 2"
   },
