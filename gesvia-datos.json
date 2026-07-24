@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-24T10:11:57.417Z",
+ "exportado": "2026-07-24T10:12:20.997Z",
  "datos": {
   "roads": [
    {
@@ -3734,7 +3734,7 @@
     "tramoId": "x46",
     "fam": "FIRME",
     "fecha": "2026-07-24",
-    "valor": 78,
+    "valor": 50,
     "obs": "Roderas, piel cocodrilo, fisuras",
     "inspector": "David Jiménez",
     "gps": "",
