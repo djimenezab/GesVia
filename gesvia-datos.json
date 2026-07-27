@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-27T10:02:39.998Z",
+ "exportado": "2026-07-27T10:02:47.117Z",
  "datos": {
   "roads": [
    {
@@ -8539,6 +8539,10 @@
      },
      {
       "elem": "Hito de arista bionda",
+      "unidad": "ud"
+     },
+     {
+      "elem": "H-75 Verde",
       "unidad": "ud"
      }
     ]
