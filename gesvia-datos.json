@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-27T10:00:06.703Z",
+ "exportado": "2026-07-27T10:00:22.382Z",
  "datos": {
   "roads": [
    {
@@ -8026,13 +8026,6 @@
      "elem": "Bionda margen izquierdo",
      "valor": 1125,
      "unidad": "m",
-     "nota": ""
-    },
-    {
-     "id": "x588",
-     "elem": "Hitos de arista",
-     "valor": 87,
-     "unidad": "ud",
      "nota": ""
     }
    ],
