@@ -1,5 +1,10 @@
 # GesVía · Gestión de la conservación de carreteras (PWA)
 
+## Novedades v1.56
+- En el informe «Inventario de elementos» se puede elegir **Toda la red** como ámbito: muestra el
+  total de cada elemento sumando todas las carreteras, en qué carreteras está cada uno, y el desglose
+  por carretera. Útil para saber de un vistazo, p. ej., cuántos hitos de arista hay en toda la zona.
+
 ## Novedades v1.55
 - El **catálogo de inventario** (familias y elementos) es totalmente **editable** en
   Ajustes → «Catálogo de inventario»: puedes renombrar o borrar familias y elementos, cambiar sus
@@ -184,7 +189,7 @@ LEEME.md
 ## Cuando actualices la app
 
 Si subes un `index.html` nuevo, edita en `sw.js` la primera línea y sube la versión
-(`gesvia-v1.29` → `gesvia-v1.30`). Así los móviles descargan la versión nueva en vez
+(`gesvia-v1.30` → `gesvia-v1.31`). Así los móviles descargan la versión nueva en vez
 de seguir usando la copia guardada en caché.
 
 ## Sincronización automática con GitHub (como RegIn 1.91)

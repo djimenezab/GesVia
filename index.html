@@ -235,7 +235,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.55</span></span></h1>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.56</span></span></h1>
       <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
@@ -427,7 +427,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
     </label>
     <div class="form-grid">
       <label class="campo">Ámbito
-        <select id="f-road" onchange="if($('f-tipo').value==='inventario'){invInformeFillTramos();invInformeFillElementos();}"><option value="*">Toda la red</option></select>
+        <select id="f-road" onchange="if($('f-tipo').value==='inventario'){cambiaTipoInforme();}"><option value="*">Toda la red</option></select>
       </label>
       <label class="campo" id="wrap-inv-ambito" style="display:none">Alcance
         <select id="f-inv-ambito" onchange="cambiaTipoInforme()">
@@ -628,7 +628,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
-      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.55</span></strong>
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.56</span></strong>
     </p>
   </div>
 </section>
@@ -647,7 +647,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.55';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.56';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -2015,20 +2015,24 @@ function cambiaTipoInforme(){
   // Campos propios del inventario
   $('wrap-inv-ambito').style.display = esInv ? '' : 'none';
   $('wrap-inv-elem').style.display = esInv ? '' : 'none';
-  const porTramo = esInv && $('f-inv-ambito').value==='tramo';
+  const esTodaRed = $('f-road').value === '*';
+  // "por tramo" solo tiene sentido con una carretera concreta
+  const porTramo = esInv && !esTodaRed && $('f-inv-ambito').value==='tramo';
   $('wrap-inv-tramo').style.display = porTramo ? '' : 'none';
+  // Con "Toda la red" el alcance por tramo no aplica: se oculta el selector de alcance
+  $('wrap-inv-ambito').style.display = (esInv && !esTodaRed) ? '' : 'none';
   if(esInv){
-    // el inventario necesita una carretera concreta: quitar "Toda la red"
+    // el inventario mantiene "Toda la red" como opción (para consultar toda la zona)
     const fr = $('f-road');
-    if(fr.querySelector('option[value="*"]')){
-      fr.innerHTML = roadsOrdenadas().map(r=>`<option value="${r.id}">${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('');
+    if(!fr.querySelector('option[value="*"]')){
+      fr.innerHTML = '<option value="*">Toda la red</option>' + roadsOrdenadas().map(r=>`<option value="${r.id}">${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('');
     }
     invInformeFillTramos();
     invInformeFillElementos();
   } else {
-    // restaurar "Toda la red" si venimos del inventario
+    // restaurar "Toda la red" con etiqueta corta si venimos del inventario
     const fr = $('f-road');
-    if(fr && !fr.querySelector('option[value="*"]')){
+    if(fr && [...fr.options].some(o=>o.value!=='*' && o.textContent.includes('·'))){
       fr.innerHTML = '<option value="*">Toda la red</option>' + roadsOrdenadas().map(r=>`<option value="${r.id}">${esc(r.codigo)}</option>`).join('');
     }
   }
@@ -2036,16 +2040,20 @@ function cambiaTipoInforme(){
 function invInformeFillTramos(){
   const rid = $('f-road').value;
   const sel = $('f-inv-tramo'); if(!sel) return;
+  if(rid==='*'){ sel.innerHTML=''; return; }
   const ts = tramosDe(rid);
   sel.innerHTML = ts.map(t=>`<option value="${t.id}">PK ${pk(t.pkIni)} – ${pk(t.pkFin)}${t.desc?' · '+esc(t.desc):''}</option>`).join('') || '<option value="">— sin tramos —</option>';
 }
 function invInformeFillElementos(){
   const sel = $('f-inv-elem'); if(!sel) return;
-  // elementos que existen realmente en el inventario de esa carretera + opción "todos"
   const rid = $('f-road').value;
-  const tids = tramosDe(rid).map(t=>t.id);
   const setEl = new Set();
-  tids.forEach(tid=>(S.inventario[tid]||[]).forEach(d=>setEl.add(d.elem)));
+  if(rid==='*'){
+    // todos los elementos que existan en cualquier tramo de la red
+    Object.values(S.inventario).forEach(arr=>(arr||[]).forEach(d=>setEl.add(d.elem)));
+  } else {
+    tramosDe(rid).map(t=>t.id).forEach(tid=>(S.inventario[tid]||[]).forEach(d=>setEl.add(d.elem)));
+  }
   const els = [...setEl].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
   sel.innerHTML = '<option value="*">Todos los elementos</option>' + els.map(e=>`<option value="${esc(e)}">${esc(e)}</option>`).join('');
 }
@@ -2417,10 +2425,66 @@ function badge2(n){
 
 /* ---------- Informe: INVENTARIO de elementos ---------- */
 function informeInventario(roadSel, ambito, tramoSel, elemSel){
-  const r = road(roadSel);
-  if(!r) return `<div class="informe">${cabInforme('Inventario de elementos','—')}<p style="color:var(--critico)">Selecciona una carretera.</p></div>`;
   const fechaTxt = new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
   const sector = (S.ajustes&&S.ajustes.sector) ? esc(S.ajustes.sector) : '';
+
+  // ===== TODA LA RED =====
+  if(roadSel === '*'){
+    // recopilar por carretera y por elemento
+    const porCarretera = {};   // rid -> { elem||unidad -> total }
+    const totalRed = {};       // elem||unidad -> {elem,unidad,total}
+    const carreterasConElem = {}; // elem -> Set(codigos)
+    roadsOrdenadas().forEach(r=>{
+      tramosDe(r.id).forEach(t=>{
+        (S.inventario[t.id]||[]).forEach(d=>{
+          if(elemSel!=='*' && d.elem!==elemSel) return;
+          const clave = d.elem+'||'+(d.unidad||'');
+          (porCarretera[r.id] ||= {});
+          porCarretera[r.id][clave] = (porCarretera[r.id][clave]||0) + (Number(d.valor)||0);
+          if(!totalRed[clave]) totalRed[clave] = {elem:d.elem, unidad:d.unidad||'', total:0};
+          totalRed[clave].total += Number(d.valor)||0;
+          (carreterasConElem[d.elem] ||= new Set()).add(r.codigo);
+        });
+      });
+    });
+    const subtitulo = `Toda la red${elemSel!=='*'?' · '+esc(elemSel):''}`;
+    const claves = Object.values(totalRed);
+    if(!claves.length){
+      return `<div class="informe">${cabInforme('Inventario de elementos', subtitulo)}
+        <p style="color:var(--texto2);padding:.5rem 0">No hay datos de inventario para este filtro en ninguna carretera.</p>
+        <div class="pie"><span>Inventario de elementos físicos de la vía.</span><span>Generado con GesVía</span></div></div>`;
+    }
+    // Tabla de totales de la red
+    const filasTotRed = claves.sort((a,b)=>a.elem.localeCompare(b.elem,'es')).map(x=>`<tr>
+      <td><strong>${esc(x.elem)}</strong></td>
+      <td style="text-align:right;font-weight:700">${formatoNum(x.total)}</td>
+      <td>${esc(x.unidad)}</td>
+      <td>${[...(carreterasConElem[x.elem]||[])].join(', ')}</td></tr>`).join('');
+    // Desglose por carretera
+    const filasCarr = roadsOrdenadas().filter(r=>porCarretera[r.id]).map(r=>{
+      const items = Object.entries(porCarretera[r.id]).map(([clave,total])=>{
+        const [elem,unidad] = clave.split('||');
+        return `<tr><td>${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</td><td>${esc(elem)}</td>
+          <td style="text-align:right;font-weight:700">${formatoNum(total)}</td><td>${esc(unidad)}</td></tr>`;
+      }).join('');
+      return items;
+    }).join('');
+
+    return `<div class="informe">
+      ${cabInforme('Inventario de elementos', subtitulo)}
+      <h3>Totales de la red</h3>
+      <div style="overflow-x:auto"><table><thead><tr><th>Elemento</th><th style="text-align:right">Total</th><th>Unidad</th><th>Carreteras</th></tr></thead>
+      <tbody>${filasTotRed}</tbody></table></div>
+      <h3>Desglose por carretera</h3>
+      <div style="overflow-x:auto"><table><thead><tr><th>Carretera</th><th>Elemento</th><th style="text-align:right">Cantidad</th><th>Unidad</th></tr></thead>
+      <tbody>${filasCarr}</tbody></table></div>
+      <div class="pie"><span>Inventario de elementos físicos de la vía (referencia para mediciones y actuaciones).</span><span>Generado con GesVía</span></div>
+    </div>`;
+  }
+
+  // ===== UNA CARRETERA =====
+  const r = road(roadSel);
+  if(!r) return `<div class="informe">${cabInforme('Inventario de elementos','—')}<p style="color:var(--critico)">Selecciona una carretera.</p></div>`;
   // tramos en el ámbito elegido
   let tramos = tramosDe(r.id);
   if(ambito==='tramo' && tramoSel) tramos = tramos.filter(t=>t.id===tramoSel);
