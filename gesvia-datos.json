@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-28T10:49:07.431Z",
+ "exportado": "2026-07-28T10:49:37.608Z",
  "datos": {
   "roads": [
    {
@@ -4742,6 +4742,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x602",
+    "tramoId": "x68",
+    "fam": "FIRME",
+    "fecha": "2026-07-28",
+    "valor": 60,
+    "obs": "Fisuras.",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -4802,7 +4814,7 @@
     ]
    }
   ],
-  "seq": 602,
+  "seq": 603,
   "ajustes": {
    "sector": "ZONA 2"
   },
