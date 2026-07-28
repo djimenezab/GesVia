@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-28T12:34:19.582Z",
+ "exportado": "2026-07-28T12:34:47.094Z",
  "datos": {
   "roads": [
    {
@@ -5450,7 +5450,7 @@
     ]
    }
   ],
-  "seq": 671,
+  "seq": 672,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -8530,6 +8530,13 @@
      "valor": 42,
      "unidad": "ud",
      "nota": "Con disuasor"
+    },
+    {
+     "id": "x671",
+     "elem": "Hitos de arista",
+     "valor": 8,
+     "unidad": "ud",
+     "nota": ""
     }
    ],
    "x142": [
