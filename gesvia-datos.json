@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-28T11:59:50.344Z",
+ "exportado": "2026-07-28T12:00:17.972Z",
  "datos": {
   "roads": [
    {
@@ -5126,6 +5126,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x645",
+    "tramoId": "x134",
+    "fam": "FIRME",
+    "fecha": "2026-07-28",
+    "valor": 72,
+    "obs": "Roderas en travesía",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -5186,7 +5198,7 @@
     ]
    }
   ],
-  "seq": 645,
+  "seq": 646,
   "ajustes": {
    "sector": "ZONA 2"
   },
