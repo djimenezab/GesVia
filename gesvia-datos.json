@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-28T11:03:04.193Z",
+ "exportado": "2026-07-28T11:03:09.911Z",
  "datos": {
   "roads": [
    {
@@ -4994,6 +4994,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x625",
+    "tramoId": "x70",
+    "fam": "BAL",
+    "fecha": "2026-07-28",
+    "valor": 77,
+    "obs": "",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -5054,7 +5066,7 @@
     ]
    }
   ],
-  "seq": 625,
+  "seq": 626,
   "ajustes": {
    "sector": "ZONA 2"
   },
