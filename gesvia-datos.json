@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-28T11:04:07.696Z",
+ "exportado": "2026-07-28T11:04:17.616Z",
  "datos": {
   "roads": [
    {
@@ -4928,7 +4928,7 @@
     "tramoId": "x30",
     "fam": "SV",
     "fecha": "2026-07-28",
-    "valor": 83,
+    "valor": 98,
     "obs": "",
     "inspector": "David Jiménez",
     "gps": "",
