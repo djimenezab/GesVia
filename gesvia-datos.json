@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-29T12:16:36.164Z",
+ "exportado": "2026-07-29T12:17:50.044Z",
  "datos": {
   "roads": [
    {
@@ -5420,6 +5420,18 @@
       "ruta": "fotos/x689_hb4hhck.jpg"
      }
     ]
+   },
+   {
+    "id": "x703",
+    "tramoId": "x53",
+    "fam": "BAL",
+    "fecha": "2026-07-29",
+    "valor": 8,
+    "obs": "Hitos de arista falta el 95%",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -5480,7 +5492,7 @@
     ]
    }
   ],
-  "seq": 703,
+  "seq": 704,
   "ajustes": {
    "sector": "ZONA 2"
   },
