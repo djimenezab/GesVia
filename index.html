@@ -235,7 +235,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.56</span></span></h1>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.57</span></span></h1>
       <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
@@ -248,6 +248,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
     <button data-v="ordenes" onclick="go('ordenes')">Órdenes</button>
     <button data-v="informe" onclick="go('informe')">Informe</button>
     <button data-v="inventario" onclick="go('inventario')">Inventario</button>
+    <button data-v="documentacion" onclick="go('documentacion')">Documentación</button>
     <button data-v="ajustes" onclick="go('ajustes')">Ajustes</button>
   </nav>
 </header>
@@ -491,6 +492,47 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div id="inv-detalle"></div>
 </section>
 
+<!-- ================= DOCUMENTACIÓN ================= -->
+<section id="v-documentacion" class="vista">
+  <div class="titulo-vista">
+    <h2>Documentación</h2>
+    <p>Sube y consulta documentos de referencia (permisos, normativa, procedimientos…). Se guardan en tu repositorio de GitHub.</p>
+  </div>
+
+  <div class="tarjeta" style="margin-bottom:1rem;padding:.7rem 1rem">
+    <div id="doc-filtros" style="display:flex;gap:.4rem;flex-wrap:wrap"></div>
+  </div>
+
+  <div id="doc-lista" style="margin-bottom:1rem"></div>
+
+  <div class="tarjeta">
+    <h3 style="margin:0;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toggleSubirDoc()">
+      <span>📤 Subir nuevo documento</span>
+      <button class="btn sec mini" id="doc-subir-toggle" type="button">▸ Desplegar</button>
+    </h3>
+    <div id="doc-subir-cuerpo" style="display:none;margin-top:.8rem">
+      <div class="form-grid">
+        <label class="campo">Archivo (PDF o imagen)
+          <input type="file" id="doc-archivo" accept=".pdf,image/*">
+        </label>
+        <label class="campo">Nombre del documento
+          <input type="text" id="doc-nombre" placeholder="Ej.: Permiso poda CM-332">
+        </label>
+        <label class="campo">Categoría
+          <select id="doc-categoria"></select>
+        </label>
+        <label class="campo">Descripción (opcional)
+          <input type="text" id="doc-desc" placeholder="Descripción breve">
+        </label>
+      </div>
+      <div class="acciones">
+        <button class="btn" id="btn-subir-doc" onclick="subirDocumento()">☁️ Subir a GitHub</button>
+      </div>
+      <p id="doc-upload-estado" style="font-size:.9rem;text-align:center;margin-top:.5rem;min-height:1rem"></p>
+    </div>
+  </div>
+</section>
+
 <!-- ================= AJUSTES (incluye Datos) ================= -->
 <section id="v-ajustes" class="vista">
   <div class="titulo-vista">
@@ -578,6 +620,25 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   </div>
 
   <div class="tarjeta" style="margin-bottom:1rem">
+    <h3 style="margin:0;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toggleDocCat()">
+      <span>Categorías de documentación</span>
+      <button class="btn sec mini" id="doccat-toggle" type="button">▸ Desplegar</button>
+    </h3>
+    <div id="doccat-cuerpo" style="display:none;margin-top:.7rem">
+      <p style="color:var(--texto2);font-size:.9rem;margin-bottom:.6rem">
+        Estas categorías aparecen al subir y filtrar documentos. Los documentos ya subidos no se ven afectados si cambias esta lista.
+      </p>
+      <div class="plano-toolbar" style="margin:0;align-items:flex-end">
+        <label class="campo" style="margin:0;flex:1;min-width:180px">Nueva categoría
+          <input id="aj-doccat-nombre" placeholder="Ej.: Permisos de poda" onkeydown="if(event.key==='Enter')addDocCategoria()" style="margin-top:.2rem">
+        </label>
+        <button class="btn" onclick="addDocCategoria()">Añadir</button>
+      </div>
+      <div id="aj-doccat-lista" style="margin-top:.7rem"></div>
+    </div>
+  </div>
+
+  <div class="tarjeta" style="margin-bottom:1rem">
     <h3 style="margin-bottom:.7rem">Datos y copias de seguridad</h3>
     <div class="aviso-banda" style="margin-bottom:.9rem">
       <strong>Sincronización activada:</strong> si configuras GitHub en el botón ⬆⬇ de arriba, al abrir la app se descargan los datos del repositorio y cada cambio se sube automáticamente a los pocos segundos. El punto de color indica el estado: verde = sincronizado, ámbar = subiendo, rojo = error o sin conexión. La copia JSON manual sigue disponible como respaldo extra.
@@ -628,7 +689,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
-      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.56</span></strong>
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.57</span></strong>
     </p>
   </div>
 </section>
@@ -647,7 +708,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.56';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.57';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -703,6 +764,9 @@ function load(){
   if(!Array.isArray(S.vigilantes)) S.vigilantes = [];
   if(!S.inventario) S.inventario = {};   // { tramoId: [ {id, elem, valor, unidad, nota} ] }
   if(!Array.isArray(S.invElementos)) S.invElementos = [];   // (heredado) elementos personalizados sueltos
+  if(!Array.isArray(S.documentos)) S.documentos = [];   // { id, nombre, categoria, desc, archivo, url, fecha }
+  if(!Array.isArray(S.docCategorias) || !S.docCategorias.length)
+    S.docCategorias = ['Permisos','Normativa','Procedimientos','Contactos','Otros'];
   migrarCatalogoInv();
   migrarFotos();
 }
@@ -756,7 +820,7 @@ function go(v){
   document.querySelectorAll('section.vista').forEach(s=>s.classList.remove('activa'));
   $('v-'+v).classList.add('activa');
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('activo', b.dataset.v===v));
-  ({panel:renderPanel, inspeccion:renderInspeccion, ordenes:renderOrdenes, informe:renderInformeForm, inventario:renderInventario, ajustes:renderAjustes}[v])();
+  ({panel:renderPanel, inspeccion:renderInspeccion, ordenes:renderOrdenes, informe:renderInformeForm, inventario:renderInventario, documentacion:renderDocumentacion, ajustes:renderAjustes}[v])();
   window.scrollTo({top:0});
 }
 
@@ -913,6 +977,38 @@ function restaurarCatalogoInv(){
   S.invCatalogo = INV_SEMILLA.map(g=>({grupo:g.grupo, items:g.items.map(it=>({elem:it.elem, unidad:it.unidad}))}));
   save(); renderCatalogoInv();
   toast('Catálogo restaurado.');
+}
+
+/* ---------- Categorías de documentación ---------- */
+let docCatDesplegado = false;
+function toggleDocCat(){
+  docCatDesplegado = !docCatDesplegado;
+  $('doccat-cuerpo').style.display = docCatDesplegado ? '' : 'none';
+  $('doccat-toggle').textContent = docCatDesplegado ? '▾ Plegar' : '▸ Desplegar';
+  if(docCatDesplegado) renderDocCategorias();
+}
+function renderDocCategorias(){
+  const box = $('aj-doccat-lista'); if(!box) return;
+  const cats = S.docCategorias || [];
+  box.innerHTML = cats.map((c,i)=>`<div class="trazo-item">
+    <span style="flex:1">${docIcono(c)} ${esc(c)}</span>
+    <button class="btn peligro mini" onclick="delDocCategoria(${i})">Eliminar</button>
+  </div>`).join('') || '<p style="color:var(--texto2);font-size:.9rem">Sin categorías.</p>';
+}
+function addDocCategoria(){
+  const nombre = ($('aj-doccat-nombre').value||'').trim();
+  if(!nombre) return toast('Escribe el nombre de la categoría.');
+  if((S.docCategorias||[]).some(c=>c.toLowerCase()===nombre.toLowerCase())) return toast('Esa categoría ya existe.');
+  S.docCategorias.push(nombre);
+  $('aj-doccat-nombre').value='';
+  save(); renderDocCategorias();
+  toast('Categoría añadida.');
+}
+function delDocCategoria(i){
+  const c = S.docCategorias[i];
+  if(!confirm('¿Eliminar la categoría «'+c+'»? Los documentos que la tengan seguirán existiendo, pero sin filtro propio.')) return;
+  S.docCategorias.splice(i,1);
+  save(); renderDocCategorias();
 }
 
 /* =====================================================
@@ -1836,6 +1932,112 @@ function renderInventario(){
   fillSelectRoads($('inv-road'));
   invFillTramos();
 }
+
+/* =====================================================
+   DOCUMENTACIÓN (PDFs e imágenes en GitHub)
+   ===================================================== */
+let docFiltroActivo = 'todas';
+let docSubirDesplegado = false;
+const DOC_ICONS = {'Permisos':'🌳','Normativa':'📖','Procedimientos':'📋','Contactos':'📞','Otros':'📄'};
+function docIcono(cat){ return DOC_ICONS[cat] || '📄'; }
+
+function renderDocumentacion(){
+  // chips de filtro (Todos + una por categoría existente en los documentos o definidas)
+  const cats = S.docCategorias || [];
+  const chips = ['<button class="chip'+(docFiltroActivo==='todas'?' activo':'')+'" onclick="setDocFiltro(\'todas\')">Todos</button>']
+    .concat(cats.map(c=>`<button class="chip${docFiltroActivo===c?' activo':''}" onclick="setDocFiltro('${esc(c)}')">${docIcono(c)} ${esc(c)}</button>`));
+  $('doc-filtros').innerHTML = chips.join('');
+  // desplegable de categoría del formulario
+  $('doc-categoria').innerHTML = cats.map(c=>`<option value="${esc(c)}">${docIcono(c)} ${esc(c)}</option>`).join('');
+  renderDocs();
+}
+function setDocFiltro(cat){ docFiltroActivo = cat; renderDocumentacion(); }
+function toggleSubirDoc(){
+  docSubirDesplegado = !docSubirDesplegado;
+  $('doc-subir-cuerpo').style.display = docSubirDesplegado ? '' : 'none';
+  $('doc-subir-toggle').textContent = docSubirDesplegado ? '▾ Plegar' : '▸ Desplegar';
+}
+function renderDocs(){
+  const box = $('doc-lista'); if(!box) return;
+  let lista = docFiltroActivo==='todas' ? S.documentos : S.documentos.filter(d=>d.categoria===docFiltroActivo);
+  lista = [...lista].reverse();
+  if(!lista.length){
+    box.innerHTML = `<div class="tarjeta" style="text-align:center;padding:2rem;color:var(--texto2)">
+      <div style="font-size:2.5rem;margin-bottom:.5rem">📭</div>
+      <p>${S.documentos.length? 'No hay documentos en esta categoría.' : 'Aún no hay documentos. Sube el primero abajo.'}</p></div>`;
+    return;
+  }
+  box.innerHTML = lista.map(d=>`<div class="tarjeta" style="margin-bottom:.6rem;padding:.7rem .9rem;display:flex;align-items:center;gap:.8rem">
+    <div style="font-size:1.8rem;flex-shrink:0">${docIcono(d.categoria)}</div>
+    <div style="flex:1;min-width:0">
+      <div style="font-weight:700">${esc(d.nombre)}</div>
+      <div style="font-size:.82rem;color:var(--texto2)">${esc(d.categoria)} · ${esc(d.fecha||'')}</div>
+      ${d.desc? `<div style="font-size:.88rem;color:var(--texto2);margin-top:.15rem">${esc(d.desc)}</div>`:''}
+    </div>
+    <div style="display:flex;gap:.4rem;flex-shrink:0">
+      <a href="${verDocUrl(d)}" target="_blank" rel="noopener" class="btn sec mini" style="text-decoration:none">👁 Ver</a>
+      <button class="btn peligro mini" title="Quitar de la lista" onclick="eliminarDocumento('${d.id}')">🗑</button>
+    </div>
+  </div>`).join('');
+}
+/* Los PDF se ven con el visor de Google (sin descarga); las imágenes se abren directas */
+function verDocUrl(d){
+  const esImg = /\.(jpg|jpeg|png|gif|webp)$/i.test(d.archivo||'');
+  if(esImg) return d.url;
+  return `https://docs.google.com/viewer?url=${encodeURIComponent(d.url)}&embedded=true`;
+}
+function setDocEstado(msg, color){ const el=$('doc-upload-estado'); if(el){ el.textContent=msg; el.style.color=color||'var(--texto2)'; } }
+
+async function subirDocumento(){
+  if(!ghConfigurado()){ setDocEstado('⚠️ Configura primero GitHub en el botón ⬆⬇ de arriba', 'var(--critico)'); return; }
+  const c = cargarConfigGH();
+  const fileInput = $('doc-archivo');
+  const nombre = $('doc-nombre').value.trim();
+  const categoria = $('doc-categoria').value;
+  const desc = $('doc-desc').value.trim();
+  if(!fileInput.files[0]){ setDocEstado('⚠️ Selecciona un archivo', 'var(--critico)'); return; }
+  if(!nombre){ setDocEstado('⚠️ Indica el nombre del documento', 'var(--critico)'); return; }
+  const file = fileInput.files[0];
+  if(file.size > 25*1024*1024){ setDocEstado('⚠️ El archivo supera los 25 MB (límite de GitHub)', 'var(--critico)'); return; }
+
+  setDocEstado('⏳ Subiendo documento…', 'var(--aviso)');
+  $('btn-subir-doc').disabled = true;
+  try{
+    const base64 = await new Promise((res,rej)=>{
+      const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file);
+    });
+    const ext = (file.name.match(/\.(pdf|jpg|jpeg|png|gif|webp)$/i)||['.pdf'])[0].toLowerCase();
+    const base = nombre.replace(/[^a-zA-Z0-9_\-\.]/g,'_').replace(/__+/g,'_');
+    const archivo = `docs/${base}_${Date.now()}${ext}`;
+    const url = `https://api.github.com/repos/${c.usuario}/${c.repo}/contents/${archivo}`;
+    const pr = await fetch(url, {
+      method:'PUT',
+      headers:{...ghHeaders(c),'Content-Type':'application/json'},
+      body: JSON.stringify({message:`GESVIA doc: ${nombre}`, content:base64})
+    });
+    if(pr.ok){
+      const rawUrl = `https://raw.githubusercontent.com/${c.usuario}/${c.repo}/main/${archivo}?raw=true`;
+      S.documentos.push({ id:uid(), nombre, categoria, desc, archivo, url:rawUrl, fecha:new Date().toLocaleDateString('es-ES') });
+      $('doc-archivo').value=''; $('doc-nombre').value=''; $('doc-desc').value='';
+      setDocEstado(`✅ «${nombre}» subido correctamente`, 'var(--ok)');
+      save(); renderDocumentacion();
+      toast('📄 Documento subido a GitHub');
+    } else {
+      let e={}; try{ e=await pr.json(); }catch(_){}
+      setDocEstado('❌ Error: ' + (e.message || pr.status), 'var(--critico)');
+    }
+  }catch(e){
+    setDocEstado('❌ Error de red: ' + e.message, 'var(--critico)');
+  }
+  $('btn-subir-doc').disabled = false;
+}
+function eliminarDocumento(id){
+  if(!confirm('¿Quitar este documento de la lista?\n(El archivo en GitHub no se borra.)')) return;
+  S.documentos = S.documentos.filter(d=>d.id!==id);
+  save(); renderDocumentacion();
+  toast('Documento quitado de la lista.');
+}
+
 function invFillTramos(){
   fillSelectTramos($('inv-road'), $('inv-tramo'));
   renderInvTramo();
@@ -1958,6 +2160,12 @@ function invGuardarEdicion(tid, did){
   if(!elem) return toast('El elemento no puede quedar vacío.');
   const valor = parseFloat($('invE-valor').value);
   if(isNaN(valor)) return toast('La cantidad no es válida.');
+  // Si ya había un valor y se está cambiando por otro distinto, pedir confirmación
+  const valorAnterior = d.valor;
+  const habiaValor = valorAnterior!=null && valorAnterior!=='';
+  if(habiaValor && Number(valorAnterior)!==valor){
+    if(!confirm(`Vas a cambiar «${d.elem}» de ${formatoNum(valorAnterior)} a ${formatoNum(valor)} ${$('invE-unidad').value||''}.\n\n¿Seguro que quieres modificar este dato?`)) return;
+  }
   d.elem = elem; d.valor = valor; d.unidad = $('invE-unidad').value; d.nota = ($('invE-nota').value||'').trim();
   save(); cerrarModal(); renderInvTramo(); toast('Dato actualizado.');
 }
@@ -2562,7 +2770,7 @@ function importJSON(input){
       const d = JSON.parse(rd.result);
       if(!Array.isArray(d.roads)) throw 0;
       if(!confirm('Esto sustituirá los datos actuales por los del archivo. ¿Continuar?')) return;
-      S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; migrarCatalogoInv(); migrarFotos(); save(); aplicarCabecera(); go('panel'); toast('Copia importada correctamente.');
+      S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; if(!Array.isArray(S.documentos)) S.documentos=[]; if(!Array.isArray(S.docCategorias)||!S.docCategorias.length) S.docCategorias=["Permisos","Normativa","Procedimientos","Contactos","Otros"]; migrarCatalogoInv(); migrarFotos(); save(); aplicarCabecera(); go('panel'); toast('Copia importada correctamente.');
     }catch(e){ toast('El archivo no parece una copia válida de GesVía.'); }
     input.value='';
   };
@@ -2817,7 +3025,7 @@ async function descargarDeGitHub(){
     const parsed = decodifica((await res.json()).content);
     const d = parsed.datos || parsed; // admite también un JSON exportado a mano
     if(!d || !Array.isArray(d.roads)){ setSyncEstado('❌ El archivo no tiene el formato de GesVía', 'var(--critico)'); return; }
-    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; migrarCatalogoInv(); migrarFotos(); saveLocal(); aplicarCabecera(); go('panel');
+    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; if(!Array.isArray(S.documentos)) S.documentos=[]; if(!Array.isArray(S.docCategorias)||!S.docCategorias.length) S.docCategorias=["Permisos","Normativa","Procedimientos","Contactos","Otros"]; migrarCatalogoInv(); migrarFotos(); saveLocal(); aplicarCabecera(); go('panel');
     setSyncEstado(`✅ Descargado: ${S.roads.length} carreteras · ${S.insp.length} inspecciones`, 'var(--ok)');
     setSyncDot('var(--ok)', 'Sincronizado ✓'); toast('📥 Datos descargados de GitHub');
   }catch(e){ setSyncEstado('❌ Error: '+e.message, 'var(--critico)'); }
@@ -2869,7 +3077,7 @@ async function autoDescargar(){
       const parsed = decodifica((await res.json()).content);
       const d = parsed.datos || parsed;
       if(d && Array.isArray(d.roads)){
-        S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; migrarCatalogoInv(); migrarFotos(); saveLocal(); aplicarCabecera();
+        S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; if(!Array.isArray(S.documentos)) S.documentos=[]; if(!Array.isArray(S.docCategorias)||!S.docCategorias.length) S.docCategorias=["Permisos","Normativa","Procedimientos","Contactos","Otros"]; migrarCatalogoInv(); migrarFotos(); saveLocal(); aplicarCabecera();
         setSyncDot('var(--ok)', 'Sincronizado ✓');
         const activa = document.querySelector('nav button.activo');
         go(activa? activa.dataset.v || 'panel' : 'panel');
@@ -2904,7 +3112,7 @@ async function refrescarSiHayNovedades(motivo){
     const local  = JSON.stringify(S);
     if(remoto === local) return;              // ya estamos al día, no tocamos nada
     if(pendienteSubir) return;                // por si cambió mientras descargábamos
-    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; migrarCatalogoInv(); migrarFotos();
+    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; if(!Array.isArray(S.documentos)) S.documentos=[]; if(!Array.isArray(S.docCategorias)||!S.docCategorias.length) S.docCategorias=["Permisos","Normativa","Procedimientos","Contactos","Otros"]; migrarCatalogoInv(); migrarFotos();
     saveLocal(); aplicarCabecera();
     const activa = document.querySelector('nav button.activo');
     go(activa? activa.dataset.v || 'panel' : 'panel');

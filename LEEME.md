@@ -1,5 +1,13 @@
 # GesVía · Gestión de la conservación de carreteras (PWA)
 
+## Novedades v1.57
+- Nueva pestaña **Documentación** (junto a Inventario): sube PDFs e imágenes a tu repositorio de
+  GitHub (permisos, normativa, procedimientos…), organizados por categorías y con descripción. Se
+  consultan desde el móvil o el PC sin descargarlos (los PDF con el visor integrado). Las categorías
+  se editan en Ajustes → «Categorías de documentación».
+- En Inventario, al **modificar un dato que ya tenía valor**, la app pide confirmación antes de
+  cambiarlo (para evitar cambios por error). Si el dato no tenía valor previo, no pregunta.
+
 ## Novedades v1.56
 - En el informe «Inventario de elementos» se puede elegir **Toda la red** como ámbito: muestra el
   total de cada elemento sumando todas las carreteras, en qué carreteras está cada uno, y el desglose
@@ -189,7 +197,7 @@ LEEME.md
 ## Cuando actualices la app
 
 Si subes un `index.html` nuevo, edita en `sw.js` la primera línea y sube la versión
-(`gesvia-v1.30` → `gesvia-v1.31`). Así los móviles descargan la versión nueva en vez
+(`gesvia-v1.31` → `gesvia-v1.32`). Así los móviles descargan la versión nueva en vez
 de seguir usando la copia guardada en caché.
 
 ## Sincronización automática con GitHub (como RegIn 1.91)
