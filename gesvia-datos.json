@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-29T06:28:00.073Z",
+ "exportado": "2026-07-29T06:41:21.022Z",
  "datos": {
   "roads": [
    {
@@ -5450,7 +5450,7 @@
     ]
    }
   ],
-  "seq": 674,
+  "seq": 675,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -9522,6 +9522,15 @@
     "desc": "Instrucciones obligatorias para desbrozar",
     "archivo": "docs/Condicionado_DESBROCE_2026_1785306475571.pdf",
     "url": "https://raw.githubusercontent.com/djimenezab/GesVia/main/docs/Condicionado_DESBROCE_2026_1785306475571.pdf?raw=true",
+    "fecha": "29/7/2026"
+   },
+   {
+    "id": "x674",
+    "nombre": "Restricción trabajos en calzada",
+    "categoria": "Procedimientos",
+    "desc": "Restricciones DGT trabajos 2026",
+    "archivo": "docs/Restricci_n_trabajos_en_calzada_1785307276415.pdf",
+    "url": "https://raw.githubusercontent.com/djimenezab/GesVia/main/docs/Restricci_n_trabajos_en_calzada_1785307276415.pdf?raw=true",
     "fecha": "29/7/2026"
    }
   ],
