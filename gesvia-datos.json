@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-29T11:16:01.078Z",
+ "exportado": "2026-07-29T11:19:27.393Z",
  "datos": {
   "roads": [
    {
@@ -5480,7 +5480,7 @@
     ]
    }
   ],
-  "seq": 692,
+  "seq": 693,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -8548,6 +8548,13 @@
      "elem": "Bionda margen izquierdo",
      "valor": 4520,
      "unidad": "m",
+     "nota": ""
+    },
+    {
+     "id": "x692",
+     "elem": "H-75 Verde",
+     "valor": 60,
+     "unidad": "ud",
      "nota": ""
     }
    ],
