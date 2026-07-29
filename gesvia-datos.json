@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-29T10:51:04.532Z",
+ "exportado": "2026-07-29T10:57:24.350Z",
  "datos": {
   "roads": [
    {
@@ -5390,6 +5390,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x687",
+    "tramoId": "x134",
+    "fam": "MAR",
+    "fecha": "2026-07-29",
+    "valor": 42,
+    "obs": "Travesía con hierva alta",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -5450,7 +5462,7 @@
     ]
    }
   ],
-  "seq": 687,
+  "seq": 688,
   "ajustes": {
    "sector": "ZONA 2"
   },
