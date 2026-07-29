@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-29T06:13:31.285Z",
+ "exportado": "2026-07-29T06:28:00.073Z",
  "datos": {
   "roads": [
    {
@@ -5450,7 +5450,7 @@
     ]
    }
   ],
-  "seq": 673,
+  "seq": 674,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -9513,6 +9513,15 @@
     "desc": "Hasta 2026",
     "archivo": "docs/Autorizacion_PODA_2026_1785305605848.pdf",
     "url": "https://raw.githubusercontent.com/djimenezab/GesVia/main/docs/Autorizacion_PODA_2026_1785305605848.pdf?raw=true",
+    "fecha": "29/7/2026"
+   },
+   {
+    "id": "x673",
+    "nombre": "Condicionado DESBROCE 2026",
+    "categoria": "Procedimientos",
+    "desc": "Instrucciones obligatorias para desbrozar",
+    "archivo": "docs/Condicionado_DESBROCE_2026_1785306475571.pdf",
+    "url": "https://raw.githubusercontent.com/djimenezab/GesVia/main/docs/Condicionado_DESBROCE_2026_1785306475571.pdf?raw=true",
     "fecha": "29/7/2026"
    }
   ],
