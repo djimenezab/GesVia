@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-29T06:44:43.285Z",
+ "exportado": "2026-07-29T10:01:29.240Z",
  "datos": {
   "roads": [
    {
@@ -5450,7 +5450,7 @@
     ]
    }
   ],
-  "seq": 676,
+  "seq": 677,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -8535,6 +8535,13 @@
      "id": "x671",
      "elem": "Hitos de arista",
      "valor": 8,
+     "unidad": "ud",
+     "nota": ""
+    },
+    {
+     "id": "x676",
+     "elem": "Paneles direccionales",
+     "valor": 2,
      "unidad": "ud",
      "nota": ""
     }
