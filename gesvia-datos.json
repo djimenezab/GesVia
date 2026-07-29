@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-29T11:22:57.678Z",
+ "exportado": "2026-07-29T11:30:22.435Z",
  "datos": {
   "roads": [
    {
@@ -8553,7 +8553,7 @@
     {
      "id": "x692",
      "elem": "H-75 Verde",
-     "valor": 60,
+     "valor": 59,
      "unidad": "ud",
      "nota": ""
     },
