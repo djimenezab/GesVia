@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-29T10:01:29.240Z",
+ "exportado": "2026-07-29T10:04:54.086Z",
  "datos": {
   "roads": [
    {
@@ -5450,7 +5450,7 @@
     ]
    }
   ],
-  "seq": 677,
+  "seq": 678,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -8507,6 +8507,13 @@
      "valor": 10564,
      "unidad": "m",
      "nota": ""
+    },
+    {
+     "id": "x677",
+     "elem": "Hito de arista bionda",
+     "valor": 32,
+     "unidad": "ud",
+     "nota": "Con disuasor"
     }
    ],
    "x143": [
