@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-30T10:50:34.189Z",
+ "exportado": "2026-07-30T10:51:36.603Z",
  "datos": {
   "roads": [
    {
@@ -5492,7 +5492,7 @@
     ]
    }
   ],
-  "seq": 722,
+  "seq": 723,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -8846,6 +8846,13 @@
      "id": "x592",
      "elem": "Hito de arista bionda",
      "valor": 40,
+     "unidad": "ud",
+     "nota": ""
+    },
+    {
+     "id": "x722",
+     "elem": "Captafaros",
+     "valor": 265,
      "unidad": "ud",
      "nota": ""
     }
