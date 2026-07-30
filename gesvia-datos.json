@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-30T10:43:35.196Z",
+ "exportado": "2026-07-30T10:44:06.800Z",
  "datos": {
   "roads": [
    {
@@ -5492,7 +5492,7 @@
     ]
    }
   ],
-  "seq": 708,
+  "seq": 709,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -8603,6 +8603,13 @@
      "id": "x678",
      "elem": "Hitos de arista",
      "valor": 8,
+     "unidad": "ud",
+     "nota": ""
+    },
+    {
+     "id": "x708",
+     "elem": "Captafaros",
+     "valor": 2688,
      "unidad": "ud",
      "nota": ""
     }
