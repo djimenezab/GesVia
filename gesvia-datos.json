@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-30T10:45:37.170Z",
+ "exportado": "2026-07-30T10:46:02.448Z",
  "datos": {
   "roads": [
    {
@@ -5492,7 +5492,7 @@
     ]
    }
   ],
-  "seq": 712,
+  "seq": 713,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -8534,6 +8534,13 @@
      "id": "x688",
      "elem": "Paneles direccionales",
      "valor": 5,
+     "unidad": "ud",
+     "nota": ""
+    },
+    {
+     "id": "x712",
+     "elem": "Captafaros",
+     "valor": 63,
      "unidad": "ud",
      "nota": ""
     }
