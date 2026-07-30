@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-30T10:54:59.747Z",
+ "exportado": "2026-07-30T10:55:27.980Z",
  "datos": {
   "roads": [
    {
@@ -5492,7 +5492,7 @@
     ]
    }
   ],
-  "seq": 731,
+  "seq": 732,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -9046,6 +9046,13 @@
      "elem": "Bionda margen izquierdo",
      "valor": 470,
      "unidad": "m",
+     "nota": ""
+    },
+    {
+     "id": "x731",
+     "elem": "Captafaros",
+     "valor": 119,
+     "unidad": "ud",
      "nota": ""
     }
    ],
