@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-30T10:57:31.627Z",
+ "exportado": "2026-07-31T09:18:46.438Z",
  "datos": {
   "roads": [
    {
@@ -5432,6 +5432,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x738",
+    "tramoId": "x122",
+    "fam": "MAR",
+    "fecha": "2026-07-31",
+    "valor": 10,
+    "obs": "Hay que podar y eliminar muchas ramas del margen derecho.",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -5492,7 +5504,7 @@
     ]
    }
   ],
-  "seq": 738,
+  "seq": 739,
   "ajustes": {
    "sector": "ZONA 2"
   },
