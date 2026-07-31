@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-31T10:18:48.974Z",
+ "exportado": "2026-07-31T10:31:30.610Z",
  "datos": {
   "roads": [
    {
@@ -5696,6 +5696,24 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x767",
+    "tramoId": "x123",
+    "fam": "MAR",
+    "fecha": "2026-07-31",
+    "valor": 33,
+    "obs": "",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": [
+     {
+      "id": "a6hjyn5",
+      "pendiente": false,
+      "ruta": "fotos/x767_a6hjyn5.jpg"
+     }
+    ]
    }
   ],
   "ots": [
@@ -5756,7 +5774,7 @@
     ]
    }
   ],
-  "seq": 767,
+  "seq": 768,
   "ajustes": {
    "sector": "ZONA 2"
   },
