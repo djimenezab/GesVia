@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-31T11:00:50.888Z",
+ "exportado": "2026-07-31T11:03:03.288Z",
  "datos": {
   "roads": [
    {
@@ -5846,7 +5846,7 @@
     ]
    }
   ],
-  "seq": 778,
+  "seq": 779,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -9067,6 +9067,13 @@
      "elem": "Captafaros",
      "valor": 573,
      "unidad": "ud",
+     "nota": ""
+    },
+    {
+     "id": "x778",
+     "elem": "Barrera rígida hormigón",
+     "valor": 1266,
+     "unidad": "m",
      "nota": ""
     }
    ],
