@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-31T10:43:45.126Z",
+ "exportado": "2026-07-31T11:00:50.888Z",
  "datos": {
   "roads": [
    {
@@ -10242,7 +10242,7 @@
     {
      "id": "x740",
      "elem": "Hito de arista bionda",
-     "valor": 36,
+     "valor": 80,
      "unidad": "ud",
      "nota": "Con disuasor fauna"
     },
