@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-07-31T10:05:21.559Z",
+ "exportado": "2026-07-31T10:05:37.069Z",
  "datos": {
   "roads": [
    {
@@ -5504,7 +5504,7 @@
     ]
    }
   ],
-  "seq": 741,
+  "seq": 742,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -9903,6 +9903,13 @@
      "valor": 36,
      "unidad": "ud",
      "nota": "Con disuasor fauna"
+    },
+    {
+     "id": "x741",
+     "elem": "Bionda margen izquierdo",
+     "valor": 8020,
+     "unidad": "m",
+     "nota": ""
     }
    ]
   },
