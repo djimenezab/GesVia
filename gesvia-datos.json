@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-04T11:23:37.150Z",
+ "exportado": "2026-08-04T11:23:56.459Z",
  "datos": {
   "roads": [
    {
@@ -5966,6 +5966,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x801",
+    "tramoId": "x155",
+    "fam": "SH",
+    "fecha": "2026-08-04",
+    "valor": 60,
+    "obs": "Bandas poca visibilidad",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -6026,7 +6038,7 @@
     ]
    }
   ],
-  "seq": 801,
+  "seq": 802,
   "ajustes": {
    "sector": "ZONA 2"
   },
