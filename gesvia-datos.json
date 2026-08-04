@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-04T11:20:27.305Z",
+ "exportado": "2026-08-04T11:20:45.206Z",
  "datos": {
   "roads": [
    {
@@ -5906,6 +5906,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x796",
+    "tramoId": "x156",
+    "fam": "BAL",
+    "fecha": "2026-08-04",
+    "valor": 72,
+    "obs": "Faltan hitos bionda",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -5966,7 +5978,7 @@
     ]
    }
   ],
-  "seq": 796,
+  "seq": 797,
   "ajustes": {
    "sector": "ZONA 2"
   },
