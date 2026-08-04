@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-04T11:11:18.461Z",
+ "exportado": "2026-08-04T11:11:49.369Z",
  "datos": {
   "roads": [
    {
@@ -5829,7 +5829,7 @@
     "fam": "BAL",
     "fecha": "2026-08-04",
     "valor": 74,
-    "obs": "",
+    "obs": "Faltan hitos bionda",
     "inspector": "David Jiménez",
     "gps": "",
     "params": {},
