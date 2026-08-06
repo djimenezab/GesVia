@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-06T10:37:59.201Z",
+ "exportado": "2026-08-06T10:38:27.001Z",
  "datos": {
   "roads": [
    {
@@ -6326,6 +6326,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x857",
+    "tramoId": "x161",
+    "fam": "SV",
+    "fecha": "2026-08-06",
+    "valor": 56,
+    "obs": "R-502 mal estado",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -6386,7 +6398,7 @@
     ]
    }
   ],
-  "seq": 857,
+  "seq": 858,
   "ajustes": {
    "sector": "ZONA 2"
   },
