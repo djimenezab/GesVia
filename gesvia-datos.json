@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-06T09:28:19.058Z",
+ "exportado": "2026-08-06T09:28:44.105Z",
  "datos": {
   "roads": [
    {
@@ -6146,6 +6146,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x834",
+    "tramoId": "x126",
+    "fam": "MAR",
+    "fecha": "2026-08-06",
+    "valor": 66,
+    "obs": "Retallos se meten en arcén",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -6206,7 +6218,7 @@
     ]
    }
   ],
-  "seq": 834,
+  "seq": 835,
   "ajustes": {
    "sector": "ZONA 2"
   },
