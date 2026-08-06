@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-06T10:51:21.954Z",
+ "exportado": "2026-08-06T10:55:31.443Z",
  "datos": {
   "roads": [
    {
@@ -6530,7 +6530,7 @@
     ]
    }
   ],
-  "seq": 871,
+  "seq": 872,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -11268,6 +11268,13 @@
      "id": "x870",
      "elem": "Bionda margen izquierdo",
      "valor": 3140,
+     "unidad": "m",
+     "nota": ""
+    },
+    {
+     "id": "x871",
+     "elem": "Barrera rígida hormigón",
+     "valor": 200,
      "unidad": "m",
      "nota": ""
     }
