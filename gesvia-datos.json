@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-06T09:51:55.529Z",
+ "exportado": "2026-08-06T09:52:39.433Z",
  "datos": {
   "roads": [
    {
@@ -6008,8 +6008,8 @@
     "tramoId": "x125",
     "fam": "SH",
     "fecha": "2026-08-06",
-    "valor": 41,
-    "obs": "",
+    "valor": 37,
+    "obs": "En curvas falta eje",
     "inspector": "David Jiménez",
     "gps": "",
     "params": {},
