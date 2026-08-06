@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-06T11:12:53.699Z",
+ "exportado": "2026-08-06T15:16:17.193Z",
  "datos": {
   "roads": [
    {
@@ -811,7 +811,13 @@
     "roadId": "x158",
     "pkIni": 0,
     "pkFin": 8,
-    "desc": "N-322 - Navas de Jorquera"
+    "desc": "N-322 - Navas de Jorquera",
+    "actuaciones": {
+     "SH": {
+      "fecha": "2026-08-06",
+      "nota": "Repintado"
+     }
+    }
    },
    {
     "id": "x160",
