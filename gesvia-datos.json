@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-06T09:27:32.100Z",
+ "exportado": "2026-08-06T09:27:49.438Z",
  "datos": {
   "roads": [
    {
@@ -6086,6 +6086,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x829",
+    "tramoId": "x126",
+    "fam": "SH",
+    "fecha": "2026-08-06",
+    "valor": 69,
+    "obs": "Eje regular",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -6146,7 +6158,7 @@
     ]
    }
   ],
-  "seq": 829,
+  "seq": 830,
   "ajustes": {
    "sector": "ZONA 2"
   },
