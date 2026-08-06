@@ -235,7 +235,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.57</span></span></h1>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.58</span></span></h1>
       <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
@@ -689,7 +689,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
-      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.57</span></strong>
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.58</span></strong>
     </p>
   </div>
 </section>
@@ -708,7 +708,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.57';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.58';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -1303,21 +1303,60 @@ function posicionarReglas(cont){
 /* ---------- detalle de tramo (modal) ---------- */
 function verTramo(tid){
   const t = tramo(tid), r = road(t.roadId);
+  if(!t.actuaciones) t.actuaciones = {};
   const filas = FAMILIAS.map(f=>{
     const i = lastInsp(tid, f.id);
+    const act = t.actuaciones[f.id];
+    const actTxt = act && act.fecha
+      ? `<div>${fFecha(act.fecha)}</div>${act.nota? `<div style="font-size:.82rem;color:var(--texto2)">${esc(act.nota)}</div>`:''}`
+      : '<span style="color:var(--texto2)">—</span>';
     return `<tr><td>${esc(f.nombre)}</td>
       <td>${i? badge(i.valor): '<span class="badge b-nd">Sin datos</span>'}</td>
       <td class="num">${i? fFecha(i.fecha):'—'}</td>
+      <td>${actTxt} <button class="btn sec mini" title="Registrar última actuación" style="margin-top:.2rem" onclick="editarActuacion('${tid}','${f.id}')">✏️</button></td>
       <td>${i? esc(i.obs||''):''} ${i&&i.fotos&&i.fotos.length? '<br>'+thumbsFotos(i):''}</td></tr>`;
   }).join('');
   abrirModal(`<button class="cerrar-x" onclick="cerrarModal()">✕</button>
     <h3>${esc(r.codigo)} · PK ${pk(t.pkIni)} – ${pk(t.pkFin)}</h3>
     <p style="color:var(--texto2);margin-bottom:.7rem">${esc(t.desc||'')}</p>
-    <div style="overflow-x:auto"><table><thead><tr><th>Familia</th><th>Estado</th><th>Fecha</th><th>Observaciones</th></tr></thead><tbody>${filas}</tbody></table></div>
+    <div style="overflow-x:auto"><table><thead><tr><th>Familia</th><th>Estado</th><th>Insp.</th><th>Última actuación</th><th>Observaciones</th></tr></thead><tbody>${filas}</tbody></table></div>
     <div class="acciones">
       <button class="btn" onclick="cerrarModal();prefillInsp('${tid}')">➕ Nueva inspección aquí</button>
       <button class="btn sec" onclick="cerrarModal();prefillOT('${tid}')">🛠 Crear orden de trabajo</button>
     </div>`);
+}
+/* Editar la fecha+nota de la última actuación de una familia en un tramo */
+function editarActuacion(tid, famId){
+  const t = tramo(tid); if(!t.actuaciones) t.actuaciones = {};
+  const act = t.actuaciones[famId] || {fecha:'', nota:''};
+  const fam = FAMILIAS.find(f=>f.id===famId);
+  abrirModal(`<button class="cerrar-x" onclick="verTramo('${tid}')">✕</button>
+    <h3>Última actuación</h3>
+    <p style="color:var(--texto2);margin-bottom:.7rem">${esc(fam?fam.nombre:'')} · registra cuándo se hizo la última actuación (pintado, instalación…). Este dato no cambia al hacer inspecciones.</p>
+    <div class="form-grid">
+      <label class="campo">Fecha de la actuación
+        <input type="date" id="act-fecha" value="${act.fecha||''}"></label>
+      <label class="campo">Nota corta
+        <input type="text" id="act-nota" value="${esc(act.nota||'')}" placeholder="Ej.: repintado completo, señales nuevas…"></label>
+    </div>
+    <div class="acciones">
+      <button class="btn" onclick="guardarActuacion('${tid}','${famId}')">Guardar</button>
+      ${act.fecha? `<button class="btn peligro" onclick="borrarActuacion('${tid}','${famId}')">Borrar dato</button>`:''}
+      <button class="btn sec" onclick="verTramo('${tid}')">Cancelar</button>
+    </div>`);
+}
+function guardarActuacion(tid, famId){
+  const t = tramo(tid); if(!t.actuaciones) t.actuaciones = {};
+  const fecha = $('act-fecha').value;
+  const nota = ($('act-nota').value||'').trim();
+  if(!fecha && !nota){ delete t.actuaciones[famId]; }
+  else { t.actuaciones[famId] = {fecha, nota}; }
+  save(); verTramo(tid); toast('Actuación registrada.');
+}
+function borrarActuacion(tid, famId){
+  const t = tramo(tid);
+  if(t.actuaciones) delete t.actuaciones[famId];
+  save(); verTramo(tid); toast('Dato borrado.');
 }
 
 /* =====================================================
@@ -2387,11 +2426,14 @@ function construirInforme(roadSel, famSel, modo){
       if(!i) continue;
       const n = nivel(i.valor);
       if(modo==='problemas' && n==='ok') continue;
+      const act = (t.actuaciones||{})[f.id];
+      const actTxt = act && act.fecha ? fFecha(act.fecha)+(act.nota?' · '+esc(act.nota):'') : '—';
       filas += `<tr>
         <td class="num">PK ${pk(t.pkIni)} – ${pk(t.pkFin)}</td>
         <td>${esc(f.nombre)}</td>
         <td>${badge(i.valor)}</td>
         <td class="num">${fFecha(i.fecha)}</td>
+        <td>${actTxt}</td>
         <td>${esc(i.obs||'')}</td>
         <td>${esc(ACCION[f.id])}</td></tr>`;
     }
@@ -2401,7 +2443,7 @@ function construirInforme(roadSel, famSel, modo){
     carreterasMostradas++;
     detalle += `<h3>${esc(r.codigo)} ${r.nombre? '· '+esc(r.nombre):''}</h3>
       ${esquemaRoad(r,true,famUnica)}
-      ${filas? `<div style="overflow-x:auto"><table><thead><tr><th>Tramo</th><th>Familia</th><th>Indicador</th><th>Inspección</th><th>Observaciones</th><th>Actuación propuesta</th></tr></thead><tbody>${filas}</tbody></table></div>`
+      ${filas? `<div style="overflow-x:auto"><table><thead><tr><th>Tramo</th><th>Familia</th><th>Indicador</th><th>Inspección</th><th>Última actuación</th><th>Observaciones</th><th>Actuación propuesta</th></tr></thead><tbody>${filas}</tbody></table></div>`
         : `<p style="color:var(--texto2)">${modo==='problemas'? 'Sin tramos con defectos en las familias seleccionadas.':'Sin inspecciones registradas.'}</p>`}`;
   }
   if(famUnica && !carreterasMostradas){
