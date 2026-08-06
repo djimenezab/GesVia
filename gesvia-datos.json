@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-06T09:41:16.039Z",
+ "exportado": "2026-08-06T09:41:44.009Z",
  "datos": {
   "roads": [
    {
@@ -10881,7 +10881,7 @@
      "elem": "Paneles direccionales",
      "valor": 36,
      "unidad": "ud",
-     "nota": ""
+     "nota": "2 viejos, resto 2026"
     },
     {
      "id": "x835",
