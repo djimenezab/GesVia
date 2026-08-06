@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-06T15:26:01.790Z",
+ "exportado": "2026-08-06T15:27:27.922Z",
  "datos": {
   "roads": [
    {
@@ -825,7 +825,12 @@
     "pkIni": 8,
     "pkFin": 9.186,
     "desc": "Variante Navas J.",
-    "actuaciones": {}
+    "actuaciones": {
+     "SH": {
+      "fecha": "2026-08-06",
+      "nota": "Repintado"
+     }
+    }
    },
    {
     "id": "x161",
