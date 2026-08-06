@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-06T10:09:24.666Z",
+ "exportado": "2026-08-06T10:09:39.007Z",
  "datos": {
   "roads": [
    {
@@ -6290,6 +6290,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x852",
+    "tramoId": "x123",
+    "fam": "CON",
+    "fecha": "2026-08-06",
+    "valor": 74,
+    "obs": "Postes IPN",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -6350,7 +6362,7 @@
     ]
    }
   ],
-  "seq": 852,
+  "seq": 853,
   "ajustes": {
    "sector": "ZONA 2"
   },
