@@ -1,5 +1,18 @@
 # GesVía · Gestión de la conservación de carreteras (PWA)
 
+## Novedades v1.59
+- Nuevo tipo de informe **«Actuaciones realizadas»**: muestra las fechas de última actuación
+  (pintado, instalación de señales, extendido de aglomerado…) por tramo y familia, con su nota.
+  Se puede filtrar por toda la red / una carretera / un tramo y por familia, ordenado por PK.
+  Así se consulta de un vistazo cuándo se hizo cada trabajo sin entrar tramo por tramo.
+- La columna «Última actuación» ya aparece también en el informe de estado.
+
+## Novedades v1.58
+- Cada tramo guarda ahora, por familia, la **fecha de última actuación** (cuándo se pintó, cuándo
+  se instalaron las señales…) con una nota corta. Es un dato que PERSISTE: no cambia al registrar
+  nuevas inspecciones (que solo actualizan el nivel de servicio). Se registra con el lápiz en el
+  detalle del tramo y se puede consultar tanto ahí como en el informe de estado.
+
 ## Novedades v1.57
 - Nueva pestaña **Documentación** (junto a Inventario): sube PDFs e imágenes a tu repositorio de
   GitHub (permisos, normativa, procedimientos…), organizados por categorías y con descripción. Se
@@ -197,7 +210,7 @@ LEEME.md
 ## Cuando actualices la app
 
 Si subes un `index.html` nuevo, edita en `sw.js` la primera línea y sube la versión
-(`gesvia-v1.31` → `gesvia-v1.32`). Así los móviles descargan la versión nueva en vez
+(`gesvia-v1.33` → `gesvia-v1.34`). Así los móviles descargan la versión nueva en vez
 de seguir usando la copia guardada en caché.
 
 ## Sincronización automática con GitHub (como RegIn 1.91)

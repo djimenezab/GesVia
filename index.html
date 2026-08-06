@@ -235,7 +235,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.58</span></span></h1>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.59</span></span></h1>
       <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
@@ -424,11 +424,12 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
         <option value="completadas">Órdenes de trabajo completadas (histórico)</option>
         <option value="plano">Plano de estado (mapa de la zona)</option>
         <option value="inventario">Inventario de elementos</option>
+        <option value="actuaciones">Actuaciones realizadas (pintado, instalación…)</option>
       </select>
     </label>
     <div class="form-grid">
       <label class="campo">Ámbito
-        <select id="f-road" onchange="if($('f-tipo').value==='inventario'){cambiaTipoInforme();}"><option value="*">Toda la red</option></select>
+        <select id="f-road" onchange="if(['inventario','actuaciones'].includes($('f-tipo').value)){cambiaTipoInforme();}"><option value="*">Toda la red</option></select>
       </label>
       <label class="campo" id="wrap-inv-ambito" style="display:none">Alcance
         <select id="f-inv-ambito" onchange="cambiaTipoInforme()">
@@ -689,7 +690,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
-      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.58</span></strong>
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.59</span></strong>
     </p>
   </div>
 </section>
@@ -708,7 +709,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.58';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.59';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -2247,9 +2248,11 @@ function renderInformeForm(){
 function cambiaTipoInforme(){
   const tipo = $('f-tipo').value;
   const esInv = tipo==='inventario';
+  const esAct = tipo==='actuaciones';
+  const usaAmbito = esInv || esAct;   // ambos usan carretera/red + alcance por tramo
   // El "Contenido" (completo / solo problemas) solo tiene sentido en el informe de estado
   $('wrap-modo').style.display = (tipo==='estado') ? '' : 'none';
-  // La familia aplica a estado/listado/completadas/plano (no en órdenes ni inventario)
+  // La familia: en inventario no; en actuaciones sí (para filtrar tipo de actuación)
   $('wrap-fam').style.display = (tipo==='ordenes'||esInv) ? 'none' : '';
   // El rango de fechas solo aplica al histórico de completadas
   const verFechas = (tipo==='completadas') ? '' : 'none';
@@ -2259,25 +2262,24 @@ function cambiaTipoInforme(){
   $('wrap-nivel').style.display = (tipo==='plano') ? '' : 'none';
   // En el plano, el ámbito por carretera no se usa (se ve toda la zona)
   $('f-road').closest('.campo').style.display = (tipo==='plano') ? 'none' : '';
-  // Campos propios del inventario
-  $('wrap-inv-ambito').style.display = esInv ? '' : 'none';
+  // El selector de "Elemento" solo es del inventario
   $('wrap-inv-elem').style.display = esInv ? '' : 'none';
   const esTodaRed = $('f-road').value === '*';
   // "por tramo" solo tiene sentido con una carretera concreta
-  const porTramo = esInv && !esTodaRed && $('f-inv-ambito').value==='tramo';
+  const porTramo = usaAmbito && !esTodaRed && $('f-inv-ambito').value==='tramo';
   $('wrap-inv-tramo').style.display = porTramo ? '' : 'none';
   // Con "Toda la red" el alcance por tramo no aplica: se oculta el selector de alcance
-  $('wrap-inv-ambito').style.display = (esInv && !esTodaRed) ? '' : 'none';
-  if(esInv){
-    // el inventario mantiene "Toda la red" como opción (para consultar toda la zona)
+  $('wrap-inv-ambito').style.display = (usaAmbito && !esTodaRed) ? '' : 'none';
+  if(usaAmbito){
+    // mantener "Toda la red" como opción (para consultar toda la zona)
     const fr = $('f-road');
     if(!fr.querySelector('option[value="*"]')){
       fr.innerHTML = '<option value="*">Toda la red</option>' + roadsOrdenadas().map(r=>`<option value="${r.id}">${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('');
     }
     invInformeFillTramos();
-    invInformeFillElementos();
+    if(esInv) invInformeFillElementos();
   } else {
-    // restaurar "Toda la red" con etiqueta corta si venimos del inventario
+    // restaurar "Toda la red" con etiqueta corta si venimos del inventario/actuaciones
     const fr = $('f-road');
     if(fr && [...fr.options].some(o=>o.value!=='*' && o.textContent.includes('·'))){
       fr.innerHTML = '<option value="*">Toda la red</option>' + roadsOrdenadas().map(r=>`<option value="${r.id}">${esc(r.codigo)}</option>`).join('');
@@ -2319,6 +2321,7 @@ function verInforme(){
   else if(tipo==='completadas') html = informeCompletadas(road, fam, $('f-desde').value, $('f-hasta').value);
   else if(tipo==='plano'){      html = informePlano(fam, $('f-nivel').value); esPlano = true; }
   else if(tipo==='inventario')  html = informeInventario(road, $('f-inv-ambito').value, $('f-inv-tramo').value, $('f-inv-elem').value);
+  else if(tipo==='actuaciones') html = informeActuaciones(road, $('f-inv-ambito').value, $('f-inv-tramo').value, fam);
   else                          html = construirInforme(road, fam, modo);
   $('previaInforme').innerHTML = html;
   $('printArea').innerHTML = html;
@@ -2786,6 +2789,52 @@ function informeInventario(roadSel, ambito, tramoSel, elemSel){
     <div style="overflow-x:auto"><table><thead><tr><th>Tramo (PK)</th><th>Elemento</th><th style="text-align:right">Cantidad</th><th>Unidad</th><th>Notas</th></tr></thead>
     <tbody>${filasDetalle}</tbody></table></div>
     <div class="pie"><span>Inventario de elementos físicos de la vía (referencia para mediciones y actuaciones).</span><span>Generado con GesVía</span></div>
+  </div>`;
+}
+
+/* ---------- Informe: ACTUACIONES REALIZADAS (última actuación por familia/tramo) ---------- */
+function informeActuaciones(roadSel, ambito, tramoSel, famSel){
+  const fechaTxt = new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
+  const fams = famSel==='*' ? FAMILIAS : FAMILIAS.filter(f=>f.id===famSel);
+  const roads = roadSel==='*' ? roadsOrdenadas() : S.roads.filter(r=>r.id===roadSel);
+  const nombreFam = famSel==='*' ? 'Todas las familias' : famName(famSel);
+  let ambitoTxt;
+  if(roadSel==='*') ambitoTxt = 'Toda la red';
+  else { const r=road(roadSel); ambitoTxt = esc(r.codigo)+(r.nombre?' · '+esc(r.nombre):''); if(ambito==='tramo') ambitoTxt += ' · un tramo'; }
+
+  // recopilar filas ordenadas por carretera y PK ascendente
+  const filas = [];
+  roads.forEach(r=>{
+    let ts = tramosDe(r.id); // ya viene ordenado por pkIni
+    if(roadSel!=='*' && ambito==='tramo' && tramoSel) ts = ts.filter(t=>t.id===tramoSel);
+    ts.forEach(t=>{
+      const act = t.actuaciones || {};
+      fams.forEach(f=>{
+        const a = act[f.id];
+        if(!a || !a.fecha) return;   // solo lo que tenga fecha de actuación
+        filas.push({r, t, fam:f, a});
+      });
+    });
+  });
+
+  if(!filas.length){
+    return `<div class="informe">${cabInforme('Actuaciones realizadas', `${ambitoTxt} · ${esc(nombreFam)}`)}
+      <p style="color:var(--texto2);padding:.5rem 0">No hay actuaciones registradas para este filtro. Regístralas con el lápiz de «Última actuación» en el detalle de cada tramo.</p>
+      <div class="pie"><span>Fechas de última actuación (pintado, instalación, aglomerado…).</span><span>Generado con GesVía</span></div></div>`;
+  }
+
+  const filasHtml = filas.map(({r,t,fam,a})=>`<tr>
+    <td><strong>${esc(r.codigo)}</strong></td>
+    <td class="num">PK ${pk(t.pkIni)} – ${pk(t.pkFin)}${t.desc?'<br><span style="color:var(--texto2);font-size:.85rem">'+esc(t.desc)+'</span>':''}</td>
+    <td>${esc(fam.nombre)}</td>
+    <td class="num" style="font-weight:700">${fFecha(a.fecha)}</td>
+    <td>${esc(a.nota||'')}</td></tr>`).join('');
+
+  return `<div class="informe">
+    ${cabInforme('Actuaciones realizadas', `${ambitoTxt} · ${esc(nombreFam)} · ${filas.length} actuación(es)`)}
+    <div style="overflow-x:auto"><table><thead><tr><th>Carretera</th><th>Tramo (PK)</th><th>Familia</th><th>Fecha actuación</th><th>Detalle</th></tr></thead>
+    <tbody>${filasHtml}</tbody></table></div>
+    <div class="pie"><span>Fechas de última actuación registrada por tramo y familia (pintado, instalación, aglomerado…).</span><span>Generado con GesVía</span></div>
   </div>`;
 }
 
