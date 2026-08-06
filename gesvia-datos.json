@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-06T10:07:01.499Z",
+ "exportado": "2026-08-06T10:08:34.865Z",
  "datos": {
   "roads": [
    {
@@ -6242,6 +6242,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x848",
+    "tramoId": "x123",
+    "fam": "FIRME",
+    "fecha": "2026-08-06",
+    "valor": 84,
+    "obs": "",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -6302,7 +6314,7 @@
     ]
    }
   ],
-  "seq": 847,
+  "seq": 849,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -11004,6 +11016,13 @@
      "elem": "Bionda margen izquierdo",
      "valor": 912,
      "unidad": "m",
+     "nota": ""
+    },
+    {
+     "id": "x847",
+     "elem": "Paneles direccionales",
+     "valor": 69,
+     "unidad": "ud",
      "nota": ""
     }
    ]
