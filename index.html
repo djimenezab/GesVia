@@ -235,7 +235,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.59</span></span></h1>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.60</span></span></h1>
       <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
@@ -690,7 +690,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
-      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.59</span></strong>
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.60</span></strong>
     </p>
   </div>
 </section>
@@ -709,7 +709,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.59';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.60';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -1194,6 +1194,12 @@ function renderPanel(){
 
 function setFiltro(f){ filtroFam = (filtroFam===f)? null : f; renderPanel(); }
 
+let ordenLista = {col:'indicador', dir:1};   // orden por defecto: peor indicador primero
+function ordenarLista(col){
+  if(ordenLista.col===col){ ordenLista.dir *= -1; }   // mismo click: invertir
+  else { ordenLista.col = col; ordenLista.dir = 1; }
+  renderListaFiltrada();
+}
 function renderListaFiltrada(){
   const box = $('listaFiltrada');
   if(!filtroFam){ box.innerHTML=''; return; }
@@ -1201,12 +1207,26 @@ function renderListaFiltrada(){
   for(const t of S.tramos){
     const i = lastInsp(t.id, filtroFam);
     if(i && nivel(i.valor)!=='ok'){
-      filas.push({t, i});
+      filas.push({t, i, rd:road(t.roadId)});
     }
   }
-  filas.sort((a,b)=>a.i.valor-b.i.valor);
-  const r = filas.map(({t,i})=>{
-    const rd = road(t.roadId);
+  // ordenar según la columna elegida
+  const dir = ordenLista.dir;
+  filas.sort((a,b)=>{
+    let r = 0;
+    if(ordenLista.col==='carretera'){
+      r = (a.rd.codigo||'').localeCompare(b.rd.codigo||'', 'es', {numeric:true});
+      if(r===0) r = a.t.pkIni - b.t.pkIni;   // dentro de la misma carretera, por PK
+    } else if(ordenLista.col==='inspeccion'){
+      r = (a.i.fecha||'').localeCompare(b.i.fecha||'');
+    } else { // indicador
+      r = a.i.valor - b.i.valor;
+    }
+    return r * dir;
+  });
+  const flecha = col => ordenLista.col===col ? (ordenLista.dir===1?' ▲':' ▼') : '';
+  const th = (col,txt,extra='') => `<th class="th-orden" style="cursor:pointer;user-select:none;${extra}" onclick="ordenarLista('${col}')">${txt}${flecha(col)}</th>`;
+  const r = filas.map(({t,i,rd})=>{
     return `<tr>
       <td><strong>${esc(rd.codigo)}</strong></td>
       <td class="num">PK ${pk(t.pkIni)} – ${pk(t.pkFin)}</td>
@@ -1221,7 +1241,8 @@ function renderListaFiltrada(){
       <span>${esc(ACCION[filtroFam])} · tramos pendientes</span>
       <span><button class="btn mini" onclick="informeRapido('${filtroFam}')">📄 Informe de estos tramos</button></span>
     </h3>
-    ${filas.length? `<div style="overflow-x:auto"><table><thead><tr><th>Carretera</th><th>Tramo</th><th>Indicador</th><th>Inspección</th><th>Observaciones</th><th></th></tr></thead><tbody>${r}</tbody></table></div>`
+    ${filas.length? `<p class="ayuda" style="margin:.2rem 0 .5rem">Pulsa en Carretera, Indicador o Inspección para ordenar.</p>
+      <div style="overflow-x:auto"><table><thead><tr>${th('carretera','Carretera')}<th>Tramo</th>${th('indicador','Indicador')}${th('inspeccion','Inspección')}<th>Observaciones</th><th></th></tr></thead><tbody>${r}</tbody></table></div>`
       : '<p style="color:var(--texto2)">✅ Ningún tramo pendiente en esta familia. Todo en buen estado o sin datos.</p>'}
   </div>`;
 }
