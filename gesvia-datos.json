@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-06T15:27:27.922Z",
+ "exportado": "2026-08-06T15:27:53.682Z",
  "datos": {
   "roads": [
    {
@@ -837,7 +837,13 @@
     "roadId": "x158",
     "pkIni": 9.186,
     "pkFin": 12.345,
-    "desc": "Navas J. - Cruce Cenizate"
+    "desc": "Navas J. - Cruce Cenizate",
+    "actuaciones": {
+     "SH": {
+      "fecha": "2026-08-06",
+      "nota": "Repintado"
+     }
+    }
    },
    {
     "id": "x162",
