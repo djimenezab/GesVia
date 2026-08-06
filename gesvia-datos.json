@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-06T09:50:58.886Z",
+ "exportado": "2026-08-06T09:51:55.529Z",
  "datos": {
   "roads": [
    {
@@ -6116,8 +6116,8 @@
     "tramoId": "x126",
     "fam": "BAL",
     "fecha": "2026-08-06",
-    "valor": 72,
-    "obs": "",
+    "valor": 40,
+    "obs": "Faltan el 50% de hitos arista",
     "inspector": "David Jiménez",
     "gps": "",
     "params": {},
