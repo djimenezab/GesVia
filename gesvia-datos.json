@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-06T09:15:51.607Z",
+ "exportado": "2026-08-06T09:16:13.536Z",
  "datos": {
   "roads": [
    {
@@ -6050,7 +6050,7 @@
     ]
    }
   ],
-  "seq": 818,
+  "seq": 819,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -10691,6 +10691,15 @@
      "valor": 61,
      "unidad": "ud",
      "nota": "2026"
+    }
+   ],
+   "x126": [
+    {
+     "id": "x818",
+     "elem": "Pasos de peatones",
+     "valor": 6,
+     "unidad": "ud",
+     "nota": ""
     }
    ]
   },
