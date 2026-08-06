@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-06T15:16:17.193Z",
+ "exportado": "2026-08-06T15:17:23.736Z",
  "datos": {
   "roads": [
    {
@@ -6483,7 +6483,7 @@
     "fam": "SH",
     "fecha": "2026-08-06",
     "valor": 100,
-    "obs": "Ago 2026",
+    "obs": "",
     "inspector": "David Jiménez",
     "gps": "",
     "params": {},
