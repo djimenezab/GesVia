@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-06T09:40:26.235Z",
+ "exportado": "2026-08-06T09:41:16.039Z",
  "datos": {
   "roads": [
    {
@@ -6093,7 +6093,7 @@
     "fam": "SH",
     "fecha": "2026-08-06",
     "valor": 69,
-    "obs": "Eje regular",
+    "obs": "Travesia critica; Eje regular",
     "inspector": "David Jiménez",
     "gps": "",
     "params": {},
