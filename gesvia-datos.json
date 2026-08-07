@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-07T07:12:35.199Z",
+ "exportado": "2026-08-07T07:13:47.108Z",
  "datos": {
   "roads": [
    {
@@ -11429,6 +11429,10 @@
      },
      {
       "elem": "H-75 Verde",
+      "unidad": "ud"
+     },
+     {
+      "elem": "Captafaro Horizontal",
       "unidad": "ud"
      }
     ]
