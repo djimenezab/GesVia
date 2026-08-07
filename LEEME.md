@@ -1,5 +1,10 @@
 # GesVía · Gestión de la conservación de carreteras (PWA)
 
+## Novedades v1.60
+- En el panel, la lista de «tramos pendientes» de cada familia se puede **ordenar** pulsando en las
+  cabeceras **Carretera**, **Indicador** o **Inspección** (un segundo clic invierte el orden). Útil
+  para agrupar por carretera antes de imprimir el informe.
+
 ## Novedades v1.59
 - Nuevo tipo de informe **«Actuaciones realizadas»**: muestra las fechas de última actuación
   (pintado, instalación de señales, extendido de aglomerado…) por tramo y familia, con su nota.
@@ -210,7 +215,7 @@ LEEME.md
 ## Cuando actualices la app
 
 Si subes un `index.html` nuevo, edita en `sw.js` la primera línea y sube la versión
-(`gesvia-v1.33` → `gesvia-v1.34`). Así los móviles descargan la versión nueva en vez
+(`gesvia-v1.34` → `gesvia-v1.35`). Así los móviles descargan la versión nueva en vez
 de seguir usando la copia guardada en caché.
 
 ## Sincronización automática con GitHub (como RegIn 1.91)
