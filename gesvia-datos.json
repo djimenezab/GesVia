@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-07T10:32:34.331Z",
+ "exportado": "2026-08-07T10:32:43.693Z",
  "datos": {
   "roads": [
    {
@@ -6598,7 +6598,7 @@
     ]
    }
   ],
-  "seq": 906,
+  "seq": 907,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -11603,6 +11603,17 @@
      "elem": "H-75 Verde",
      "valor": 4,
      "unidad": "ud",
+     "nota": "",
+     "actFecha": "",
+     "actNota": ""
+    }
+   ],
+   "x900": [
+    {
+     "id": "x906",
+     "elem": "Bionda margen derecho",
+     "valor": 910,
+     "unidad": "m",
      "nota": "",
      "actFecha": "",
      "actNota": ""
