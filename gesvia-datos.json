@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-07T07:20:19.952Z",
+ "exportado": "2026-08-07T07:20:25.983Z",
  "datos": {
   "roads": [
    {
@@ -6578,7 +6578,7 @@
     ]
    }
   ],
-  "seq": 891,
+  "seq": 892,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -10795,6 +10795,15 @@
      "id": "x890",
      "elem": "Hitos de arista",
      "valor": 109,
+     "unidad": "ud",
+     "nota": "",
+     "actFecha": "",
+     "actNota": ""
+    },
+    {
+     "id": "x891",
+     "elem": "Hito de arista bionda",
+     "valor": 31,
      "unidad": "ud",
      "nota": "",
      "actFecha": "",
