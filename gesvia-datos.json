@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-07T07:14:02.719Z",
+ "exportado": "2026-08-07T07:14:33.109Z",
  "datos": {
   "roads": [
    {
@@ -6578,7 +6578,7 @@
     ]
    }
   ],
-  "seq": 881,
+  "seq": 882,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -10090,6 +10090,15 @@
      "id": "x880",
      "elem": "Hitos de arista",
      "valor": 172,
+     "unidad": "ud",
+     "nota": "",
+     "actFecha": "",
+     "actNota": ""
+    },
+    {
+     "id": "x881",
+     "elem": "Captafaro Muro",
+     "valor": 25,
      "unidad": "ud",
      "nota": "",
      "actFecha": "",
