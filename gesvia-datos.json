@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-07T07:23:50.498Z",
+ "exportado": "2026-08-07T10:27:51.457Z",
  "datos": {
   "roads": [
    {
@@ -117,6 +117,12 @@
     "codigo": "CM-3226",
     "nombre": "Mahora - Villamalea",
     "sector": "ZONA 2.1"
+   },
+   {
+    "id": "x898",
+    "codigo": "CM-3218a",
+    "nombre": "Antigua CM-3218 Tinajeros",
+    "sector": "2.1"
    }
   ],
   "tramos": [
@@ -6578,7 +6584,7 @@
     ]
    }
   ],
-  "seq": 898,
+  "seq": 899,
   "ajustes": {
    "sector": "ZONA 2"
   },
