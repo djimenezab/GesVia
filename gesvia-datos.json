@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-07T06:48:07.104Z",
+ "exportado": "2026-08-07T07:12:35.199Z",
  "datos": {
   "roads": [
    {
@@ -6578,7 +6578,7 @@
     ]
    }
   ],
-  "seq": 880,
+  "seq": 881,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -10085,6 +10085,15 @@
      "valor": 1012,
      "unidad": "m",
      "nota": ""
+    },
+    {
+     "id": "x880",
+     "elem": "Hitos de arista",
+     "valor": 172,
+     "unidad": "ud",
+     "nota": "",
+     "actFecha": "",
+     "actNota": ""
     }
    ],
    "x33": [
