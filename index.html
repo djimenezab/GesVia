@@ -235,7 +235,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.60</span></span></h1>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.61</span></span></h1>
       <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
@@ -690,7 +690,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
-      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.60</span></strong>
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.61</span></strong>
     </p>
   </div>
 </section>
@@ -709,7 +709,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.60';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.61';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -2126,11 +2126,12 @@ function renderInvTramo(){
       <td class="num" style="text-align:right;font-weight:700">${d.valor!=null? formatoNum(d.valor):''}</td>
       <td>${esc(d.unidad||'')}</td>
       <td>${esc(d.nota||'')}</td>
+      <td>${d.actFecha? fFecha(d.actFecha)+(d.actNota?'<br><span style="font-size:.82rem;color:var(--texto2)">'+esc(d.actNota)+'</span>':'') : '<span style="color:var(--texto2)">—</span>'}</td>
       <td style="white-space:nowrap;text-align:right">
         <button class="btn sec mini" title="Editar" onclick="invEditar('${tid}','${d.id}')">✏️</button>
         <button class="btn peligro mini" onclick="invBorrar('${tid}','${d.id}')">✕</button>
       </td></tr>`).join('')
-    : '<tr><td colspan="5" style="color:var(--texto2)">Aún no hay datos de inventario en este tramo.</td></tr>';
+    : '<tr><td colspan="6" style="color:var(--texto2)">Aún no hay datos de inventario en este tramo.</td></tr>';
 
   cont.innerHTML = `
     <div class="tarjeta" style="margin-bottom:1rem">
@@ -2140,7 +2141,7 @@ function renderInvTramo(){
       </h3>
       <p style="color:var(--texto2);font-size:.9rem;margin-bottom:.8rem">${esc(t.desc||'')}</p>
       <div style="overflow-x:auto">
-        <table><thead><tr><th>Elemento</th><th style="text-align:right">Cantidad</th><th>Unidad</th><th>Notas</th><th></th></tr></thead>
+        <table><thead><tr><th>Elemento</th><th style="text-align:right">Cantidad</th><th>Unidad</th><th>Notas</th><th>Actuación</th><th></th></tr></thead>
         <tbody>${filas}</tbody></table>
       </div>
     </div>
@@ -2161,6 +2162,12 @@ function renderInvTramo(){
         </label>
         <label class="campo" style="grid-column:1/-1">Notas (opcional)
           <input id="inv-nota" placeholder="Ej.: medido en campo, junio 2026">
+        </label>
+        <label class="campo">Fecha de actuación (opcional)
+          <input type="date" id="inv-actfecha">
+        </label>
+        <label class="campo">Detalle de la actuación (opcional)
+          <input id="inv-actnota" placeholder="Ej.: repintado, instalación…">
         </label>
       </div>
       <div class="acciones"><button class="btn" onclick="invAdd('${tid}')">Añadir al inventario</button></div>
@@ -2187,7 +2194,8 @@ function invAdd(tid){
   const valor = parseFloat(valorStr);
   if(isNaN(valor)) return toast('La cantidad no es válida.');
   if(!S.inventario[tid]) S.inventario[tid] = [];
-  S.inventario[tid].push({ id:uid(), elem, valor, unidad:$('inv-unidad').value, nota:($('inv-nota').value||'').trim() });
+  S.inventario[tid].push({ id:uid(), elem, valor, unidad:$('inv-unidad').value, nota:($('inv-nota').value||'').trim(),
+    actFecha:$('inv-actfecha').value||'', actNota:($('inv-actnota').value||'').trim() });
   save(); renderInvTramo(); toast('Dato añadido al inventario.');
 }
 function invBorrar(tid, did){
@@ -2209,6 +2217,10 @@ function invEditar(tid, did){
         <select id="invE-unidad">${optUnidades}</select></label>
       <label class="campo" style="grid-column:1/-1">Notas
         <input id="invE-nota" value="${esc(d.nota||'')}"></label>
+      <label class="campo">Fecha de actuación
+        <input type="date" id="invE-actfecha" value="${d.actFecha||''}"></label>
+      <label class="campo">Detalle de la actuación
+        <input id="invE-actnota" value="${esc(d.actNota||'')}" placeholder="Ej.: repintado, instalación…"></label>
     </div>
     <div class="acciones">
       <button class="btn" onclick="invGuardarEdicion('${tid}','${did}')">Guardar cambios</button>
@@ -2228,6 +2240,7 @@ function invGuardarEdicion(tid, did){
     if(!confirm(`Vas a cambiar «${d.elem}» de ${formatoNum(valorAnterior)} a ${formatoNum(valor)} ${$('invE-unidad').value||''}.\n\n¿Seguro que quieres modificar este dato?`)) return;
   }
   d.elem = elem; d.valor = valor; d.unidad = $('invE-unidad').value; d.nota = ($('invE-nota').value||'').trim();
+  d.actFecha = $('invE-actfecha').value||''; d.actNota = ($('invE-actnota').value||'').trim();
   save(); cerrarModal(); renderInvTramo(); toast('Dato actualizado.');
 }
 function imprimirInvTramo(tid){
@@ -2239,7 +2252,8 @@ function imprimirInvTramo(tid){
     <td>${esc(d.elem)}</td>
     <td style="text-align:right;font-weight:700">${d.valor!=null?formatoNum(d.valor):''}</td>
     <td>${esc(d.unidad||'')}</td>
-    <td>${esc(d.nota||'')}</td></tr>`).join('');
+    <td>${esc(d.nota||'')}</td>
+    <td>${d.actFecha? fFecha(d.actFecha)+(d.actNota?' · '+esc(d.actNota):'') : ''}</td></tr>`).join('');
   const html = `<div class="informe">
     <div class="cab">
       <div><h2>Ficha de inventario del tramo</h2><div style="color:var(--texto2)">${esc(r.codigo)} · PK ${pk(t.pkIni)} – ${pk(t.pkFin)}${sector? ' · '+sector:''}</div></div>
@@ -2247,8 +2261,8 @@ function imprimirInvTramo(tid){
         <div style="color:var(--texto2);font-size:.9rem">${fechaTxt}</div></div>
     </div>
     ${t.desc? `<p style="color:var(--texto2);margin-bottom:.8rem">${esc(t.desc)}</p>`:''}
-    <div style="overflow-x:auto"><table><thead><tr><th>Elemento</th><th style="text-align:right">Cantidad</th><th>Unidad</th><th>Notas</th></tr></thead>
-    <tbody>${filas||'<tr><td colspan="4">Sin datos.</td></tr>'}</tbody></table></div>
+    <div style="overflow-x:auto"><table><thead><tr><th>Elemento</th><th style="text-align:right">Cantidad</th><th>Unidad</th><th>Notas</th><th>Actuación</th></tr></thead>
+    <tbody>${filas||'<tr><td colspan="5">Sin datos.</td></tr>'}</tbody></table></div>
     <div class="pie"><span>Datos de inventario del tramo (referencia para mediciones y actuaciones).</span><span>Generado con GesVía</span></div>
   </div>`;
   $('printArea').innerHTML = html;
@@ -2813,12 +2827,13 @@ function informeInventario(roadSel, ambito, tramoSel, elemSel){
   </div>`;
 }
 
-/* ---------- Informe: ACTUACIONES REALIZADAS (última actuación por familia/tramo) ---------- */
+/* ---------- Informe: ACTUACIONES REALIZADAS (familia/tramo + inventario) ---------- */
 function informeActuaciones(roadSel, ambito, tramoSel, famSel){
   const fechaTxt = new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
   const fams = famSel==='*' ? FAMILIAS : FAMILIAS.filter(f=>f.id===famSel);
   const roads = roadSel==='*' ? roadsOrdenadas() : S.roads.filter(r=>r.id===roadSel);
   const nombreFam = famSel==='*' ? 'Todas las familias' : famName(famSel);
+  const todasFam = famSel==='*';
   let ambitoTxt;
   if(roadSel==='*') ambitoTxt = 'Toda la red';
   else { const r=road(roadSel); ambitoTxt = esc(r.codigo)+(r.nombre?' · '+esc(r.nombre):''); if(ambito==='tramo') ambitoTxt += ' · un tramo'; }
@@ -2829,33 +2844,41 @@ function informeActuaciones(roadSel, ambito, tramoSel, famSel){
     let ts = tramosDe(r.id); // ya viene ordenado por pkIni
     if(roadSel!=='*' && ambito==='tramo' && tramoSel) ts = ts.filter(t=>t.id===tramoSel);
     ts.forEach(t=>{
+      // 1) actuaciones por familia del tramo
       const act = t.actuaciones || {};
       fams.forEach(f=>{
         const a = act[f.id];
-        if(!a || !a.fecha) return;   // solo lo que tenga fecha de actuación
-        filas.push({r, t, fam:f, a});
+        if(!a || !a.fecha) return;
+        filas.push({r, t, concepto:f.nombre, fecha:a.fecha, nota:a.nota||''});
       });
+      // 2) actuaciones específicas de elementos de inventario (solo si "Todas las familias")
+      if(todasFam){
+        (S.inventario[t.id]||[]).forEach(d=>{
+          if(!d.actFecha) return;
+          filas.push({r, t, concepto:d.elem, fecha:d.actFecha, nota:d.actNota||'', esInv:true});
+        });
+      }
     });
   });
 
   if(!filas.length){
     return `<div class="informe">${cabInforme('Actuaciones realizadas', `${ambitoTxt} · ${esc(nombreFam)}`)}
-      <p style="color:var(--texto2);padding:.5rem 0">No hay actuaciones registradas para este filtro. Regístralas con el lápiz de «Última actuación» en el detalle de cada tramo.</p>
+      <p style="color:var(--texto2);padding:.5rem 0">No hay actuaciones registradas para este filtro. Regístralas con el lápiz de «Última actuación» en el detalle del tramo, o en la fecha de actuación de cada elemento de Inventario.</p>
       <div class="pie"><span>Fechas de última actuación (pintado, instalación, aglomerado…).</span><span>Generado con GesVía</span></div></div>`;
   }
 
-  const filasHtml = filas.map(({r,t,fam,a})=>`<tr>
+  const filasHtml = filas.map(({r,t,concepto,fecha,nota,esInv})=>`<tr>
     <td><strong>${esc(r.codigo)}</strong></td>
     <td class="num">PK ${pk(t.pkIni)} – ${pk(t.pkFin)}${t.desc?'<br><span style="color:var(--texto2);font-size:.85rem">'+esc(t.desc)+'</span>':''}</td>
-    <td>${esc(fam.nombre)}</td>
-    <td class="num" style="font-weight:700">${fFecha(a.fecha)}</td>
-    <td>${esc(a.nota||'')}</td></tr>`).join('');
+    <td>${esc(concepto)}${esInv?' <span style="color:var(--texto2);font-size:.8rem">(inventario)</span>':''}</td>
+    <td class="num" style="font-weight:700">${fFecha(fecha)}</td>
+    <td>${esc(nota||'')}</td></tr>`).join('');
 
   return `<div class="informe">
     ${cabInforme('Actuaciones realizadas', `${ambitoTxt} · ${esc(nombreFam)} · ${filas.length} actuación(es)`)}
-    <div style="overflow-x:auto"><table><thead><tr><th>Carretera</th><th>Tramo (PK)</th><th>Familia</th><th>Fecha actuación</th><th>Detalle</th></tr></thead>
+    <div style="overflow-x:auto"><table><thead><tr><th>Carretera</th><th>Tramo (PK)</th><th>Concepto</th><th>Fecha actuación</th><th>Detalle</th></tr></thead>
     <tbody>${filasHtml}</tbody></table></div>
-    <div class="pie"><span>Fechas de última actuación registrada por tramo y familia (pintado, instalación, aglomerado…).</span><span>Generado con GesVía</span></div>
+    <div class="pie"><span>Fechas de última actuación por tramo, familia y elemento de inventario (pintado, instalación, aglomerado…).</span><span>Generado con GesVía</span></div>
   </div>`;
 }
 
