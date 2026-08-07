@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-07T10:32:59.971Z",
+ "exportado": "2026-08-07T10:45:57.149Z",
  "datos": {
   "roads": [
    {
@@ -6538,6 +6538,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x909",
+    "tramoId": "x899",
+    "fam": "FIRME",
+    "fecha": "2026-08-07",
+    "valor": 55,
+    "obs": "Piel cocodrilo",
+    "inspector": "",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -6598,7 +6610,7 @@
     ]
    }
   ],
-  "seq": 909,
+  "seq": 910,
   "ajustes": {
    "sector": "ZONA 2"
   },
