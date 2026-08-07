@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-07T06:47:22.453Z",
+ "exportado": "2026-08-07T06:48:07.104Z",
  "datos": {
   "roads": [
    {
@@ -10100,7 +10100,9 @@
      "elem": "Paneles direccionales",
      "valor": 28,
      "unidad": "ud",
-     "nota": ""
+     "nota": "",
+     "actFecha": "2026-05-01",
+     "actNota": "Instalación"
     },
     {
      "id": "x572",
