@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-19T10:12:30.990Z",
+ "exportado": "2026-08-19T11:12:15.269Z",
  "datos": {
   "roads": [
    {
@@ -6836,9 +6836,22 @@
       "ruta": "fotos/x305_v2gmeqf.jpg"
      }
     ]
+   },
+   {
+    "id": "x934",
+    "tramoId": "x139",
+    "fam": "DRE",
+    "desc": "Reperfilar cunetas en P.K. 0+800 para darle continuidad al agua hacia obra de fábrica, e intentar darle más capacidad.",
+    "prio": "alta",
+    "estado": "pendiente",
+    "creada": "2026-08-19",
+    "cerrada": null,
+    "obs": "",
+    "gps": "",
+    "fotos": []
    }
   ],
-  "seq": 934,
+  "seq": 935,
   "ajustes": {
    "sector": "ZONA 2"
   },
