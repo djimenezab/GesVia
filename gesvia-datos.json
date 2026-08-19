@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-19T12:07:25.856Z",
+ "exportado": "2026-08-19T12:07:53.690Z",
  "datos": {
   "roads": [
    {
@@ -12120,7 +12120,12 @@
     "prio": "media",
     "obs": "Hacer calculo hidráulico para ampliar obra de fábrica, actualmente un tubo de 80.",
     "fotos": [],
-    "historial": [],
+    "historial": [
+     {
+      "fecha": "2026-08-19",
+      "texto": "Visita a fábrica por inundación"
+     }
+    ],
     "creado": "2026-08-19"
    }
   ],
