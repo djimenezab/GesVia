@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-19T12:19:07.370Z",
+ "exportado": "2026-08-19T12:20:47.388Z",
  "datos": {
   "roads": [
    {
@@ -12113,7 +12113,7 @@
    {
     "id": "x936",
     "roadId": "x107",
-    "tipo": "Arrastres",
+    "tipo": "Cruces de Agua",
     "pkIni": 0.5,
     "pkFin": null,
     "estado": "pendiente",
