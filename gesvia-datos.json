@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-19T12:20:47.388Z",
+ "exportado": "2026-08-19T12:21:27.589Z",
  "datos": {
   "roads": [
    {
@@ -12119,7 +12119,13 @@
     "estado": "pendiente",
     "prio": "media",
     "obs": "Hacer calculo hidráulico para ampliar obra de fábrica, actualmente un tubo de 80. Cruza el agua por la carretera.",
-    "fotos": [],
+    "fotos": [
+     {
+      "id": "3u1wivb",
+      "pendiente": false,
+      "ruta": "fotos/x936_3u1wivb.jpg"
+     }
+    ],
     "historial": [
      {
       "fecha": "2026-08-19",
