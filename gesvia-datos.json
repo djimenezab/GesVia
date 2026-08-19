@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-19T12:18:24.028Z",
+ "exportado": "2026-08-19T12:19:03.048Z",
  "datos": {
   "roads": [
    {
@@ -6862,7 +6862,7 @@
     ]
    }
   ],
-  "seq": 937,
+  "seq": 938,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -12126,7 +12126,15 @@
       "texto": "Visita a fábrica por inundación"
      }
     ],
-    "creado": "2026-08-19"
+    "creado": "2026-08-19",
+    "adjuntos": [
+     {
+      "id": "x937",
+      "nombre": "WhatsApp Video 2026-08-19 at 13.08.25.mp4",
+      "archivo": "puntos/x936_1787141934316_WhatsApp_Video_2026-08-19_at_13_08_25.mp4",
+      "url": "https://raw.githubusercontent.com/djimenezab/GesVia/main/puntos/x936_1787141934316_WhatsApp_Video_2026-08-19_at_13_08_25.mp4?raw=true"
+     }
+    ]
    }
   ],
   "puntoTipos": [
