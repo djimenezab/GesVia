@@ -235,7 +235,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.62</span></span></h1>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.63</span></span></h1>
       <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
@@ -679,6 +679,25 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   </div>
 
   <div class="tarjeta" style="margin-bottom:1rem">
+    <h3 style="margin:0;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="togglePuntoTipos()">
+      <span>Tipos de puntos críticos</span>
+      <button class="btn sec mini" id="pctipos-toggle" type="button">▸ Desplegar</button>
+    </h3>
+    <div id="pctipos-cuerpo" style="display:none;margin-top:.7rem">
+      <p style="color:var(--texto2);font-size:.9rem;margin-bottom:.6rem">
+        Estos tipos aparecen al crear y filtrar puntos críticos. Los puntos ya creados no se ven afectados si cambias esta lista.
+      </p>
+      <div class="plano-toolbar" style="margin:0;align-items:flex-end">
+        <label class="campo" style="margin:0;flex:1;min-width:180px">Nuevo tipo
+          <input id="aj-pctipo-nombre" placeholder="Ej.: Inundaciones" onkeydown="if(event.key==='Enter')addPuntoTipo()" style="margin-top:.2rem">
+        </label>
+        <button class="btn" onclick="addPuntoTipo()">Añadir</button>
+      </div>
+      <div id="aj-pctipo-lista" style="margin-top:.7rem"></div>
+    </div>
+  </div>
+
+  <div class="tarjeta" style="margin-bottom:1rem">
     <h3 style="margin-bottom:.7rem">Datos y copias de seguridad</h3>
     <div class="aviso-banda" style="margin-bottom:.9rem">
       <strong>Sincronización activada:</strong> si configuras GitHub en el botón ⬆⬇ de arriba, al abrir la app se descargan los datos del repositorio y cada cambio se sube automáticamente a los pocos segundos. El punto de color indica el estado: verde = sincronizado, ámbar = subiendo, rojo = error o sin conexión. La copia JSON manual sigue disponible como respaldo extra.
@@ -729,7 +748,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
-      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.62</span></strong>
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.63</span></strong>
     </p>
   </div>
 </section>
@@ -748,7 +767,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.62';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.63';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -1052,6 +1071,38 @@ function delDocCategoria(i){
   if(!confirm('¿Eliminar la categoría «'+c+'»? Los documentos que la tengan seguirán existiendo, pero sin filtro propio.')) return;
   S.docCategorias.splice(i,1);
   save(); renderDocCategorias();
+}
+
+/* ---------- Tipos de puntos críticos ---------- */
+let pcTiposDesplegado = false;
+function togglePuntoTipos(){
+  pcTiposDesplegado = !pcTiposDesplegado;
+  $('pctipos-cuerpo').style.display = pcTiposDesplegado ? '' : 'none';
+  $('pctipos-toggle').textContent = pcTiposDesplegado ? '▾ Plegar' : '▸ Desplegar';
+  if(pcTiposDesplegado) renderPuntoTipos();
+}
+function renderPuntoTipos(){
+  const box = $('aj-pctipo-lista'); if(!box) return;
+  const tipos = S.puntoTipos || [];
+  box.innerHTML = tipos.map((t,i)=>`<div class="trazo-item">
+    <span style="flex:1">${esc(t)}</span>
+    <button class="btn peligro mini" onclick="delPuntoTipo(${i})">Eliminar</button>
+  </div>`).join('') || '<p style="color:var(--texto2);font-size:.9rem">Sin tipos.</p>';
+}
+function addPuntoTipo(){
+  const nombre = ($('aj-pctipo-nombre').value||'').trim();
+  if(!nombre) return toast('Escribe el nombre del tipo.');
+  if((S.puntoTipos||[]).some(t=>t.toLowerCase()===nombre.toLowerCase())) return toast('Ese tipo ya existe.');
+  S.puntoTipos.push(nombre);
+  $('aj-pctipo-nombre').value='';
+  save(); renderPuntoTipos();
+  toast('Tipo añadido.');
+}
+function delPuntoTipo(i){
+  const t = S.puntoTipos[i];
+  if(!confirm('¿Eliminar el tipo «'+t+'»? Los puntos que lo tengan seguirán existiendo, pero sin filtro propio.')) return;
+  S.puntoTipos.splice(i,1);
+  save(); renderPuntoTipos();
 }
 
 /* =====================================================
@@ -2195,6 +2246,7 @@ function renderPuntos(){
           <div style="color:var(--texto2);font-size:.9rem;margin-top:.2rem">${esc(p.tipo||'')}${r&&r.nombre?' · '+esc(r.nombre):''}</div>
           ${p.obs? `<div style="margin-top:.35rem">${esc(p.obs)}</div>`:''}
           ${ultima? `<div style="margin-top:.35rem;font-size:.85rem;color:var(--texto2)">Última actuación: ${fFecha(ultima.fecha)} · ${esc(ultima.texto)}</div>`:''}
+          ${p.adjuntos&&p.adjuntos.length? `<div style="margin-top:.3rem;font-size:.85rem;color:var(--texto2)">📎 ${p.adjuntos.length} adjunto(s): ${p.adjuntos.map(a=>adjIcono(a.nombre)+' '+esc(a.nombre)).join(', ')}</div>`:''}
           ${p.fotos&&p.fotos.length? '<div style="margin-top:.4rem;display:flex;gap:.4rem;flex-wrap:wrap">'+thumbsFotos(p)+'</div>':''}
         </div>
         <div style="display:flex;gap:.3rem;flex-shrink:0">
@@ -2251,6 +2303,15 @@ function editarPunto(id){
         <input type="file" id="pc-foto" accept="image/*" capture="environment" multiple onchange="anadirFotosBuffer('pc', this.files); this.value='';"></label>
       <div id="pc-fotos-lista" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem"></div>
       ${p.fotos&&p.fotos.length? `<div style="margin-top:.4rem"><div style="font-size:.85rem;color:var(--texto2);margin-bottom:.3rem">Fotos guardadas:</div><div id="pc-fotos-guardadas" style="display:flex;flex-wrap:wrap;gap:.5rem">${p.fotos.map(f=>{const src=f.pendiente?f.data:urlFoto(f.ruta);return `<div style="position:relative;display:inline-block"><img src="${src}" class="foto-mini" onclick="verFotoGrande('${src.replace(/'/g,'')}')"><button class="btn peligro mini" style="position:absolute;top:-6px;right:-6px;padding:.1rem .35rem;border-radius:50%" onclick="quitarFotoPunto('${p.id}','${f.id}')">✕</button></div>`;}).join('')}</div></div>`:''}
+    </div>
+
+    <div style="margin-top:1rem">
+      <label class="campo" style="margin:0">Vídeos y documentos (PDF)
+        ${p.id? `<input type="file" id="pc-adjunto" accept="video/*,.pdf,image/*" onchange="subirAdjuntoPunto('${p.id}', this.files); this.value='';">`
+               : '<span class="ayuda">Guarda primero el punto para poder adjuntar vídeos o documentos.</span>'}
+      </label>
+      <p id="pc-adjunto-estado" style="font-size:.85rem;margin:.3rem 0 0;min-height:1rem;color:var(--texto2)"></p>
+      <div id="pc-adjuntos-lista" style="margin-top:.4rem">${renderAdjuntosPunto(p)}</div>
     </div>
 
     <div style="margin-top:1rem;border-top:1px solid var(--borde);padding-top:.7rem">
@@ -2318,6 +2379,54 @@ function borrarHistorial(id, idx){
 function quitarFotoPunto(id, fid){
   const p = S.puntos.find(x=>x.id===id); if(!p||!p.fotos) return;
   p.fotos = p.fotos.filter(f=>f.id!==fid);
+  save(); editarPunto(id);
+}
+/* Adjuntos de vídeo/PDF: se suben como archivos sueltos a GitHub (no van en el JSON) */
+function adjIcono(nombre){
+  if(/\.(mp4|mov|avi|webm|mkv|m4v)$/i.test(nombre)) return '🎬';
+  if(/\.pdf$/i.test(nombre)) return '📄';
+  if(/\.(jpg|jpeg|png|gif|webp)$/i.test(nombre)) return '🖼';
+  return '📎';
+}
+function renderAdjuntosPunto(p){
+  const adj = (p.adjuntos||[]);
+  if(!adj.length) return '';
+  return adj.map(a=>`<div class="trazo-item">
+    <a href="${a.url}" target="_blank" rel="noopener" style="flex:1;text-decoration:none">${adjIcono(a.nombre)} ${esc(a.nombre)}</a>
+    ${p.id?`<button class="btn peligro mini" onclick="quitarAdjuntoPunto('${p.id}','${a.id}')">✕</button>`:''}
+  </div>`).join('');
+}
+async function subirAdjuntoPunto(id, fileList){
+  const file = fileList[0]; if(!file) return;
+  const est = $('pc-adjunto-estado');
+  if(!ghConfigurado()){ if(est){est.textContent='⚠️ Configura primero GitHub (botón ⬆⬇) para subir adjuntos'; est.style.color='var(--critico)';} return; }
+  if(file.size > 100*1024*1024){ if(est){est.textContent='⚠️ El archivo supera los 100 MB (límite de GitHub)'; est.style.color='var(--critico)';} return; }
+  const c = cargarConfigGH();
+  if(est){ est.textContent='⏳ Subiendo «'+file.name+'»… (los vídeos pueden tardar)'; est.style.color='var(--aviso)'; }
+  try{
+    const base64 = await new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file); });
+    const ext = (file.name.match(/\.[a-zA-Z0-9]+$/)||[''])[0].toLowerCase();
+    const base = file.name.replace(/\.[^.]+$/,'').replace(/[^a-zA-Z0-9_\-]/g,'_').slice(0,40);
+    const archivo = `puntos/${id}_${Date.now()}_${base}${ext}`;
+    const url = `https://api.github.com/repos/${c.usuario}/${c.repo}/contents/${archivo}`;
+    const pr = await fetch(url, { method:'PUT', headers:{...ghHeaders(c),'Content-Type':'application/json'},
+      body: JSON.stringify({message:`GESVIA adjunto punto: ${file.name}`, content:base64}) });
+    if(pr.ok){
+      const rawUrl = `https://raw.githubusercontent.com/${c.usuario}/${c.repo}/main/${archivo}?raw=true`;
+      const p = S.puntos.find(x=>x.id===id); if(!p.adjuntos) p.adjuntos=[];
+      p.adjuntos.push({ id:uid(), nombre:file.name, archivo, url:rawUrl });
+      save(); editarPunto(id);
+      toast('📎 Adjunto subido.');
+    } else {
+      let e={}; try{ e=await pr.json(); }catch(_){}
+      if(est){ est.textContent='❌ Error: '+(e.message||pr.status); est.style.color='var(--critico)'; }
+    }
+  }catch(e){ if(est){ est.textContent='❌ Error de red: '+e.message; est.style.color='var(--critico)'; } }
+}
+function quitarAdjuntoPunto(id, aid){
+  const p = S.puntos.find(x=>x.id===id); if(!p||!p.adjuntos) return;
+  if(!confirm('¿Quitar este adjunto de la lista?\n(El archivo en GitHub no se borra.)')) return;
+  p.adjuntos = p.adjuntos.filter(a=>a.id!==aid);
   save(); editarPunto(id);
 }
 function imprimirPunto(id){

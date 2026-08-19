@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gesvia-v1.36';
+const CACHE_NAME = 'gesvia-v1.37';
 const ASSETS = [
   './',
   './index.html',
