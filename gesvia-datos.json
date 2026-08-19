@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-19T06:22:16.451Z",
+ "exportado": "2026-08-19T06:23:26.667Z",
  "datos": {
   "roads": [
    {
@@ -6754,7 +6754,7 @@
     ]
    }
   ],
-  "seq": 923,
+  "seq": 924,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -9983,6 +9983,15 @@
      "valor": 1266,
      "unidad": "m",
      "nota": ""
+    },
+    {
+     "id": "x923",
+     "elem": "Captafaro Muro",
+     "valor": 158,
+     "unidad": "ud",
+     "nota": "",
+     "actFecha": "",
+     "actNota": ""
     }
    ],
    "x86": [
