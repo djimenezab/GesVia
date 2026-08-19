@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-19T11:12:15.269Z",
+ "exportado": "2026-08-19T11:13:56.001Z",
  "datos": {
   "roads": [
    {
@@ -6848,7 +6848,18 @@
     "cerrada": null,
     "obs": "",
     "gps": "",
-    "fotos": []
+    "fotos": [
+     {
+      "id": "wiwn8uj",
+      "pendiente": false,
+      "ruta": "fotos/x934_wiwn8uj.jpg"
+     },
+     {
+      "id": "851r58o",
+      "pendiente": false,
+      "ruta": "fotos/x934_851r58o.jpg"
+     }
+    ]
    }
   ],
   "seq": 935,
