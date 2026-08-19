@@ -235,7 +235,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   <div class="logo">
     <div class="logo-mark">GV</div>
     <div>
-      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.61</span></span></h1>
+      <h1>GesVía <span style="font-family:'Archivo Narrow';font-weight:600;font-size:.8rem;color:#B9C0C6;letter-spacing:0">v<span id="hdr-version">1.62</span></span></h1>
       <small>Gestión de la conservación · <span id="hdr-sector">Sector sin definir</span></small>
     </div>
   </div>
@@ -249,6 +249,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
     <button data-v="informe" onclick="go('informe')">Informe</button>
     <button data-v="inventario" onclick="go('inventario')">Inventario</button>
     <button data-v="documentacion" onclick="go('documentacion')">Documentación</button>
+    <button data-v="puntos" onclick="go('puntos')">Puntos C.</button>
     <button data-v="ajustes" onclick="go('ajustes')">Ajustes</button>
   </nav>
 </header>
@@ -534,6 +535,44 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   </div>
 </section>
 
+<!-- ================= PUNTOS CRÍTICOS ================= -->
+<section id="v-puntos" class="vista">
+  <div class="titulo-vista">
+    <h2>Puntos críticos</h2>
+    <p>Puntos de posible mejora futura (arrastres, accidentalidad, trazado, señalización…) que requieren estudio, presupuesto y organización.</p>
+  </div>
+
+  <div class="tarjeta" style="margin-bottom:1rem;padding:.7rem 1rem">
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-end">
+      <label class="campo" style="margin:0;min-width:150px">Estado
+        <select id="pc-f-estado" onchange="renderPuntos()">
+          <option value="*">Todos</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="estudio">En estudio</option>
+          <option value="resuelto">Resuelto</option>
+        </select>
+      </label>
+      <label class="campo" style="margin:0;min-width:150px">Prioridad
+        <select id="pc-f-prio" onchange="renderPuntos()">
+          <option value="*">Todas</option>
+          <option value="alta">Alta</option>
+          <option value="media">Media</option>
+          <option value="baja">Baja</option>
+        </select>
+      </label>
+      <label class="campo" style="margin:0;min-width:160px">Carretera
+        <select id="pc-f-road" onchange="renderPuntos()"><option value="*">Todas</option></select>
+      </label>
+      <label class="campo" style="margin:0;min-width:160px">Tipo
+        <select id="pc-f-tipo" onchange="renderPuntos()"><option value="*">Todos</option></select>
+      </label>
+      <button class="btn" onclick="nuevoPunto()">➕ Nuevo punto</button>
+    </div>
+  </div>
+
+  <div id="pc-lista"></div>
+</section>
+
 <!-- ================= AJUSTES (incluye Datos) ================= -->
 <section id="v-ajustes" class="vista">
   <div class="titulo-vista">
@@ -690,7 +729,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 
   <div class="tarjeta">
     <p style="color:var(--texto2);font-size:.9rem;margin:0">
-      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.61</span></strong>
+      Versión de la aplicación: <strong>GesVía v<span id="aj-version">1.62</span></strong>
     </p>
   </div>
 </section>
@@ -709,7 +748,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
    GesVía · lógica de la aplicación (vanilla JS, sin dependencias)
    ===================================================== */
 
-const APP_VERSION = '1.61';  // ← subir este número al publicar cambios
+const APP_VERSION = '1.62';  // ← subir este número al publicar cambios
 
 const FAMILIAS = [
   {id:'FIRME', nombre:'Firme (pavimento)'},
@@ -768,6 +807,9 @@ function load(){
   if(!Array.isArray(S.documentos)) S.documentos = [];   // { id, nombre, categoria, desc, archivo, url, fecha }
   if(!Array.isArray(S.docCategorias) || !S.docCategorias.length)
     S.docCategorias = ['Permisos','Normativa','Procedimientos','Contactos','Otros'];
+  if(!Array.isArray(S.puntos)) S.puntos = [];   // { id, roadId, pkIni, pkFin, tipo, estado, prio, obs, fotos:[], historial:[{fecha,texto}], creado }
+  if(!Array.isArray(S.puntoTipos) || !S.puntoTipos.length)
+    S.puntoTipos = ['Arrastres','Accidentalidad','Mejora de trazado','Mejora de señalización','Mejora de balizamiento','Drenaje','Otros'];
   migrarCatalogoInv();
   migrarFotos();
 }
@@ -821,7 +863,7 @@ function go(v){
   document.querySelectorAll('section.vista').forEach(s=>s.classList.remove('activa'));
   $('v-'+v).classList.add('activa');
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('activo', b.dataset.v===v));
-  ({panel:renderPanel, inspeccion:renderInspeccion, ordenes:renderOrdenes, informe:renderInformeForm, inventario:renderInventario, documentacion:renderDocumentacion, ajustes:renderAjustes}[v])();
+  ({panel:renderPanel, inspeccion:renderInspeccion, ordenes:renderOrdenes, informe:renderInformeForm, inventario:renderInventario, documentacion:renderDocumentacion, puntos:renderPuntos, ajustes:renderAjustes}[v])();
   window.scrollTo({top:0});
 }
 
@@ -1484,7 +1526,7 @@ function guardarEdicionTramo(tid){
 /* ====== Widget compartido de captura de fotos (inspección y órdenes) ======
    fotosBuffer[prefijo] = array de {id, data(dataURL), pendiente:true}
    El prefijo es 'i' para inspección y 'o' para orden. */
-let fotosBuffer = { i: [], o: [] };
+let fotosBuffer = { i: [], o: [], pc: [] };
 
 function renderFotosBuffer(prefijo){
   const arr = fotosBuffer[prefijo] || [];
@@ -1494,7 +1536,9 @@ function renderFotosBuffer(prefijo){
       onclick="quitarFotoBuffer('${prefijo}','${f.id}')">✕</button>
   </div>`).join('');
   // Puede haber una lista en el formulario y otra en el modal de edición (órdenes)
-  const ids = prefijo==='o' ? ['o-fotos-lista','o-fotos-lista-edit'] : ['i-fotos-lista','i-fotos-lista-edit'];
+  const ids = prefijo==='o' ? ['o-fotos-lista','o-fotos-lista-edit']
+            : prefijo==='pc' ? ['pc-fotos-lista']
+            : ['i-fotos-lista','i-fotos-lista-edit'];
   ids.forEach(id=>{ const el=$(id); if(el) el.innerHTML = html; });
 }
 async function anadirFotosBuffer(prefijo, fileList){
@@ -2098,6 +2142,216 @@ function eliminarDocumento(id){
   save(); renderDocumentacion();
   toast('Documento quitado de la lista.');
 }
+
+/* =====================================================
+   PUNTOS CRÍTICOS (banco de mejoras futuras)
+   ===================================================== */
+const PC_ESTADO = {pendiente:{txt:'Pendiente',cls:'b-critico'}, estudio:{txt:'En estudio',cls:'b-aviso'}, resuelto:{txt:'Resuelto',cls:'b-ok'}};
+const PC_PRIO = {alta:'Alta', media:'Media', baja:'Baja'};
+function pcEstadoBadge(e){ const x=PC_ESTADO[e]||{txt:e,cls:'b-nd'}; return `<span class="badge ${x.cls}">${x.txt}</span>`; }
+
+function renderPuntos(){
+  // rellenar filtros de carretera y tipo (una vez, conservando selección)
+  const fr = $('pc-f-road');
+  if(fr && fr.options.length<=1){
+    fr.innerHTML = '<option value="*">Todas</option>' + roadsOrdenadas().map(r=>`<option value="${r.id}">${esc(r.codigo)}</option>`).join('');
+  }
+  const ft = $('pc-f-tipo');
+  if(ft && ft.options.length<=1){
+    ft.innerHTML = '<option value="*">Todos</option>' + (S.puntoTipos||[]).map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('');
+  }
+  const fEstado=$('pc-f-estado').value, fPrio=$('pc-f-prio').value, fRoad=$('pc-f-road').value, fTipo=$('pc-f-tipo').value;
+  let lista = (S.puntos||[]).filter(p=>
+    (fEstado==='*'||p.estado===fEstado) &&
+    (fPrio==='*'||p.prio===fPrio) &&
+    (fRoad==='*'||p.roadId===fRoad) &&
+    (fTipo==='*'||p.tipo===fTipo));
+  // ordenar por prioridad (alta>media>baja) y luego carretera+PK
+  const ordPrio = {alta:0, media:1, baja:2};
+  lista.sort((a,b)=>{
+    const pa=ordPrio[a.prio]??3, pb=ordPrio[b.prio]??3;
+    if(pa!==pb) return pa-pb;
+    const ra=road(a.roadId), rb=road(b.roadId);
+    const r = (ra?ra.codigo:'').localeCompare(rb?rb.codigo:'', 'es', {numeric:true});
+    if(r!==0) return r;
+    return (a.pkIni||0)-(b.pkIni||0);
+  });
+  const box = $('pc-lista');
+  const total = (S.puntos||[]).length;
+  if(!lista.length){
+    box.innerHTML = `<div class="tarjeta" style="text-align:center;padding:2rem;color:var(--texto2)">
+      <div style="font-size:2.5rem;margin-bottom:.5rem">📍</div>
+      <p>${total? 'Ningún punto crítico con estos filtros.' : 'Aún no hay puntos críticos. Crea el primero con «Nuevo punto».'}</p></div>`;
+    return;
+  }
+  box.innerHTML = lista.map(p=>{
+    const r = road(p.roadId);
+    const pkTxt = p.pkFin!=null && p.pkFin!=='' ? `PK ${pk(p.pkIni)} – ${pk(p.pkFin)}` : `PK ${pk(p.pkIni)}`;
+    const ultima = (p.historial||[]).slice(-1)[0];
+    return `<div class="tarjeta" style="margin-bottom:.7rem">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;align-items:flex-start">
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700">${r?esc(r.codigo):'—'} · ${pkTxt} ${pcEstadoBadge(p.estado)} <span class="badge b-nd">${esc(PC_PRIO[p.prio]||p.prio)}</span></div>
+          <div style="color:var(--texto2);font-size:.9rem;margin-top:.2rem">${esc(p.tipo||'')}${r&&r.nombre?' · '+esc(r.nombre):''}</div>
+          ${p.obs? `<div style="margin-top:.35rem">${esc(p.obs)}</div>`:''}
+          ${ultima? `<div style="margin-top:.35rem;font-size:.85rem;color:var(--texto2)">Última actuación: ${fFecha(ultima.fecha)} · ${esc(ultima.texto)}</div>`:''}
+          ${p.fotos&&p.fotos.length? '<div style="margin-top:.4rem;display:flex;gap:.4rem;flex-wrap:wrap">'+thumbsFotos(p)+'</div>':''}
+        </div>
+        <div style="display:flex;gap:.3rem;flex-shrink:0">
+          <button class="btn sec mini" title="Editar" onclick="editarPunto('${p.id}')">✏️</button>
+          <button class="btn sec mini" title="Imprimir ficha" onclick="imprimirPunto('${p.id}')">🖨</button>
+          <button class="btn peligro mini" onclick="borrarPunto('${p.id}')">✕</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function nuevoPunto(){ editarPunto(null); }
+function editarPunto(id){
+  const p = id ? S.puntos.find(x=>x.id===id) : {id:null, roadId:(roadsOrdenadas()[0]||{}).id||'', pkIni:'', pkFin:'', tipo:(S.puntoTipos||[])[0]||'', estado:'pendiente', prio:'media', obs:'', fotos:[], historial:[]};
+  if(!p) return;
+  fotosBuffer.pc = [];   // buffer para fotos nuevas
+  const optRoad = roadsOrdenadas().map(r=>`<option value="${r.id}" ${p.roadId===r.id?'selected':''}>${esc(r.codigo)}${r.nombre?' · '+esc(r.nombre):''}</option>`).join('');
+  const optTipo = (S.puntoTipos||[]).map(t=>`<option value="${esc(t)}" ${p.tipo===t?'selected':''}>${esc(t)}</option>`).join('');
+  const histHtml = (p.historial||[]).map((h,i)=>`<div class="trazo-item">
+    <span style="flex:1"><strong>${fFecha(h.fecha)}</strong> · ${esc(h.texto)}</span>
+    ${p.id?`<button class="btn peligro mini" onclick="borrarHistorial('${p.id}',${i})">✕</button>`:''}
+  </div>`).join('') || '<p style="color:var(--texto2);font-size:.85rem">Sin actuaciones registradas todavía.</p>';
+
+  abrirModal(`<button class="cerrar-x" onclick="cerrarModal()">✕</button>
+    <h3>${id?'Editar':'Nuevo'} punto crítico</h3>
+    <div class="form-grid">
+      <label class="campo">Carretera
+        <select id="pc-road">${optRoad}</select></label>
+      <label class="campo">Tipo
+        <select id="pc-tipo">${optTipo}</select></label>
+      <label class="campo">PK inicio
+        <input type="number" step="any" min="0" id="pc-pkini" value="${p.pkIni!==''&&p.pkIni!=null?p.pkIni:''}" placeholder="Ej.: 12.3"></label>
+      <label class="campo">PK fin (opcional, si es un tramo)
+        <input type="number" step="any" min="0" id="pc-pkfin" value="${p.pkFin!==''&&p.pkFin!=null?p.pkFin:''}" placeholder="Ej.: 12.8"></label>
+      <label class="campo">Estado
+        <select id="pc-estado">
+          <option value="pendiente" ${p.estado==='pendiente'?'selected':''}>Pendiente</option>
+          <option value="estudio" ${p.estado==='estudio'?'selected':''}>En estudio</option>
+          <option value="resuelto" ${p.estado==='resuelto'?'selected':''}>Resuelto</option>
+        </select></label>
+      <label class="campo">Prioridad
+        <select id="pc-prio">
+          <option value="alta" ${p.prio==='alta'?'selected':''}>Alta</option>
+          <option value="media" ${p.prio==='media'?'selected':''}>Media</option>
+          <option value="baja" ${p.prio==='baja'?'selected':''}>Baja</option>
+        </select></label>
+      <label class="campo" style="grid-column:1/-1">Observaciones
+        <textarea id="pc-obs" placeholder="Describe el punto: qué ocurre, qué mejora se propone…">${esc(p.obs||'')}</textarea></label>
+    </div>
+
+    <div style="margin-top:1rem">
+      <label class="campo" style="margin:0">Fotografías
+        <input type="file" id="pc-foto" accept="image/*" capture="environment" multiple onchange="anadirFotosBuffer('pc', this.files); this.value='';"></label>
+      <div id="pc-fotos-lista" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem"></div>
+      ${p.fotos&&p.fotos.length? `<div style="margin-top:.4rem"><div style="font-size:.85rem;color:var(--texto2);margin-bottom:.3rem">Fotos guardadas:</div><div id="pc-fotos-guardadas" style="display:flex;flex-wrap:wrap;gap:.5rem">${p.fotos.map(f=>{const src=f.pendiente?f.data:urlFoto(f.ruta);return `<div style="position:relative;display:inline-block"><img src="${src}" class="foto-mini" onclick="verFotoGrande('${src.replace(/'/g,'')}')"><button class="btn peligro mini" style="position:absolute;top:-6px;right:-6px;padding:.1rem .35rem;border-radius:50%" onclick="quitarFotoPunto('${p.id}','${f.id}')">✕</button></div>`;}).join('')}</div></div>`:''}
+    </div>
+
+    <div style="margin-top:1rem;border-top:1px solid var(--borde);padding-top:.7rem">
+      <h4 style="margin:0 0 .4rem 0">Historial de actuaciones</h4>
+      <div id="pc-hist">${histHtml}</div>
+      ${p.id? `<div class="plano-toolbar" style="margin:.5rem 0 0 0;align-items:flex-end">
+        <label class="campo" style="margin:0;min-width:130px">Fecha
+          <input type="date" id="pc-hist-fecha" value="${hoy()}"></label>
+        <label class="campo" style="margin:0;flex:1;min-width:160px">Actuación / seguimiento
+          <input id="pc-hist-texto" placeholder="Ej.: solicitado estudio geotécnico"></label>
+        <button class="btn sec mini" onclick="addHistorial('${p.id}')">+ Añadir</button>
+      </div>` : '<p class="ayuda">Guarda primero el punto para poder añadir actuaciones al historial.</p>'}
+    </div>
+
+    <div class="acciones">
+      <button class="btn" onclick="guardarPunto('${id||''}')">Guardar punto</button>
+      <button class="btn sec" onclick="cerrarModal()">Cancelar</button>
+    </div>`);
+  renderFotosBuffer('pc');
+}
+function guardarPunto(id){
+  const pkIni = parseFloat($('pc-pkini').value);
+  if(isNaN(pkIni)) return toast('Indica al menos el PK de inicio.');
+  const pkFinStr = $('pc-pkfin').value;
+  const pkFin = pkFinStr==='' ? null : parseFloat(pkFinStr);
+  const datos = {
+    roadId: $('pc-road').value,
+    tipo: $('pc-tipo').value,
+    pkIni, pkFin,
+    estado: $('pc-estado').value,
+    prio: $('pc-prio').value,
+    obs: ($('pc-obs').value||'').trim(),
+  };
+  const nuevasFotos = volcarFotos('pc');
+  if(id){
+    const p = S.puntos.find(x=>x.id===id); if(!p) return;
+    Object.assign(p, datos);
+    p.fotos = (p.fotos||[]).concat(nuevasFotos);
+  } else {
+    S.puntos.push({ id:uid(), ...datos, fotos:nuevasFotos, historial:[], creado:hoy() });
+  }
+  save(); cerrarModal(); renderPuntos(); toast('Punto crítico guardado.');
+}
+function borrarPunto(id){
+  const p = S.puntos.find(x=>x.id===id);
+  if(!confirm('¿Eliminar este punto crítico y todo su historial?')) return;
+  S.puntos = S.puntos.filter(x=>x.id!==id);
+  save(); renderPuntos(); toast('Punto crítico eliminado.');
+}
+function addHistorial(id){
+  const p = S.puntos.find(x=>x.id===id); if(!p) return;
+  const fecha = $('pc-hist-fecha').value;
+  const texto = ($('pc-hist-texto').value||'').trim();
+  if(!fecha||!texto) return toast('Indica fecha y texto de la actuación.');
+  if(!p.historial) p.historial = [];
+  p.historial.push({fecha, texto});
+  p.historial.sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||''));
+  save(); editarPunto(id);   // recargar el modal con el historial actualizado
+}
+function borrarHistorial(id, idx){
+  const p = S.puntos.find(x=>x.id===id); if(!p||!p.historial) return;
+  p.historial.splice(idx,1);
+  save(); editarPunto(id);
+}
+function quitarFotoPunto(id, fid){
+  const p = S.puntos.find(x=>x.id===id); if(!p||!p.fotos) return;
+  p.fotos = p.fotos.filter(f=>f.id!==fid);
+  save(); editarPunto(id);
+}
+function imprimirPunto(id){
+  const p = S.puntos.find(x=>x.id===id); if(!p) return;
+  const r = road(p.roadId);
+  const fechaTxt = new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
+  const sector = (S.ajustes&&S.ajustes.sector) ? esc(S.ajustes.sector) : '';
+  const pkTxt = p.pkFin!=null && p.pkFin!=='' ? `PK ${pk(p.pkIni)} – ${pk(p.pkFin)}` : `PK ${pk(p.pkIni)}`;
+  const fotos = (p.fotos||[]).map(f=>{ const src=f.pendiente?f.data:urlFoto(f.ruta); return `<img src="${src}" class="pt-foto">`; }).join('');
+  const hist = (p.historial||[]).map(h=>`<tr><td class="num" style="white-space:nowrap">${fFecha(h.fecha)}</td><td>${esc(h.texto)}</td></tr>`).join('')
+    || '<tr><td colspan="2" style="color:var(--texto2)">Sin actuaciones registradas.</td></tr>';
+  const html = `<div class="informe">
+    <div class="cab">
+      <div><h2>Punto crítico</h2><div style="color:var(--texto2)">${r?esc(r.codigo):''} · ${pkTxt}${sector?' · '+sector:''}</div></div>
+      <div style="text-align:right"><div class="display" style="font-weight:800">GesVía</div><div style="color:var(--texto2);font-size:.9rem">${fechaTxt}</div></div>
+    </div>
+    <table class="pt-tabla"><tbody>
+      <tr><td class="pt-et">Carretera</td><td>${r?'<strong>'+esc(r.codigo)+'</strong>'+(r.nombre?' · '+esc(r.nombre):''):'—'}</td></tr>
+      <tr><td class="pt-et">Ubicación</td><td>${pkTxt}</td></tr>
+      <tr><td class="pt-et">Tipo</td><td>${esc(p.tipo||'')}</td></tr>
+      <tr><td class="pt-et">Estado</td><td>${(PC_ESTADO[p.estado]||{txt:p.estado}).txt}</td></tr>
+      <tr><td class="pt-et">Prioridad</td><td>${esc(PC_PRIO[p.prio]||p.prio)}</td></tr>
+    </tbody></table>
+    ${p.obs? `<h3>Observaciones</h3><p style="margin:.2rem 0 .6rem">${esc(p.obs)}</p>`:''}
+    <h3>Historial de actuaciones</h3>
+    <div style="overflow-x:auto"><table><thead><tr><th style="width:120px">Fecha</th><th>Actuación / seguimiento</th></tr></thead><tbody>${hist}</tbody></table></div>
+    ${fotos? `<h3>Fotografías</h3><div class="pt-fotos">${fotos}</div>`:''}
+    <div class="pie"><span>Punto de posible actuación futura (mejora, estudio, presupuesto).</span><span>Generado con GesVía</span></div>
+  </div>`;
+  $('printArea').innerHTML = html;
+  document.body.classList.add('imprimiendo');
+  requestAnimationFrame(()=>{ window.print(); setTimeout(()=>document.body.classList.remove('imprimiendo'), 400); });
+}
+
 
 function invFillTramos(){
   fillSelectTramos($('inv-road'), $('inv-tramo'));
@@ -2905,7 +3159,7 @@ function importJSON(input){
       const d = JSON.parse(rd.result);
       if(!Array.isArray(d.roads)) throw 0;
       if(!confirm('Esto sustituirá los datos actuales por los del archivo. ¿Continuar?')) return;
-      S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; if(!Array.isArray(S.documentos)) S.documentos=[]; if(!Array.isArray(S.docCategorias)||!S.docCategorias.length) S.docCategorias=["Permisos","Normativa","Procedimientos","Contactos","Otros"]; migrarCatalogoInv(); migrarFotos(); save(); aplicarCabecera(); go('panel'); toast('Copia importada correctamente.');
+      S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; if(!Array.isArray(S.documentos)) S.documentos=[]; if(!Array.isArray(S.docCategorias)||!S.docCategorias.length) S.docCategorias=["Permisos","Normativa","Procedimientos","Contactos","Otros"]; if(!Array.isArray(S.puntos)) S.puntos=[]; if(!Array.isArray(S.puntoTipos)||!S.puntoTipos.length) S.puntoTipos=["Arrastres","Accidentalidad","Mejora de trazado","Mejora de señalización","Mejora de balizamiento","Drenaje","Otros"]; migrarCatalogoInv(); migrarFotos(); save(); aplicarCabecera(); go('panel'); toast('Copia importada correctamente.');
     }catch(e){ toast('El archivo no parece una copia válida de GesVía.'); }
     input.value='';
   };
@@ -3101,7 +3355,7 @@ async function subirFotoGitHub(dataURL, nombreBase){
 async function subirFotosPendientes(){
   if(!ghConfigurado()) return false;
   let algoSubido = false;
-  const cols = [S.insp, S.ots];
+  const cols = [S.insp, S.ots, S.puntos];
   for(const col of cols){
     for(const reg of col){
       if(!reg.fotos) continue;
@@ -3160,7 +3414,7 @@ async function descargarDeGitHub(){
     const parsed = decodifica((await res.json()).content);
     const d = parsed.datos || parsed; // admite también un JSON exportado a mano
     if(!d || !Array.isArray(d.roads)){ setSyncEstado('❌ El archivo no tiene el formato de GesVía', 'var(--critico)'); return; }
-    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; if(!Array.isArray(S.documentos)) S.documentos=[]; if(!Array.isArray(S.docCategorias)||!S.docCategorias.length) S.docCategorias=["Permisos","Normativa","Procedimientos","Contactos","Otros"]; migrarCatalogoInv(); migrarFotos(); saveLocal(); aplicarCabecera(); go('panel');
+    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; if(!Array.isArray(S.documentos)) S.documentos=[]; if(!Array.isArray(S.docCategorias)||!S.docCategorias.length) S.docCategorias=["Permisos","Normativa","Procedimientos","Contactos","Otros"]; if(!Array.isArray(S.puntos)) S.puntos=[]; if(!Array.isArray(S.puntoTipos)||!S.puntoTipos.length) S.puntoTipos=["Arrastres","Accidentalidad","Mejora de trazado","Mejora de señalización","Mejora de balizamiento","Drenaje","Otros"]; migrarCatalogoInv(); migrarFotos(); saveLocal(); aplicarCabecera(); go('panel');
     setSyncEstado(`✅ Descargado: ${S.roads.length} carreteras · ${S.insp.length} inspecciones`, 'var(--ok)');
     setSyncDot('var(--ok)', 'Sincronizado ✓'); toast('📥 Datos descargados de GitHub');
   }catch(e){ setSyncEstado('❌ Error: '+e.message, 'var(--critico)'); }
@@ -3212,7 +3466,7 @@ async function autoDescargar(){
       const parsed = decodifica((await res.json()).content);
       const d = parsed.datos || parsed;
       if(d && Array.isArray(d.roads)){
-        S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; if(!Array.isArray(S.documentos)) S.documentos=[]; if(!Array.isArray(S.docCategorias)||!S.docCategorias.length) S.docCategorias=["Permisos","Normativa","Procedimientos","Contactos","Otros"]; migrarCatalogoInv(); migrarFotos(); saveLocal(); aplicarCabecera();
+        S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; if(!Array.isArray(S.documentos)) S.documentos=[]; if(!Array.isArray(S.docCategorias)||!S.docCategorias.length) S.docCategorias=["Permisos","Normativa","Procedimientos","Contactos","Otros"]; if(!Array.isArray(S.puntos)) S.puntos=[]; if(!Array.isArray(S.puntoTipos)||!S.puntoTipos.length) S.puntoTipos=["Arrastres","Accidentalidad","Mejora de trazado","Mejora de señalización","Mejora de balizamiento","Drenaje","Otros"]; migrarCatalogoInv(); migrarFotos(); saveLocal(); aplicarCabecera();
         setSyncDot('var(--ok)', 'Sincronizado ✓');
         const activa = document.querySelector('nav button.activo');
         go(activa? activa.dataset.v || 'panel' : 'panel');
@@ -3247,7 +3501,7 @@ async function refrescarSiHayNovedades(motivo){
     const local  = JSON.stringify(S);
     if(remoto === local) return;              // ya estamos al día, no tocamos nada
     if(pendienteSubir) return;                // por si cambió mientras descargábamos
-    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; if(!Array.isArray(S.documentos)) S.documentos=[]; if(!Array.isArray(S.docCategorias)||!S.docCategorias.length) S.docCategorias=["Permisos","Normativa","Procedimientos","Contactos","Otros"]; migrarCatalogoInv(); migrarFotos();
+    S = d; if(!S.ajustes) S.ajustes={sector:''}; if(!S.trazados) S.trazados={}; if(!Array.isArray(S.vigilantes)) S.vigilantes=[]; if(!S.inventario) S.inventario={}; if(!Array.isArray(S.invElementos)) S.invElementos=[]; if(!Array.isArray(S.documentos)) S.documentos=[]; if(!Array.isArray(S.docCategorias)||!S.docCategorias.length) S.docCategorias=["Permisos","Normativa","Procedimientos","Contactos","Otros"]; if(!Array.isArray(S.puntos)) S.puntos=[]; if(!Array.isArray(S.puntoTipos)||!S.puntoTipos.length) S.puntoTipos=["Arrastres","Accidentalidad","Mejora de trazado","Mejora de señalización","Mejora de balizamiento","Drenaje","Otros"]; migrarCatalogoInv(); migrarFotos();
     saveLocal(); aplicarCabecera();
     const activa = document.querySelector('nav button.activo');
     go(activa? activa.dataset.v || 'panel' : 'panel');
