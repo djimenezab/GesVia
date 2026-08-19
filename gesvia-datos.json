@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-19T09:58:51.003Z",
+ "exportado": "2026-08-19T09:59:05.698Z",
  "datos": {
   "roads": [
    {
@@ -6766,6 +6766,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x931",
+    "tramoId": "x139",
+    "fam": "MAR",
+    "fecha": "2026-08-19",
+    "valor": 35,
+    "obs": "Hierva alta",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -6826,7 +6838,7 @@
     ]
    }
   ],
-  "seq": 931,
+  "seq": 932,
   "ajustes": {
    "sector": "ZONA 2"
   },
