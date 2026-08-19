@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-19T12:07:14.930Z",
+ "exportado": "2026-08-19T12:07:25.856Z",
  "datos": {
   "roads": [
    {
@@ -12114,7 +12114,7 @@
     "id": "x936",
     "roadId": "x107",
     "tipo": "Arrastres",
-    "pkIni": 500,
+    "pkIni": 0.5,
     "pkFin": null,
     "estado": "pendiente",
     "prio": "media",
