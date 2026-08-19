@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-19T12:09:53.771Z",
+ "exportado": "2026-08-19T12:18:24.028Z",
  "datos": {
   "roads": [
    {
@@ -12136,7 +12136,8 @@
    "Mejora de señalización",
    "Mejora de balizamiento",
    "Drenaje",
-   "Otros"
+   "Otros",
+   "Cruces de Agua"
   ]
  }
 }
