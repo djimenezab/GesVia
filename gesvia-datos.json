@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-19T11:29:03.329Z",
+ "exportado": "2026-08-19T12:07:14.930Z",
  "datos": {
   "roads": [
    {
@@ -6862,7 +6862,7 @@
     ]
    }
   ],
-  "seq": 936,
+  "seq": 937,
   "ajustes": {
    "sector": "ZONA 2"
   },
@@ -12107,6 +12107,30 @@
    "Normativa",
    "Procedimientos",
    "Contactos",
+   "Otros"
+  ],
+  "puntos": [
+   {
+    "id": "x936",
+    "roadId": "x107",
+    "tipo": "Arrastres",
+    "pkIni": 500,
+    "pkFin": null,
+    "estado": "pendiente",
+    "prio": "media",
+    "obs": "Hacer calculo hidráulico para ampliar obra de fábrica, actualmente un tubo de 80.",
+    "fotos": [],
+    "historial": [],
+    "creado": "2026-08-19"
+   }
+  ],
+  "puntoTipos": [
+   "Arrastres",
+   "Accidentalidad",
+   "Mejora de trazado",
+   "Mejora de señalización",
+   "Mejora de balizamiento",
+   "Drenaje",
    "Otros"
   ]
  }
