@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-19T09:58:14.526Z",
+ "exportado": "2026-08-19T09:58:51.003Z",
  "datos": {
   "roads": [
    {
@@ -6754,6 +6754,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x930",
+    "tramoId": "x139",
+    "fam": "DRE",
+    "fecha": "2026-08-19",
+    "valor": 31,
+    "obs": "PK 0 a 1+500 reperfilado cunetas",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -6814,7 +6826,7 @@
     ]
    }
   ],
-  "seq": 930,
+  "seq": 931,
   "ajustes": {
    "sector": "ZONA 2"
   },
