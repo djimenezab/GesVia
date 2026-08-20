@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-08-19T12:21:27.589Z",
+ "exportado": "2026-08-20T09:00:01.118Z",
  "datos": {
   "roads": [
    {
@@ -10173,7 +10173,9 @@
      "elem": "Pasos de peatones",
      "valor": 4,
      "unidad": "ud",
-     "nota": ""
+     "nota": "",
+     "actFecha": "2026-08-20",
+     "actNota": "Repintado"
     }
    ],
    "x138": [
