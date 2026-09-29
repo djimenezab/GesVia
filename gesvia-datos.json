@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-09-23T10:44:03.440Z",
+ "exportado": "2026-09-29T13:34:35.057Z",
  "datos": {
   "roads": [
    {
@@ -10159,7 +10159,8 @@
   },
   "vigilantes": [
    "David Jiménez",
-   "Jose L. Moya"
+   "Jose L. Moya",
+   "Manuel García"
   ],
   "inventario": {
    "x147": [
