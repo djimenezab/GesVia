@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-09-30T08:48:33.260Z",
+ "exportado": "2026-09-30T08:54:12.791Z",
  "datos": {
   "roads": [
    {
@@ -538,21 +538,24 @@
     "roadId": "x98",
     "pkIni": 0,
     "pkFin": 5.252,
-    "desc": "A-30 - Cruce San Isidro"
+    "desc": "A-30 - Cruce San Isidro",
+    "actuaciones": {}
    },
    {
     "id": "x100",
     "roadId": "x98",
     "pkIni": 5.252,
     "pkFin": 13.235,
-    "desc": "Cruce San Isidro - Pinilla"
+    "desc": "Cruce San Isidro - Pinilla",
+    "actuaciones": {}
    },
    {
     "id": "x101",
     "roadId": "x98",
     "pkIni": 13.235,
     "pkFin": 17.436,
-    "desc": "Pinilla - Cruce CM-3211"
+    "desc": "Pinilla - Cruce CM-3211",
+    "actuaciones": {}
    },
    {
     "id": "x119",
@@ -7224,6 +7227,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x983",
+    "tramoId": "x99",
+    "fam": "MAR",
+    "fecha": "2026-09-30",
+    "valor": 21,
+    "obs": "",
+    "inspector": "",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -7308,7 +7323,7 @@
     ]
    }
   ],
-  "seq": 983,
+  "seq": 984,
   "ajustes": {
    "sector": "ZONA 2"
   },
