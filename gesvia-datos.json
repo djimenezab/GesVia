@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-10-15T10:44:17.532Z",
+ "exportado": "2026-10-15T10:44:52.671Z",
  "datos": {
   "roads": [
    {
@@ -7275,6 +7275,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x990",
+    "tramoId": "x53",
+    "fam": "BAL",
+    "fecha": "2026-10-15",
+    "valor": 23,
+    "obs": "Faltan el 90% de hitos de arista",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -7359,7 +7371,7 @@
     ]
    }
   ],
-  "seq": 990,
+  "seq": 991,
   "ajustes": {
    "sector": "ZONA 2"
   },
