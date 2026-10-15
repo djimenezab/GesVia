@@ -1,7 +1,7 @@
 {
  "app": "gesvia",
  "version": "2.0",
- "exportado": "2026-10-15T10:43:08.379Z",
+ "exportado": "2026-10-15T10:44:04.475Z",
  "datos": {
   "roads": [
    {
@@ -7275,6 +7275,18 @@
     "gps": "",
     "params": {},
     "fotos": []
+   },
+   {
+    "id": "x989",
+    "tramoId": "x30",
+    "fam": "FIRME",
+    "fecha": "2026-10-15",
+    "valor": 23,
+    "obs": "Hitos faltan el 90%",
+    "inspector": "David Jiménez",
+    "gps": "",
+    "params": {},
+    "fotos": []
    }
   ],
   "ots": [
@@ -7359,7 +7371,7 @@
     ]
    }
   ],
-  "seq": 989,
+  "seq": 990,
   "ajustes": {
    "sector": "ZONA 2"
   },
